@@ -4,7 +4,8 @@
         The actual rendered columns are set as a property on the row definition" -->
 
 
-  <ng-container *ngFor="let header of headers[0]" [matColumnDef]="header">
+  <ng-container *ngFor="let header of headers[0]" [matColumnDef]="header" 
+  sticky="header==='user' || header==='user2' || header==='user3'">
     <th mat-header-cell *matHeaderCellDef> {{header}} </th>
     <td mat-cell *matCellDef="let element">
       {{this.getValue(element, header)}}
@@ -19,9 +20,9 @@
     <th mat-header-cell *matHeaderCellDef [attr.colSpan]="thirdHeader.colSpan"> {{thirdHeader.code}} </th>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="this.thirdHeadersList"></tr>
-  <tr mat-header-row *matHeaderRowDef="this.secondHeadersList"></tr>
-  <tr mat-header-row *matHeaderRowDef="headers[0]"></tr>
+  <tr mat-header-row *matHeaderRowDef="this.thirdHeadersList; sticky: true"></tr>
+  <tr mat-header-row *matHeaderRowDef="this.secondHeadersList; sticky: true"></tr>
+  <tr mat-header-row *matHeaderRowDef="headers[0]; sticky: true"></tr>
 
   <tr mat-row *matRowDef="let row; columns: headers[0];"></tr>
 </table>
