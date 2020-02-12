@@ -10,14 +10,13 @@ export class SchedulerV2Component implements OnInit {
 
   input: Array<{user: string}> = agGridData.result;
   startDate: Date;
-  headers: Array<string>;
+  headers: Array<Array<string>> = [];
 
   constructor() { }
 
   ngOnInit() {
-    console.log(this.input);
-    this.headers = Object.keys(this.input[0]);
-    this.headers.sort( (a,b) => {
+    this.headers.push( Object.keys(this.input[0]) );
+    this.headers[0].sort( (a,b) => {
       if(a==='user') return -1;
       if(b==='user') return 1;
       return 0;

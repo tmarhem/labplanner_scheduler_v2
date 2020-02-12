@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SchedulerComponent implements OnInit {
 
-  @Input() headers: Array<string>;
+  @Input() headers: Array<Array<string>>;
   @Input() rows: Array<any>;
 
   constructor() { }
