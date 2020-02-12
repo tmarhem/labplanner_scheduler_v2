@@ -13,6 +13,7 @@ export class SchedulerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.headers);
   }
 
   getValue = (element, header) => {
