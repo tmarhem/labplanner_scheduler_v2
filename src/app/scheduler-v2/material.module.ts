@@ -55,7 +55,7 @@ import {MatTableModule} from '@angular/material/table';
     // MatBottomSheetModule,
     MatButtonModule,
     // MatButtonToggleModule,
-    // MatCardModule,
+    MatCardModule,
     // MatCheckboxModule,
     // MatChipsModule,
     // MatStepperModule,
