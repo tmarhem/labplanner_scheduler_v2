@@ -12,10 +12,10 @@
   </ng-container>
 
   <ng-container *ngFor="let secondHeader of headers[1]" [matColumnDef]="secondHeader.code">
-    <th mat-header-cell *matHeaderCellDef [attr.colSpan]="secondHeader.colSpan"> test </th>
+    <th mat-header-cell *matHeaderCellDef [attr.colSpan]="secondHeader.colSpan"> {{secondHeader.code}} </th>
   </ng-container>
 
-  <tr mat-header-row *matHeaderRowDef="this.secondHeqdersList"></tr>
+  <tr mat-header-row *matHeaderRowDef="this.secondHeadersList"></tr>
   <tr mat-header-row *matHeaderRowDef="headers[0]"></tr>
 
   <tr mat-row *matRowDef="let row; columns: headers[0];"></tr>
