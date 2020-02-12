@@ -11,6 +11,7 @@ export class SchedulerV2Component implements OnInit {
   input: Array<{user: string}> = agGridData.result;
   startDate: Date;
   headers: Array<Array<string>>;
+  secondHeaders: Array<any>;
 
   constructor() { }
 
@@ -32,22 +33,30 @@ export class SchedulerV2Component implements OnInit {
       if(b==='user') return 1;
       return 0;
     });
-    // this.headers.push( this.headers[0].map( h => {
-    //   if( h === 'user') return h;
-    //   return h.slice(0,-2);
-    // }));
-    // this.headers.push( this.headers[0].map( h => {
-    //   if( h === 'user') return h;
-    //   return h.slice(3,5);
-    // }));
   }
 
   generateSecondHeaders = ( firstHeaders: any) => {
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
       return h.slice(0,-2);
+    }).map( h => (h === 'user') ? 'user2' : h);
+    this.secondHeaders = [];
+    duplicateHeaders.forEach( h => {
+      let index = this.secondHeaders.findIndex( h2 => h2.code === h)
+      if( index < 0) {
+        this.secondHeaders.push({code: h, colSpan:1})
+      } else {
+        this.secondHeaders[index].colSpan ++;
+      }
+    this.headers.push(this.secondHeaders);
     });
-    console.log('duplicate',duplicateHeaders);
+  }
+
+  generateThirdHeaders = ( firstHeaders: any ) => {
+    const duplicateHeaders = this.headers[0].map( h => {
+      if( h === 'user') return h;
+      return h.slice(3,5);
+    })
   }
 }
 

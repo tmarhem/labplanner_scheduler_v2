@@ -7,13 +7,17 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class SchedulerComponent implements OnInit {
 
-  @Input() headers: Array<Array<string>>;
+  @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
+  secondHeadersList: Array<string>;
   constructor() { }
 
   ngOnInit() {
-    console.log(this.headers);
+    this.secondHeadersList = this.headers[1].map( h => h.code);
+    console.log('where', this.secondHeadersList);
+        console.log('where', this.headers[0]);
+
   }
 
   getValue = (element, header) => {
