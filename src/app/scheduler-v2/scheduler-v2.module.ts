@@ -7,11 +7,13 @@ import { TimeslotPickerComponent } from './timeslot-picker/timeslot-picker.compo
 import { SchedulerV2Component } from './scheduler-v2.component';
 
 import { MaterialModule } from './material.module';
+import {MatButtonModule} from '@angular/material/button';
 
 @NgModule({
   imports: [
     CommonModule,
-    // MaterialModule
+    // MaterialModule,
+    MatButtonModule
   ],
   declarations: [
     SchedulerComponent,
