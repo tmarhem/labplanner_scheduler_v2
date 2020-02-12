@@ -12,12 +12,15 @@ export class SchedulerV2Component implements OnInit {
   startDate: Date;
   headers: Array<Array<string>>;
   secondHeaders: Array<any>;
+  thirdHeaders: Array<any>;
+
 
   constructor() { }
 
   ngOnInit() {
     this.generateHeaders(this.input[0]);
     this.generateSecondHeaders(this.headers[0]);
+    this.generateThirdHeaders(this.headers[0]);
   }
 
 /**
@@ -48,19 +51,30 @@ export class SchedulerV2Component implements OnInit {
       } else {
         this.secondHeaders[index].colSpan ++;
       }
-    this.headers.push(this.secondHeaders);
     });
+    this.headers.push(this.secondHeaders);
   }
 
   generateThirdHeaders = ( firstHeaders: any ) => {
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
       return h.slice(3,5);
-    })
+    }).map( h => (h === 'user') ? 'user3' : h);
+    this.thirdHeaders = [];
+    duplicateHeaders.forEach( h => {
+      let index = this.thirdHeaders.findIndex( h2 => h2.code === h)
+      if( index < 0) {
+        this.thirdHeaders.push({code: h, colSpan:1})
+      } else {
+        this.thirdHeaders[index].colSpan ++;
+      }
+    });
+    this.headers.push(this.thirdHeaders);
+    console.log('h3',this.headers)
   }
 }
-
 export class TimeSlot{
+
   category: string;
   userId: string;
   value: string;

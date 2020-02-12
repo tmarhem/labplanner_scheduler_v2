@@ -11,12 +11,15 @@ export class SchedulerComponent implements OnInit {
   @Input() rows: Array<any>;
 
   secondHeadersList: Array<string>;
+  thirdHeadersList: Array<string>;
+
   constructor() { }
 
   ngOnInit() {
     this.secondHeadersList = this.headers[1].map( h => h.code);
-    console.log('where', this.secondHeadersList);
-        console.log('where', this.headers[0]);
+    this.thirdHeadersList = this.headers[2].map( h => h.code);
+
+    console.log('where', this.thirdHeadersList);
 
   }
 

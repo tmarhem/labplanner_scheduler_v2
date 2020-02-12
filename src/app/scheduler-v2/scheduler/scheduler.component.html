@@ -15,6 +15,11 @@
     <th mat-header-cell *matHeaderCellDef [attr.colSpan]="secondHeader.colSpan"> {{secondHeader.code}} </th>
   </ng-container>
 
+  <ng-container *ngFor="let thirdHeader of headers[2]" [matColumnDef]="thirdHeader.code">
+    <th mat-header-cell *matHeaderCellDef [attr.colSpan]="thirdHeader.colSpan"> {{thirdHeader.code}} </th>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="this.thirdHeadersList"></tr>
   <tr mat-header-row *matHeaderRowDef="this.secondHeadersList"></tr>
   <tr mat-header-row *matHeaderRowDef="headers[0]"></tr>
 
