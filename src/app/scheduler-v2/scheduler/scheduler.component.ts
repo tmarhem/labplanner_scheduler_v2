@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-scheduler',
@@ -6,6 +6,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./scheduler.component.css']
 })
 export class SchedulerComponent implements OnInit {
+
+  @Input() headers: Array<string>;
+  @Input() rows: Array<any>;
 
   ELEMENT_DATA: any[] = [
   {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
@@ -26,6 +29,7 @@ export class SchedulerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log('data', this.headers, this.rows);
   }
 
 }
