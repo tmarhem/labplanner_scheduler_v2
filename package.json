@@ -14,11 +14,13 @@
     "@angular/platform-browser-dynamic": "^8.0.0",
     "@angular/router": "^8.0.0",
     "core-js": "2",
+    "node-sass": "^4.13.1",
     "rxjs": "^6.5.2",
     "tslib": "^1.9.0",
     "zone.js": "^0.9.1"
   },
   "scripts": {
+    "tsc": "tsc --init",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
