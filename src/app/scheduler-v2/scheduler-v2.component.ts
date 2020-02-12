@@ -15,8 +15,13 @@ export class SchedulerV2Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.input);
     this.headers = Object.keys(this.input[0]);
-    // this.headers = this.headers.filter( h => h !== 'user');
+    this.headers.sort( (a,b) => {
+      if(a==='user') return -1;
+      if(b==='user') return 1;
+      return 0;
+    });
   }
 
 }
