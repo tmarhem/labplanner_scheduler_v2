@@ -11,9 +11,9 @@
     </th>
     <td mat-cell *matCellDef="let element" 
     [attr.rowspan]="i === 0 ? 2 : 1"
-    [attr.colspan]="test(element, i, header)"
-    [ngStyle]="test(element, i, header) === 0 ? {'display': 'none'} : {}">
-      {{this.getValue(element, header)}}
+    [attr.colspan]="getRowSpan(element, i, header)"
+    [ngStyle]="getRowSpan(element, i, header) === 0 ? {'display': 'none'} : {}">
+      {{this.getTimeSlotDisplayValue(element, header)}}
     </td>
   </ng-container>
 

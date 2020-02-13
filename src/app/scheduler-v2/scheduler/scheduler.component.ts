@@ -23,18 +23,14 @@ export class SchedulerComponent implements OnInit {
     this.generateSpannedRow();
   }
 
-  getValue = (element, header) => {
+  getTimeSlotDisplayValue = (element, header) => {
     if (element[header].value) return element[header].value;
     if (typeof element[header] === 'string') return element[header];
     return 'NA';
   }
 
-  getRowSpan = (header)=>{
-    console.log('h',header);
-    return header === 'user3' ? 3 : 1
-  }
   
-  test = (element, i, header) => {
+  getRowSpan = (element, i, header) => {
     // if (element[header].value === 'Legallais') { return 2}
     if ( i === 2) return 2;
     if (i === 3) return 0;
@@ -65,7 +61,7 @@ export class SchedulerComponent implements OnInit {
       while( codeIndex < rowCodesList.length) {
         if(!isReading){
           currentCode = rowCodesList[codeIndex];
-          currentCodeDisplayValue = this.getValue(row, currentCode);
+          currentCodeDisplayValue = this.getTimeSlotDisplayValue(row, currentCode);
           isReading = true;
 
               console.log('spanned1', this.spannedRows)
