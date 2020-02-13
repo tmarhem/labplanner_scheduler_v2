@@ -19,7 +19,7 @@ export class SchedulerV2Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // this.duplicateInput(this.input);
+    this.duplicateInput(this.input);
     this.generateHeaders(this.input[0]);
     this.generateSecondHeaders(this.headers[0]);
     this.generateThirdHeaders(this.headers[0]);
@@ -73,19 +73,18 @@ export class SchedulerV2Component implements OnInit {
       }
     });
     this.headers.push(this.thirdHeaders);
-    console.log('h3',this.headers)
   }
 
   duplicateInput = (input: Array<any>) => {
-    console.log(input[0]);
     this.duplicatedInput = [];
     input.forEach( row => {
+      // console.log('dup',row);
       this.duplicatedInput.push( row )
-      this.duplicatedInput.push( this.emptyRow(row))
+      this.duplicatedInput.push( this.emptyRowExceptUser(row))
     })
   }
 
-  emptyRow = (row: any) => {
+  emptyRowExceptUser = (row: any) => {
     const clonedRow = Object.assign({}, row);
     for(let prop in row) {
       switch(prop){
