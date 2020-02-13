@@ -51,7 +51,7 @@ export class SchedulerComponent implements OnInit {
     let isReading;
 
     this.rows.forEach( (row, rowIndex) =>{
-        this.spannedRows.push({});
+      this.spannedRows.push({});//
 
       isOdd = !(rowIndex%2 === 0);
       if( isOdd ) {return};
