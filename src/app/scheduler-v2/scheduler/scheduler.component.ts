@@ -29,4 +29,9 @@ export class SchedulerComponent implements OnInit {
     return 'NA';
   }
 
+  getRowSpan = (header)=>{
+    console.log('h',header);
+    return header === 'user3' ? 3 : 1
+  }
+
 }

@@ -35,14 +35,15 @@ export class SchedulerV2Component implements OnInit {
       if(a==='user') return -1;
       if(b==='user') return 1;
       return 0;
-    });
+    })
+    // this.headers[0]= this.headers[0].filter( h => h !== 'user');
   }
 
   generateSecondHeaders = ( firstHeaders: any) => {
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
       return h.slice(0,-2);
-    }).map( h => (h === 'user') ? 'user2' : h);
+    }).map( h => h === 'user' ? 'user2' : h);
     this.secondHeaders = [];
     duplicateHeaders.forEach( h => {
       let index = this.secondHeaders.findIndex( h2 => h2.code === h)

@@ -3,21 +3,25 @@
   <!--- Note that these columns can be defined in any order.
         The actual rendered columns are set as a property on the row definition" -->
 
-
+  <!-- First header -->
   <ng-container *ngFor="let header of headers[0]" [matColumnDef]="header" 
   sticky="header==='user' || header==='user2' || header==='user3'">
-    <th mat-header-cell *matHeaderCellDef> {{header}} </th>
+    <th mat-header-cell *matHeaderCellDef [ngStyle]=" header === 'user' ? {'display': 'none'} : {}"> {{header}} </th>
     <td mat-cell *matCellDef="let element">
       {{this.getValue(element, header)}}
     </td>
   </ng-container>
 
+<!-- Second Headers -->
   <ng-container *ngFor="let secondHeader of headers[1]" [matColumnDef]="secondHeader.code">
-    <th mat-header-cell *matHeaderCellDef [attr.colSpan]="secondHeader.colSpan"> {{secondHeader.code}} </th>
+    <th mat-header-cell *matHeaderCellDef 
+    [attr.colSpan]="secondHeader.colSpan"
+    [ngStyle]=" secondHeader.code === 'user2' ? {'display': 'none'} : {}"> {{secondHeader.code}} </th>
   </ng-container>
 
-  <ng-container *ngFor="let thirdHeader of headers[2]" [matColumnDef]="thirdHeader.code">
-    <th mat-header-cell *matHeaderCellDef [attr.colSpan]="thirdHeader.colSpan"> {{thirdHeader.code}} </th>
+<!-- Third headers -->
+  <ng-container *ngFor="let thirdHeader of headers[2]; let i = index" [matColumnDef]="thirdHeader.code">
+    <th mat-header-cell *matHeaderCellDef [attr.colSpan]="thirdHeader.colSpan" [attr.rowspan]="thirdHeader.code === 'user3' ? 3 : 1"> {{thirdHeader.code}} </th>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="this.thirdHeadersList; sticky: true"></tr>
