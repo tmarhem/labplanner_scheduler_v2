@@ -10,7 +10,8 @@
       {{header}} 
     </th>
     <td mat-cell *matCellDef="let element" 
-    [attr.rowspan]="i === 0 ? 2 : 1">
+    [attr.rowspan]="i === 0 ? 2 : 1"
+    [attr.colspan]="test(element, i, header)">
       {{this.getValue(element, header)}}
     </td>
   </ng-container>

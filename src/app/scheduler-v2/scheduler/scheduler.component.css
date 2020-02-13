@@ -20,7 +20,9 @@ tr:nth-child(even) td:hover{
 th:first-of-type:hover, tr td:first-of-type:hover{
   background-color: inherit;
   cursor: auto;
-  font-weight: bold;
+  text-shadow:2px 2px 10px orangered;
+
+  /* font-weight: bold; */
 }
 
 tr:nth-child(even) td:first-of-type{
