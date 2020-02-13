@@ -20,6 +20,7 @@ export class SchedulerComponent implements OnInit {
   ngOnInit() {
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
+    this.generateSpannedRow();
   }
 
   getValue = (element, header) => {
@@ -40,32 +41,38 @@ export class SchedulerComponent implements OnInit {
 
   generateSpannedRow = () => {
 
-    this.spannedRows = Object.assign({}, this.rows);
-    // row[0] = index, row[1]= value
+    this.spannedRows = [];
     let isOdd: boolean;
-    let rowIndex: number;
-    let rowValues : any;
     let rowCodesList: Array<string>;
 
-    let nextCode: string
-    let nextValue: string;
-    
-    for ( const row of this.spannedRows.entries()){
-      rowIndex = row[0];
+    let codeIndex;
+    let currentCodeValue;
+    let currentCode;
+    let isReading;
+
+    this.rows.forEach( (row, rowIndex) =>{
       isOdd = !(rowIndex%2 === 0);
-      if( isOdd ) break;
-      rowValues = row[1];
-      rowCodesList = Object.keys(rowValues);
+      if( isOdd ) {return};
+      rowCodesList = Object.keys(row);
 
-      for( let code of rowCodesList.entries() ){
-        code[1]['colSpan'] = 1;
-        nextValue = this.getValue(rowValues, rowCodesList)
-        while( rowValues[code[0] + code[1]['colSpan']]) {
-
+      codeIndex = 0;
+      isReading = false;
+      while( codeIndex < rowCodesList.length) {
+        if(!isReading){
+          currentCode = rowCodesList[codeIndex];
+          currentCodeValue = this.getValue(row, currentCode);
+          isReading = true;
+          console.log(currentCode, currentCodeValue);
         }
-
+        codeIndex ++;
       }
-    }
+
+
+
+      
+
+    });
+    console.log('spanned', this.spannedRows)
   }
 
 }
