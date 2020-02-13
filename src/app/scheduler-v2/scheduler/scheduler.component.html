@@ -4,12 +4,13 @@
         The actual rendered columns are set as a property on the row definition" -->
 
   <!-- First header  and rows-->
-  <ng-container *ngFor="let header of headers[0]" [matColumnDef]="header" 
+  <ng-container *ngFor="let header of headers[0]; let i = index" [matColumnDef]="header" 
   sticky="header==='user' || header==='user2' || header==='user3'">
     <th mat-header-cell *matHeaderCellDef [ngStyle]=" header === 'user' ? {'display': 'none'} : {}"> 
       {{header}} 
     </th>
-    <td mat-cell *matCellDef="let element">
+    <td mat-cell *matCellDef="let element" 
+    [attr.rowspan]="i === 0 ? 2 : 1">
       {{this.getValue(element, header)}}
     </td>
   </ng-container>
@@ -23,7 +24,11 @@
 
 <!-- Third headers -->
   <ng-container *ngFor="let thirdHeader of headers[2]; let i = index" [matColumnDef]="thirdHeader.code">
-    <th mat-header-cell *matHeaderCellDef [attr.colSpan]="thirdHeader.colSpan" [attr.rowspan]="thirdHeader.code === 'user3' ? 3 : 1"> {{thirdHeader.code}} </th>
+    <th mat-header-cell *matHeaderCellDef 
+      [attr.colSpan]="thirdHeader.colSpan" 
+      [attr.rowspan]="thirdHeader.code === 'user3' ? 3 : 1"> 
+      {{thirdHeader.code}} 
+    </th>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="this.thirdHeadersList; sticky: true"></tr>

@@ -22,3 +22,7 @@ th:first-of-type:hover, tr td:first-of-type:hover{
   cursor: auto;
   font-weight: bold;
 }
+
+tr:nth-child(even) td:first-of-type{
+  display:none;
+}
