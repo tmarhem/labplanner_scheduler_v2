@@ -16,3 +16,9 @@ tr:nth-child(even) td:hover{
   background-color: orangered;
   color: white;
 }
+
+th:first-of-type:hover, tr td:first-of-type:hover{
+  background-color: inherit;
+  cursor: auto;
+  font-weight: bold;
+}
