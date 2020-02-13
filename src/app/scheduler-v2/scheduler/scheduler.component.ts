@@ -13,7 +13,7 @@ export class SchedulerComponent implements OnInit {
   secondHeadersList: Array<string>;
   thirdHeadersList: Array<string>;
 
-  spannedRows: Array<Array<any>>;
+  spannedRows: Array<any>;
 
   constructor() { }
 
@@ -46,11 +46,13 @@ export class SchedulerComponent implements OnInit {
     let rowCodesList: Array<string>;
 
     let codeIndex;
-    let currentCodeValue;
+    let currentCodeDisplayValue;
     let currentCode;
     let isReading;
 
     this.rows.forEach( (row, rowIndex) =>{
+        this.spannedRows.push({});
+
       isOdd = !(rowIndex%2 === 0);
       if( isOdd ) {return};
       rowCodesList = Object.keys(row);
@@ -60,16 +62,17 @@ export class SchedulerComponent implements OnInit {
       while( codeIndex < rowCodesList.length) {
         if(!isReading){
           currentCode = rowCodesList[codeIndex];
-          currentCodeValue = this.getValue(row, currentCode);
+          currentCodeDisplayValue = this.getValue(row, currentCode);
           isReading = true;
-          console.log(currentCode, currentCodeValue);
+
+              console.log('spanned1', this.spannedRows)
+
+          this.spannedRows[rowIndex][currentCode] = row[currentCode];
+          this.spannedRows[rowIndex][currentCode].colSpan = 1;
+          console.log(currentCode, currentCodeDisplayValue);
         }
         codeIndex ++;
       }
-
-
-
-      
 
     });
     console.log('spanned', this.spannedRows)
