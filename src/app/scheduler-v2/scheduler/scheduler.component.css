@@ -7,7 +7,12 @@ table *{
   cursor: pointer;
 }
 
-td:hover, th:hover{
+tr:nth-child(odd) td:hover{
   background-color: orange;
+  color: white;
+}
+
+tr:nth-child(even) td:hover{
+  background-color: orangered;
   color: white;
 }
