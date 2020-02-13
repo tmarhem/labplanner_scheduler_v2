@@ -6,3 +6,8 @@ table *{
   user-select: none;
   cursor: pointer;
 }
+
+td:hover, th:hover{
+  background-color: orange;
+  color: white;
+}
