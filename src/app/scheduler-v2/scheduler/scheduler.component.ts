@@ -36,8 +36,11 @@ export class SchedulerComponent implements OnInit {
   
   test = (element, i, header) => {
     // if (element[header].value === 'Legallais') { return 2}
+    if ( i === 2) return 2;
+    if (i === 3) return 0;
     return 1;
   }
+
 
   generateSpannedRow = () => {
 
