@@ -18,9 +18,6 @@ export class SchedulerComponent implements OnInit {
   ngOnInit() {
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
-
-    console.log('where', this.thirdHeadersList);
-
   }
 
   getValue = (element, header) => {

@@ -9,6 +9,7 @@ import { agGridData } from '../testData/data'
 export class SchedulerV2Component implements OnInit {
 
   input: Array<{user: string}> = agGridData.result;
+  duplicatedInput: Array<any>;
   startDate: Date;
   headers: Array<Array<string>>;
   secondHeaders: Array<any>;
@@ -18,6 +19,7 @@ export class SchedulerV2Component implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    // this.duplicateInput(this.input);
     this.generateHeaders(this.input[0]);
     this.generateSecondHeaders(this.headers[0]);
     this.generateThirdHeaders(this.headers[0]);
@@ -72,6 +74,26 @@ export class SchedulerV2Component implements OnInit {
     });
     this.headers.push(this.thirdHeaders);
     console.log('h3',this.headers)
+  }
+
+  duplicateInput = (input: Array<any>) => {
+    console.log(input[0]);
+    this.duplicatedInput = [];
+    input.forEach( row => {
+      this.duplicatedInput.push( row )
+      this.duplicatedInput.push( this.emptyRow(row))
+    })
+  }
+
+  emptyRow = (row: any) => {
+    const clonedRow = Object.assign({}, row);
+    for(let prop in row) {
+      switch(prop){
+        case 'user': break;
+        default: clonedRow[prop] = ''; break;
+      }
+    }
+    return clonedRow;
   }
 }
 export class TimeSlot{
