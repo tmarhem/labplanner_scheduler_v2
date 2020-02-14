@@ -38,10 +38,15 @@ export class SchedulerComponent implements OnInit {
   getRowSpan = (row, colIndex, code) => {
     const isUserColumn = colIndex === 0;
     const isSelectionCell = row[code] === "";
-    if( isUserColumn || isSelectionCell ) {return 1};
+    const isLastCol = row.length -1 < colIndex;
+    if( isUserColumn || isSelectionCell || isLastCol ) {return 1};
+
     const currentCellValue = this.getTimeSlotDisplayValue(row, code);
     const previousCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex -1]);
+    // const nextCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex]);
+
     const isPreviousCellSameValue = currentCellValue === previousCellValue ;
+    // const isNExtCellSameValue = currentCellValue === nextCellValue;
     if (isPreviousCellSameValue) {return 0;}
     return 1;
   }
