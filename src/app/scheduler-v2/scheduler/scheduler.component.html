@@ -13,7 +13,7 @@
     <td mat-cell *matCellDef="let element" 
     [attr.rowspan]="i === 0 ? 2 : 1"
     [attr.colspan]="getRowSpan(element, i, header, first, last)"
-    [ngStyle]="getRowSpan(element, i, header, first, last) === 0 ? {} : {}"
+    [ngStyle]="getRowSpan(element, i, header, first, last) === 0 ? {'display':'none'} : {}"
     >
       {{this.getTimeSlotDisplayValue(element, header)}}
     </td>
