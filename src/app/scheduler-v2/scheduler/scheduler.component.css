@@ -7,6 +7,14 @@ table *{
   cursor: pointer;
 }
 
+td {
+  text-align: center;
+}
+
+td:first-of-type {
+  text-align: left;
+}
+
 tr:nth-child(odd) td:hover, th:hover{
   background-color: orange;
   color: white;
