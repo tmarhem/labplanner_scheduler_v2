@@ -19,7 +19,7 @@ export class SchedulerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log( this.rows[2])
+    console.log( this.rows[86])
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
   }
