@@ -42,27 +42,27 @@ export class SchedulerComponent implements OnInit {
    * code: the current code at this index
    */
   getRowSpan = (row, colIndex, code, isFirst, isLast) => {
-    // const isSelectionCell = row[code] === "";
-    // if( isFirst || isSelectionCell ) {return 1;};
+    const isSelectionCell = row[code] === "";
+    if( isFirst || isSelectionCell ) {return 1;};
 
-    // let span = 1
-    // let currentCellValue = this.getTimeSlotDisplayValue(row, code);
-    // let previousCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex -1]);
-    // let isPreviousCellSameValue = currentCellValue === previousCellValue ;
-    // if( isPreviousCellSameValue ) {return 0;};
+    let span = 1
+    let currentCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex]);
+    let previousCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex -1]);
+    let isPreviousCellSameValue = currentCellValue === previousCellValue ;
+    if( isPreviousCellSameValue ) {return 0;};
 
-    // let nextCellValue;
-    // let isNextCellSameValue;
+    let nextCellValue;
+    let isNextCellSameValue;
 
-    // while ( isNextCellSameValue ) {
-    //   currentCellValue = this.getTimeSlotDisplayValue(row, code);
-    //   nextCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex +1]);
-    //   isNextCellSameValue = currentCellValue === nextCellValue;
-    //   span ++;
-    // }
+    do {
+      currentCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex]);
+      nextCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex +1]);
+      isNextCellSameValue = currentCellValue === nextCellValue;
+      span ++;
+    } while ( false );
 
-    // return span;
-    return 1;
+    return span;
+    // return 1;
   }
 
 
