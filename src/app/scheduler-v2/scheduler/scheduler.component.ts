@@ -31,15 +31,18 @@ export class SchedulerComponent implements OnInit {
     return 'NA';
   }
 
-  //TODO to not span same etxt on different types
+  //TODO to not span same text on different types
   isSameTimeslot = (t1, t2): boolean => {
     return false;
   }
 
   /**
+   * Returns the spanning for a defined cell, if 0 the cell should be hidden
    * row: the row object with all codes /values
    * index: the column number
    * code: the current code at this index
+   * isFirst: boolean, true if first col
+   * isLast: boolean, true if last col
    */
   getRowSpan = (row, colIndex, code, isFirst, isLast) => {
     const isSelectionCell = row[code] === "";
