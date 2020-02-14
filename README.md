@@ -1,3 +1,2 @@
-# angular-mu2zzu
-
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-mu2zzu)
+# DADC - SchedulerV2
+[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/dadc-schedulerv2)
