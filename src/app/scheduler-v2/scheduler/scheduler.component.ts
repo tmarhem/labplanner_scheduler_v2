@@ -19,7 +19,7 @@ export class SchedulerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log( this.headers[0])
+    console.log( this.rows[2])
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
   }
@@ -65,46 +65,6 @@ export class SchedulerComponent implements OnInit {
     } while ( isNextCellSameValue );
 
     return span;
-  }
-
-
-  generateSpannedRow = () => {
-
-    this.spannedRows = [];
-    let isOdd: boolean;
-    let rowCodesList: Array<string>;
-
-    let codeIndex;
-    let currentCodeDisplayValue;
-    let currentCode;
-    let isReading;
-
-    this.rows.forEach( (row, rowIndex) =>{
-      this.spannedRows.push({});//
-
-      isOdd = !(rowIndex%2 === 0);
-      if( isOdd ) {return};
-      rowCodesList = Object.keys(row);
-
-      codeIndex = 0;
-      isReading = false;
-      while( codeIndex < rowCodesList.length) {
-        if(!isReading){
-          currentCode = rowCodesList[codeIndex];
-          currentCodeDisplayValue = this.getTimeSlotDisplayValue(row, currentCode);
-          isReading = true;
-
-              console.log('spanned1', this.spannedRows)
-
-          this.spannedRows[rowIndex][currentCode] = row[currentCode];
-          this.spannedRows[rowIndex][currentCode].colSpan = 1;
-          console.log(currentCode, currentCodeDisplayValue);
-        }
-        codeIndex ++;
-      }
-
-    });
-    console.log('spanned', this.spannedRows)
   }
 
 }

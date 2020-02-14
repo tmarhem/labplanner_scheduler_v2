@@ -6,7 +6,7 @@
   <!-- First header  and rows-->
   <ng-container *ngFor="let header of headers[0]; let i = index; let first = first; let last = last" 
   [matColumnDef]="header" 
-  sticky="header==='user' || header==='user2' || header==='user3'">
+  >
     <th mat-header-cell *matHeaderCellDef [ngStyle]=" header === 'user' ? {'display': 'none'} : {}"> 
       {{header}} 
     </th>
@@ -14,6 +14,7 @@
     [attr.rowspan]="i === 0 ? 2 : 1"
     [attr.colspan]="getRowSpan(element, i, header, first, last)"
     [ngStyle]="getRowSpan(element, i, header, first, last) === 0 ? {'display':'none'} : {}"
+    [ngClass]="element[header].category"
     >
       {{this.getTimeSlotDisplayValue(element, header)}}
     </td>
