@@ -25,9 +25,15 @@ export class SchedulerComponent implements OnInit {
   }
 
   getTimeSlotDisplayValue = (row, code) => {
+    if( !row[code]){ return null};
     if (row[code].value) return row[code].value;
     if (typeof row[code] === 'string') return row[code];
     return 'NA';
+  }
+
+  //TODO to not span same etxt on different types
+  isSameTimeslot = (t1, t2): boolean => {
+    return false;
   }
 
   /**
@@ -35,19 +41,27 @@ export class SchedulerComponent implements OnInit {
    * index: the column number
    * code: the current code at this index
    */
-  getRowSpan = (row, colIndex, code) => {
-    const isUserColumn = colIndex === 0;
-    const isSelectionCell = row[code] === "";
-    const isLastCol = row.length -1 < colIndex;
-    if( isUserColumn || isSelectionCell || isLastCol ) {return 1};
+  getRowSpan = (row, colIndex, code, isFirst, isLast) => {
+    // const isSelectionCell = row[code] === "";
+    // if( isFirst || isSelectionCell ) {return 1;};
 
-    const currentCellValue = this.getTimeSlotDisplayValue(row, code);
-    const previousCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex -1]);
-    // const nextCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex]);
+    // let span = 1
+    // let currentCellValue = this.getTimeSlotDisplayValue(row, code);
+    // let previousCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex -1]);
+    // let isPreviousCellSameValue = currentCellValue === previousCellValue ;
+    // if( isPreviousCellSameValue ) {return 0;};
 
-    const isPreviousCellSameValue = currentCellValue === previousCellValue ;
-    // const isNExtCellSameValue = currentCellValue === nextCellValue;
-    if (isPreviousCellSameValue) {return 0;}
+    // let nextCellValue;
+    // let isNextCellSameValue;
+
+    // while ( isNextCellSameValue ) {
+    //   currentCellValue = this.getTimeSlotDisplayValue(row, code);
+    //   nextCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex +1]);
+    //   isNextCellSameValue = currentCellValue === nextCellValue;
+    //   span ++;
+    // }
+
+    // return span;
     return 1;
   }
 
