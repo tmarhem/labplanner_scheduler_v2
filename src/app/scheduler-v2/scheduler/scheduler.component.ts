@@ -14,26 +14,34 @@ export class SchedulerComponent implements OnInit {
   thirdHeadersList: Array<string>;
 
   spannedRows: Array<any>;
+  codesList: Array<string>;
 
   constructor() { }
 
   ngOnInit() {
+    console.log( this.headers[0])
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
-    this.generateSpannedRow();
   }
 
-  getTimeSlotDisplayValue = (element, header) => {
-    if (element[header].value) return element[header].value;
-    if (typeof element[header] === 'string') return element[header];
+  getTimeSlotDisplayValue = (row, code) => {
+    if (row[code].value) return row[code].value;
+    if (typeof row[code] === 'string') return row[code];
     return 'NA';
   }
 
-  
-  getRowSpan = (element, i, header) => {
-    // if (element[header].value === 'Legallais') { return 2}
-    if ( i === 2) return 2;
-    if (i === 3) return 0;
+  /**
+   * row: the row object with all codes /values
+   * index: the column number
+   * code: the current code at this index
+   */
+  getRowSpan = (row, colIndex, code) => {
+    const isUserColumn = colIndex === 0;
+    const currentCellValue = row[code];
+    const previousCellValue = row[this.headers[0][colIndex -1]];
+    const isPreviousCellSameValue = currentCellValue === previousCellValue ;
+    if( colIndex === 0 ) {return 1};
+    if (true) { }
     return 1;
   }
 
