@@ -12,17 +12,18 @@ export class SchedulerV2Component implements OnInit {
   duplicatedInput: Array<any>;
   startDate: Date;
   headers: Array<Array<string>>;
-  secondHeaders: Array<any>;
-  thirdHeaders: Array<any>;
+  // secondHeaders: Array<any>;
+  // thirdHeaders: Array<any>;
 
 
   constructor() { }
 
   ngOnInit() {
     this.duplicateInput(this.input);
-    this.generateHeaders(this.input[0]);
-    this.generateSecondHeaders(this.headers[0]);
-    this.generateThirdHeaders(this.headers[0]);
+    this.generateHalfDayHeaders(this.input[0]);
+    this.generateDayHeaders(this.headers[0]);
+    this.generateMonthHeaders(this.headers[0]);
+    console.log(this.getDispayDate('_10022020am'))
   }
 
 /**
@@ -30,7 +31,7 @@ export class SchedulerV2Component implements OnInit {
  * rows : a sample of data to get the necessary codes :
  * {user: string, _10022020am: string|TimeSlot, ...}
  */
-  generateHeaders = (rows: any) => {
+  generateHalfDayHeaders = (rows: any) => {
     this.headers = [];
     this.headers.push( Object.keys(rows) );
     this.headers[0].sort( (a,b) => {
@@ -41,38 +42,39 @@ export class SchedulerV2Component implements OnInit {
     // this.headers[0]= this.headers[0].filter( h => h !== 'user');
   }
 
-  generateSecondHeaders = ( firstHeaders: any) => {
+  generateDayHeaders = ( firstHeaders: any) => {
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
       return h.slice(0,-2);
     }).map( h => h === 'user' ? 'user2' : h);
-    this.secondHeaders = [];
+     let secondHeaders = [];
     duplicateHeaders.forEach( h => {
-      let index = this.secondHeaders.findIndex( h2 => h2.code === h)
+      let index = secondHeaders.findIndex( h2 => h2.code === h)
       if( index < 0) {
-        this.secondHeaders.push({code: h, colSpan:1})
+        secondHeaders.push({code: h, colSpan:1})
       } else {
-        this.secondHeaders[index].colSpan ++;
+        secondHeaders[index].colSpan ++;
       }
     });
-    this.headers.push(this.secondHeaders);
+    this.headers.push(secondHeaders);
   }
 
-  generateThirdHeaders = ( firstHeaders: any ) => {
+
+  generateMonthHeaders = ( firstHeaders: any ) => {
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
       return h.slice(3,5);
     }).map( h => (h === 'user') ? 'user3' : h);
-    this.thirdHeaders = [];
+    let thirdHeaders = [];
     duplicateHeaders.forEach( h => {
-      let index = this.thirdHeaders.findIndex( h2 => h2.code === h)
+      let index = thirdHeaders.findIndex( h2 => h2.code === h)
       if( index < 0) {
-        this.thirdHeaders.push({code: h, colSpan:1})
+        thirdHeaders.push({code: h, colSpan:1})
       } else {
-        this.thirdHeaders[index].colSpan ++;
+        thirdHeaders[index].colSpan ++;
       }
     });
-    this.headers.push(this.thirdHeaders);
+    this.headers.push(thirdHeaders);
   }
 
   duplicateInput = (input: Array<any>) => {
@@ -93,6 +95,15 @@ export class SchedulerV2Component implements OnInit {
       }
     }
     return clonedRow;
+  }
+
+  getDispayDate = (code: string): string => {
+    switch(code.length){
+      case 11:
+      
+      return 'test';
+      break;
+    }
   }
 }
 export class TimeSlot{
