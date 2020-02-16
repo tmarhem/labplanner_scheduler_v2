@@ -23,7 +23,6 @@ export class SchedulerV2Component implements OnInit {
     this.generateHalfDayHeaders(this.input[0]);
     this.generateDayHeaders(this.headers[0]);
     this.generateMonthHeaders(this.headers[0]);
-    console.log(this.getDisplayDate('_10022020am').toString())
   }
 
 /**
@@ -108,8 +107,13 @@ export class SchedulerV2Component implements OnInit {
       console.log(year, month, day)
       return new Date(year, month - 1, day - 1);
       break;
-      case 2:
-      month = Number(code);
+      case 6:
+      year = Number(code.slice(2));
+      month = Number(code.slice(0,2));
+      console.log(year, month, day)
+      return new Date(year, month - 1, 1);
+      break;
+      default:
       return new Date();
       
     }
