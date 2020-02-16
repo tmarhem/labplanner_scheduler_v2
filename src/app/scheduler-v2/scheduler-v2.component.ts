@@ -63,7 +63,7 @@ export class SchedulerV2Component implements OnInit {
   generateMonthHeaders = ( firstHeaders: any ) => {
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
-      return h.slice(3,5);
+      return h.slice(3,-2);
     }).map( h => (h === 'user') ? 'user3' : h);
     let thirdHeaders = [];
     duplicateHeaders.forEach( h => {
@@ -98,15 +98,20 @@ export class SchedulerV2Component implements OnInit {
   }
 
   getDisplayDate = (code: string): Date => {
+    let year, month, day;
     switch(code.length){
       case 11:
-      const year = Number(code.slice(5,9));
-      const month = Number(code.slice(3,5));
-      const day = Number(code.slice(1,3));
+      case 9:
+      year = Number(code.slice(5,9));
+      month = Number(code.slice(3,5));
+      day = Number(code.slice(1,3));
       console.log(year, month, day)
       return new Date(year, month - 1, day - 1);
       break;
-      case 9:
+      case 2:
+      month = Number(code);
+      return new Date();
+      
     }
   }
 }
