@@ -23,7 +23,7 @@ export class SchedulerV2Component implements OnInit {
     this.generateHalfDayHeaders(this.input[0]);
     this.generateDayHeaders(this.headers[0]);
     this.generateMonthHeaders(this.headers[0]);
-    console.log(this.getDispayDate('_10022020am'))
+    console.log(this.getDisplayDate('_10022020am').toString())
   }
 
 /**
@@ -97,12 +97,16 @@ export class SchedulerV2Component implements OnInit {
     return clonedRow;
   }
 
-  getDispayDate = (code: string): string => {
+  getDisplayDate = (code: string): Date => {
     switch(code.length){
       case 11:
-      
-      return 'test';
+      const year = Number(code.slice(5,9));
+      const month = Number(code.slice(3,5));
+      const day = Number(code.slice(1,3));
+      console.log(year, month, day)
+      return new Date(year, month - 1, day - 1);
       break;
+      case 9:
     }
   }
 }
