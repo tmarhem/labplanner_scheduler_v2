@@ -25,12 +25,17 @@ export class SchedulerV2Component implements OnInit {
     this.generateMonthHeaders(this.headers[0]);
   }
 
+  handleError = (e: any) => {
+    console.log( 'ERROR', e);
+  }
+
 /**
  * Fills headers with halfday headers then days headers then month headers
  * rows : a sample of data to get the necessary codes :
  * {user: string, _10022020am: string|TimeSlot, ...}
  */
   generateHalfDayHeaders = (rows: any) => {
+    try{
     this.headers = [];
     this.headers.push( Object.keys(rows) );
     this.headers[0].sort( (a,b) => {
@@ -38,10 +43,13 @@ export class SchedulerV2Component implements OnInit {
       if(b==='user') return 1;
       return 0;
     })
-    // this.headers[0]= this.headers[0].filter( h => h !== 'user');
+    } catch (e) {
+      this.handleError(e);
+    }
   }
 
   generateDayHeaders = ( firstHeaders: any) => {
+    try{
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
       return h.slice(0,-2);
@@ -56,10 +64,15 @@ export class SchedulerV2Component implements OnInit {
       }
     });
     this.headers.push(secondHeaders);
+    } catch (e) {
+      this.handleError(e);
+    }
   }
 
 
   generateMonthHeaders = ( firstHeaders: any ) => {
+    try{
+
     const duplicateHeaders = this.headers[0].map( h => {
       if( h === 'user') return h;
       return h.slice(3,-2);
@@ -74,6 +87,9 @@ export class SchedulerV2Component implements OnInit {
       }
     });
     this.headers.push(thirdHeaders);
+    } catch (e) {
+      this.handleError(e);
+    }
   }
 
   duplicateInput = (input: Array<any>) => {

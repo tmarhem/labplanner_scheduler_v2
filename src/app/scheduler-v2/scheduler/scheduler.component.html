@@ -5,7 +5,7 @@
 
   <!-- First header  and rows-->
   <ng-container *ngFor="let header of headers[0]; let i = index; let first = first; let last = last" 
-  [matColumnDef]="header" 
+  [matColumnDef]="header"
   >
     <th mat-header-cell *matHeaderCellDef [ngStyle]=" header === 'user' ? {'display': 'none'} : {}"> 
       {{header}} 

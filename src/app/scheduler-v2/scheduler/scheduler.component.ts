@@ -19,10 +19,15 @@ export class SchedulerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log( this.rows[86])
+    console.log('headers', this.headers)
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
   }
+
+  handleError = (e: any) => {
+    console.log( 'ERROR', e);
+  }
+  
 
   getTimeSlotDisplayValue = (row, code) => {
     if( !row[code]){ return null};
@@ -45,6 +50,8 @@ export class SchedulerComponent implements OnInit {
    * isLast: boolean, true if last col
    */
   getRowSpan = (row, colIndex, code, isFirst, isLast) => {
+    try{
+
     const isSelectionCell = row[code] === "";
     if( isFirst || isSelectionCell ) {return 1;};
 
@@ -65,6 +72,9 @@ export class SchedulerComponent implements OnInit {
     } while ( isNextCellSameValue );
 
     return span;
+    } catch (e) {
+      this.handleError(e);
+    }
   }
 
 }
