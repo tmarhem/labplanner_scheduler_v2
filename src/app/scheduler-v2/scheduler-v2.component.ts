@@ -117,7 +117,7 @@ export class SchedulerV2Component implements OnInit {
     return clonedRow;
   };
 
-  getDisplayDate = (code: string): Date => {
+  getDateFromCode = (code: string): Date => {
     let year, month, day;
     switch (code.length) {
       case 11:
@@ -125,20 +125,19 @@ export class SchedulerV2Component implements OnInit {
         year = Number(code.slice(5, 9));
         month = Number(code.slice(3, 5));
         day = Number(code.slice(1, 3));
-        console.log(year, month, day);
         return new Date(year, month - 1, day - 1);
         break;
       case 6:
         year = Number(code.slice(2));
         month = Number(code.slice(0, 2));
-        console.log(year, month, day);
         return new Date(year, month - 1, 1);
         break;
       default:
-        return new Date();
+        return null;
     }
   };
 }
+
 export class TimeSlot {
   category: string;
   userId: string;
