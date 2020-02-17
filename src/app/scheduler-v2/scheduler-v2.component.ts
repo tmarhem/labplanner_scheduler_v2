@@ -10,7 +10,7 @@ export class SchedulerV2Component implements OnInit {
   input: Array<{ user: string }> = agGridData.result;
   duplicatedInput: Array<any>;
   startDate: Date;
-  headers: Array<Array<string>>;
+  headers: Array<any>;
   headersList: Array<string>;
   // secondHeaders: Array<any>;
   // thirdHeaders: Array<any>;
@@ -42,6 +42,28 @@ export class SchedulerV2Component implements OnInit {
         return 0;
       });
       this.headers.push(this.headersList);
+    } catch (e) {
+      this.handleError(e);
+    }
+  };
+
+   generateHalfDayHeadersV2 = (rows: any) => {
+    try {
+      this.headers = [];
+      this.headersList = Object.keys(rows).sort((a, b) => {
+        if (a === "user") return -1;
+        if (b === "user") return 1;
+        return 0;
+      });
+      this.headers.push(this.headersList.map( h => {
+        return {
+          code: h,
+          colSpan: 1,
+          date: new Date()
+        }
+      }
+
+      ));
     } catch (e) {
       this.handleError(e);
     }
