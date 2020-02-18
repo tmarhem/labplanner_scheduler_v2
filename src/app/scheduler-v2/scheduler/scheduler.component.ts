@@ -19,6 +19,7 @@ export class SchedulerComponent implements OnInit {
   spannedRows: Array<any>;
   codesList: Array<string>;
 
+
   constructor() {}
 
   ngOnInit() {
@@ -103,7 +104,8 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-    getRowClasses = (row, colIndex, code, isFirst, isLast) => {
+    getRowClasses = (row, colIndex, codex, isFirst, isLast) => {
+      const code = this.headersCodes[0][colIndex];
       const classes = [];
       const rowSpan = this.getRowSpan(row, colIndex, code, isFirst, isLast);
       const category = row[code].category ? row[code].category : null;

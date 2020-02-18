@@ -3,6 +3,7 @@ import { agGridData } from "../testData/data";
 
 import { format, isValid } from 'date-fns';
 import { fr, enGB } from 'date-fns/locale';
+import { SchedulerParams } from './_models/schedulerv2.models';
 
 @Component({
   selector: "app-scheduler-v2",
@@ -17,6 +18,7 @@ export class SchedulerV2Component implements OnInit {
   headersList: Array<string>;
 
   lang = fr;
+  PARAMS: SchedulerParams = new SchedulerParams();
 
   constructor() {}
 
@@ -49,7 +51,7 @@ export class SchedulerV2Component implements OnInit {
           return {
             code: h,
             colSpan: 1,
-            displayValue: this.formatDate(this.getDateFromCode(h), 'a')
+            displayValue: this.getDisplayValue(this.getDateFromCode(h), 'a')
           };
         })
       );
@@ -73,7 +75,7 @@ export class SchedulerV2Component implements OnInit {
           secondHeaders.push({
             code: h,
             colSpan: 1,
-            displayValue: this.formatDate(this.getDateFromCode(h), 'Ed')
+            displayValue: this.getDisplayValue(this.getDateFromCode(h), 'Ed')
           });
         } else {
           secondHeaders[index].colSpan++;
@@ -102,7 +104,7 @@ export class SchedulerV2Component implements OnInit {
           thirdHeaders.push({
             code: h,
             colSpan: 1,
-            displayValue: this.formatDate(this.getDateFromCode(h), 'LLLL y')
+            displayValue: this.getDisplayValue(this.getDateFromCode(h), 'LLLL y')
           });
         } else {
           thirdHeaders[index].colSpan++;
@@ -157,9 +159,9 @@ export class SchedulerV2Component implements OnInit {
     }
   };
 
-  formatDate = (date: Date, pattern?: string) => {
+  getDisplayValue = (date: Date, pattern?: string) => {
     try {
-      if (!isValid(date)) { return 'User' };
+      if (!isValid(date)) { return this.PARAMS.crossHeaderText};
       return format(date, pattern ? pattern : 'P', {locale: this.lang})
       .replace(/^\w/, c => c.toUpperCase());
     } catch (e) {
