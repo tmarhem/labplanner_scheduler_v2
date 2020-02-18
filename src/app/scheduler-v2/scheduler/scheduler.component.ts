@@ -19,17 +19,26 @@ export class SchedulerComponent implements OnInit {
   spannedRows: Array<any>;
   codesList: Array<string>;
 
+  lang = fr;
+
   constructor() { }
 
   ngOnInit() {
-    console.log('headers', this.headers)
     this.firstHeadersList = this.headers[0].map( h => h.code);
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
   }
 
   handleError = (e: any) => {
-    console.log( 'ERROR', e);
+    console.log( 'handleError', e);
+  }
+
+  dateFormat = (date: Date, pattern: string) => {
+    try {
+      return format(date, pattern, {locale: this.lang});
+    } catch (e) {
+      this.handleError(e);
+    }
   }
   
 

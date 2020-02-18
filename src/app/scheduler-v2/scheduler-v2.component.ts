@@ -146,19 +146,20 @@ export class SchedulerV2Component implements OnInit {
   };
 
   getDateFromCode = (code: string): Date => {
-    let year, month, day;
+    let year, month, day, half;
     switch (code.length) {
       case 11:
+        half = code.slice(9,11)
       case 9:
         year = Number(code.slice(5, 9));
         month = Number(code.slice(3, 5));
         day = Number(code.slice(1, 3));
-        return new Date(year, month - 1, day - 1);
+        return new Date(year, month - 1, day - 1, half === 'pm' ? 22 : 5);
         break;
       case 6:
         year = Number(code.slice(2));
         month = Number(code.slice(0, 2));
-        return new Date(year, month - 1, 1);
+        return new Date(year, month - 1, 1, 5);
         break;
       default:
         return null;
