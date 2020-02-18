@@ -18,7 +18,6 @@ export class SchedulerV2Component implements OnInit {
 
   lang = fr;
 
-
   constructor() {}
 
   ngOnInit() {

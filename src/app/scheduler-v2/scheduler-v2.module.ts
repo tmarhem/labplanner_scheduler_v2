@@ -21,6 +21,6 @@ import { MaterialModule } from './material.module';
   ],
   exports: [
     SchedulerV2Component
-  ]
+  ],
 })
 export class SchedulerV2Module { }

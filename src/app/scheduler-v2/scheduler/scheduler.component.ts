@@ -3,13 +3,15 @@ import { Component, OnInit, Input } from "@angular/core";
 @Component({
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
-  styleUrls: ["./scheduler.component.css"]
+  styleUrls: ["./scheduler.component.css"],
 })
 export class SchedulerComponent implements OnInit {
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
   headersCodes: Array<Array<string>>;
+  reversedHeadersCodes: Array<Array<string>>;
+
   firstHeadersList: Array<string>;
   secondHeadersList: Array<string>;
   thirdHeadersList: Array<string>;
@@ -26,6 +28,8 @@ export class SchedulerComponent implements OnInit {
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
+    this.reversedHeadersCodes = this.headersCodes.slice().reverse();
+    console.log(this.reversedHeadersCodes);
   }
 
   handleError = (e: any) => {
@@ -111,4 +115,9 @@ export class SchedulerComponent implements OnInit {
       }
       return classes;
     }
+
+ 
 }
+
+
+
