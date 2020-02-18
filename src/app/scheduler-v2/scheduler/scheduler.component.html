@@ -6,29 +6,33 @@
 	<!-- First header  and rows-->
 	<ng-container *ngFor="let header of headers[0]; let i = index; let first = first; let last = last"
 		[matColumnDef]="header.code">
-		<th mat-header-cell *matHeaderCellDef [ngStyle]=" header.code === 'user' ? {'display': 'none'} : {}">
+		<th mat-header-cell *matHeaderCellDef 
+    [ngClass]="first ? 'hidden' : ''"
+    >
 			{{header.displayValue}}
 		</th>
 
 		<td mat-cell *matCellDef="let element" [attr.rowspan]="i === 0 ? 2 : 1"
 			[attr.colspan]="getRowSpan(element, i, header.code, first, last)"
-
 			[ngClass]="getRowClasses(element, i, header.code, first, last)">
 			{{this.getTimeSlotDisplayValue(element, header.code)}}
 		</td>
 	</ng-container>
 
 	<!-- Second Headers -->
-	<ng-container *ngFor="let secondHeader of headers[1]" [matColumnDef]="secondHeader.code">
-		<th mat-header-cell *matHeaderCellDef [attr.colSpan]="secondHeader.colSpan"
-			[ngStyle]=" secondHeader.code === 'user2' ? {'display': 'none'} : {}">
+	<ng-container *ngFor="let secondHeader of headers[1]; let first = first" [matColumnDef]="secondHeader.code">
+		<th mat-header-cell *matHeaderCellDef 
+      [attr.colSpan]="secondHeader.colSpan"
+      [ngClass]="first ? 'hidden' : ''"
+      >
 			{{secondHeader.displayValue}}
 		</th>
 	</ng-container>
 
 	<!-- Third headers -->
 	<ng-container *ngFor="let thirdHeader of headers[2]; let i = index" [matColumnDef]="thirdHeader.code">
-		<th mat-header-cell *matHeaderCellDef [attr.colSpan]="thirdHeader.colSpan"
+		<th mat-header-cell *matHeaderCellDef 
+      [attr.colSpan]="thirdHeader.colSpan"
 			[attr.rowspan]="thirdHeader.code === 'user3' ? 3 : 1">
 			{{thirdHeader.displayValue}}
 		</th>
