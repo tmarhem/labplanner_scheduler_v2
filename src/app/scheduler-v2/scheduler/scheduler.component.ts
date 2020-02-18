@@ -37,10 +37,9 @@ export class SchedulerComponent implements OnInit {
 
   dateFormat = (date: Date, pattern?: string) => {
     try {
-      if (!isValid(date)) { return ''};
+      if (!isValid(date)) { return 'User' };
       return format(date, pattern ? pattern : 'P', {locale: this.lang})
       .replace(/^\w/, c => c.toUpperCase());
-
     } catch (e) {
       this.handleError(e);
     }
