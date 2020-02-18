@@ -154,7 +154,7 @@ export class SchedulerV2Component implements OnInit {
         year = Number(code.slice(5, 9));
         month = Number(code.slice(3, 5));
         day = Number(code.slice(1, 3));
-        return new Date(year, month - 1, day - 1, half === 'pm' ? 22 : 5);
+        return new Date(year, month - 1, day, half === 'pm' ? 22 : 5);
         break;
       case 6:
         year = Number(code.slice(2));

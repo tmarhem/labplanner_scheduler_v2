@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { format } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import { fr, enGB } from 'date-fns/locale';
 
 @Component({
@@ -27,15 +27,20 @@ export class SchedulerComponent implements OnInit {
     this.firstHeadersList = this.headers[0].map( h => h.code);
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
+    
+    this.dateFormat( new Date(), 'P');
   }
 
   handleError = (e: any) => {
     console.log( 'handleError', e);
   }
 
-  dateFormat = (date: Date, pattern: string) => {
+  dateFormat = (date: Date, pattern?: string) => {
     try {
-      return format(date, pattern, {locale: this.lang});
+      if (!isValid(date)) { return ''};
+      return format(date, pattern ? pattern : 'P', {locale: this.lang})
+      .replace(/^\w/, c => c.toUpperCase());
+
     } catch (e) {
       this.handleError(e);
     }
