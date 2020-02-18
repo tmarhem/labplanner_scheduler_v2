@@ -1,6 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { agGridData } from "../testData/data";
 
+import { format, isValid } from 'date-fns';
+import { fr, enGB } from 'date-fns/locale';
+
 @Component({
   selector: "app-scheduler-v2",
   templateUrl: "./scheduler-v2.component.html",
@@ -13,11 +16,14 @@ export class SchedulerV2Component implements OnInit {
   headers: Array<any>;
   headersList: Array<string>;
 
+  lang = fr;
+
+
   constructor() {}
 
   ngOnInit() {
     this.duplicateInput(this.input);
-    this.generateHalfDayHeadersV2(this.input[0]);
+    this.generateHalfDayHeaders(this.input[0]);
     this.generateDayHeaders(this.headersList);
     this.generateMonthHeaders(this.headersList);
   }
@@ -31,21 +37,7 @@ export class SchedulerV2Component implements OnInit {
    * rows : a sample of data to get the necessary codes :
    * {user: string, _10022020am: string|TimeSlot, ...}
    */
-  generateHalfDayHeaders = (rows: any) => {
-    try {
-      this.headers = [];
-      this.headersList = Object.keys(rows).sort((a, b) => {
-        if (a === "user") return -1;
-        if (b === "user") return 1;
-        return 0;
-      });
-      this.headers.push(this.headersList);
-    } catch (e) {
-      this.handleError(e);
-    }
-  };
-
-  generateHalfDayHeadersV2 = (rows: any) => {
+    generateHalfDayHeaders = (rows: any) => {
     try {
       this.headers = [];
       this.headersList = Object.keys(rows).sort((a, b) => {
@@ -58,7 +50,7 @@ export class SchedulerV2Component implements OnInit {
           return {
             code: h,
             colSpan: 1,
-            date: this.getDateFromCode(h)
+            displayValue: this.formatDate(this.getDateFromCode(h), 'a')
           };
         })
       );
@@ -82,7 +74,7 @@ export class SchedulerV2Component implements OnInit {
           secondHeaders.push({
             code: h,
             colSpan: 1,
-            date: this.getDateFromCode(h)
+            displayValue: this.formatDate(this.getDateFromCode(h), 'Ed')
           });
         } else {
           secondHeaders[index].colSpan++;
@@ -111,7 +103,7 @@ export class SchedulerV2Component implements OnInit {
           thirdHeaders.push({
             code: h,
             colSpan: 1,
-            date: this.getDateFromCode(h)
+            displayValue: this.formatDate(this.getDateFromCode(h), 'LLLL y')
           });
         } else {
           thirdHeaders[index].colSpan++;
@@ -165,6 +157,16 @@ export class SchedulerV2Component implements OnInit {
         return null;
     }
   };
+
+  formatDate = (date: Date, pattern?: string) => {
+    try {
+      if (!isValid(date)) { return 'User' };
+      return format(date, pattern ? pattern : 'P', {locale: this.lang})
+      .replace(/^\w/, c => c.toUpperCase());
+    } catch (e) {
+      this.handleError(e);
+    }
+  }
 }
 
 export class TimeSlot {

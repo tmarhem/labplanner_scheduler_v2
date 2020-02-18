@@ -1,6 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { format, isValid } from 'date-fns';
-import { fr, enGB } from 'date-fns/locale';
+
 
 @Component({
   selector: 'app-scheduler',
@@ -12,6 +11,7 @@ export class SchedulerComponent implements OnInit {
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
+  headersCodes: Array<Array<string>>;
   firstHeadersList: Array<string>;
   secondHeadersList: Array<string>;
   thirdHeadersList: Array<string>;
@@ -19,7 +19,6 @@ export class SchedulerComponent implements OnInit {
   spannedRows: Array<any>;
   codesList: Array<string>;
 
-  lang = fr;
 
   constructor() { }
 
@@ -27,24 +26,14 @@ export class SchedulerComponent implements OnInit {
     this.firstHeadersList = this.headers[0].map( h => h.code);
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
-    
-    this.dateFormat( new Date(), 'P');
+    this.headersCodes = this.headers.map( headerRow => 
+      headerRow.map( header => header.code)
+    );
   }
 
   handleError = (e: any) => {
     console.log( 'handleError', e);
   }
-
-  dateFormat = (date: Date, pattern?: string) => {
-    try {
-      if (!isValid(date)) { return 'User' };
-      return format(date, pattern ? pattern : 'P', {locale: this.lang})
-      .replace(/^\w/, c => c.toUpperCase());
-    } catch (e) {
-      this.handleError(e);
-    }
-  }
-  
 
   getTimeSlotDisplayValue = (row, code) => {
     if( !row[code]){ return null};
@@ -60,9 +49,9 @@ export class SchedulerComponent implements OnInit {
 
   /**
    * Returns the spanning for a defined cell, if 0 the cell should be hidden
-   * row: the row object with all codes /values
-   * index: the column number
-   * code: the current code at this index
+   * row: the row object with all codes / values
+   * index: the column colIndex
+   * code: current code at this index
    * isFirst: boolean, true if first col
    * isLast: boolean, true if last col
    */
