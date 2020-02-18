@@ -10,6 +10,7 @@ export class SchedulerComponent implements OnInit {
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
+  firstHeadersList: Array<string>;
   secondHeadersList: Array<string>;
   thirdHeadersList: Array<string>;
 
@@ -20,6 +21,7 @@ export class SchedulerComponent implements OnInit {
 
   ngOnInit() {
     console.log('headers', this.headers)
+    this.firstHeadersList = this.headers[0].map( h => h.code);
     this.secondHeadersList = this.headers[1].map( h => h.code);
     this.thirdHeadersList = this.headers[2].map( h => h.code);
   }
@@ -56,8 +58,8 @@ export class SchedulerComponent implements OnInit {
     if( isFirst || isSelectionCell ) {return 1;};
 
     let span = 0;
-    let currentCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex]);
-    let previousCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex -1]);
+    let currentCellValue = this.getTimeSlotDisplayValue(row, this.firstHeadersList[colIndex]);
+    let previousCellValue = this.getTimeSlotDisplayValue(row, this.firstHeadersList[colIndex -1]);
     let isPreviousCellSameValue = currentCellValue === previousCellValue ;
     if( isPreviousCellSameValue ) {return 0;};
 
@@ -65,8 +67,8 @@ export class SchedulerComponent implements OnInit {
     let isNextCellSameValue;
 
     do {
-      currentCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex + span]);
-      nextCellValue = this.getTimeSlotDisplayValue(row, this.headers[0][colIndex + 1 + span]);
+      currentCellValue = this.getTimeSlotDisplayValue(row, this.firstHeadersList[colIndex + span]);
+      nextCellValue = this.getTimeSlotDisplayValue(row, this.firstHeadersList[colIndex + 1 + span]);
       isNextCellSameValue = currentCellValue === nextCellValue;
       span ++;
     } while ( isNextCellSameValue );

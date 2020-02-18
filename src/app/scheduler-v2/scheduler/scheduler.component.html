@@ -5,18 +5,19 @@
 
   <!-- First header  and rows-->
   <ng-container *ngFor="let header of headers[0]; let i = index; let first = first; let last = last" 
-  [matColumnDef]="header"
+  [matColumnDef]="header.code"
   >
-    <th mat-header-cell *matHeaderCellDef [ngStyle]=" header === 'user' ? {'display': 'none'} : {}"> 
-      {{header}} 
+    <th mat-header-cell *matHeaderCellDef [ngStyle]=" header.code === 'user' ? {'display': 'none'} : {}"> 
+      {{header.code}} 
     </th>
+
     <td mat-cell *matCellDef="let element" 
     [attr.rowspan]="i === 0 ? 2 : 1"
-    [attr.colspan]="getRowSpan(element, i, header, first, last)"
-    [ngStyle]="getRowSpan(element, i, header, first, last) === 0 ? {'display':'none'} : {}"
-    [ngClass]="element[header].category"
+    [attr.colspan]="getRowSpan(element, i, header.code, first, last)"
+    [ngStyle]="getRowSpan(element, i, header.code, first, last) === 0 ? {'display':'none'} : {}"
+    [ngClass]="element[header.code].category"
     >
-      {{this.getTimeSlotDisplayValue(element, header)}}
+      {{this.getTimeSlotDisplayValue(element, header.code)}}
     </td>
   </ng-container>
 
@@ -38,7 +39,7 @@
 
   <tr mat-header-row *matHeaderRowDef="this.thirdHeadersList; sticky: true"></tr>
   <tr mat-header-row *matHeaderRowDef="this.secondHeadersList; sticky: true"></tr>
-  <tr mat-header-row *matHeaderRowDef="headers[0]; sticky: true"></tr>
+  <tr mat-header-row *matHeaderRowDef="this.firstHeadersList; sticky: true"></tr>
 
-  <tr mat-row *matRowDef="let row; columns: headers[0];"></tr>
+  <tr mat-row *matRowDef="let row; columns: this.firstHeadersList;"></tr>
 </table>

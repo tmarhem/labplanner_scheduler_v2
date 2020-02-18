@@ -17,7 +17,7 @@ export class SchedulerV2Component implements OnInit {
 
   ngOnInit() {
     this.duplicateInput(this.input);
-    this.generateHalfDayHeaders(this.input[0]);
+    this.generateHalfDayHeadersV2(this.input[0]);
     this.generateDayHeaders(this.headersList);
     this.generateMonthHeaders(this.headersList);
   }
