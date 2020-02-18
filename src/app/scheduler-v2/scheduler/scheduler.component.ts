@@ -29,7 +29,6 @@ export class SchedulerComponent implements OnInit {
       headerRow.map(header => header.code)
     );
     this.reversedHeadersCodes = this.headersCodes.slice().reverse();
-    console.log(this.reversedHeadersCodes);
   }
 
   handleError = (e: any) => {
@@ -58,7 +57,8 @@ export class SchedulerComponent implements OnInit {
    * isFirst: boolean, true if first col
    * isLast: boolean, true if last col
    */
-  getRowSpan = (row, colIndex, code, isFirst, isLast) => {
+  getRowSpan = (row, colIndex, codex, isFirst, isLast) => {
+    const code = this.headersCodes[0][colIndex];
     try {
       const isSelectionCell = row[code] === "";
 
