@@ -12,8 +12,6 @@ export class SchedulerV2Component implements OnInit {
   startDate: Date;
   headers: Array<any>;
   headersList: Array<string>;
-  // secondHeaders: Array<any>;
-  // thirdHeaders: Array<any>;
 
   constructor() {}
 
@@ -25,7 +23,7 @@ export class SchedulerV2Component implements OnInit {
   }
 
   handleError = (e: any) => {
-    console.log("ERROR", e);
+    console.log("handleError", e);
   };
 
   /**
@@ -47,7 +45,7 @@ export class SchedulerV2Component implements OnInit {
     }
   };
 
-   generateHalfDayHeadersV2 = (rows: any) => {
+  generateHalfDayHeadersV2 = (rows: any) => {
     try {
       this.headers = [];
       this.headersList = Object.keys(rows).sort((a, b) => {
@@ -55,15 +53,15 @@ export class SchedulerV2Component implements OnInit {
         if (b === "user") return 1;
         return 0;
       });
-      this.headers.push(this.headersList.map( h => {
-        return {
-          code: h,
-          colSpan: 1,
-          date: new Date()
-        }
-      }
-
-      ));
+      this.headers.push(
+        this.headersList.map(h => {
+          return {
+            code: h,
+            colSpan: 1,
+            date: this.getDateFromCode(h)
+          };
+        })
+      );
     } catch (e) {
       this.handleError(e);
     }
@@ -81,7 +79,11 @@ export class SchedulerV2Component implements OnInit {
       slicedHeaders.forEach(h => {
         let index = secondHeaders.findIndex(h2 => h2.code === h);
         if (index < 0) {
-          secondHeaders.push({ code: h, colSpan: 1 });
+          secondHeaders.push({
+            code: h,
+            colSpan: 1,
+            date: this.getDateFromCode(h)
+          });
         } else {
           secondHeaders[index].colSpan++;
         }
@@ -101,12 +103,16 @@ export class SchedulerV2Component implements OnInit {
         })
         .map(h => (h === "user" ? "user3" : h));
       let thirdHeaders = [];
-      let index, is;
+      let index;
 
       slicedHeaders.forEach(h => {
         let index = thirdHeaders.findIndex(h2 => h2.code === h);
         if (index < 0) {
-          thirdHeaders.push({ code: h, colSpan: 1 });
+          thirdHeaders.push({
+            code: h,
+            colSpan: 1,
+            date: this.getDateFromCode(h)
+          });
         } else {
           thirdHeaders[index].colSpan++;
         }
