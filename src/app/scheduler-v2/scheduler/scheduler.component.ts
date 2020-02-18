@@ -1,4 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { format } from 'date-fns';
+import { fr, enGB } from 'date-fns/locale';
 
 @Component({
   selector: 'app-scheduler',
