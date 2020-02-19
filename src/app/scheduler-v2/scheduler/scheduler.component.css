@@ -16,8 +16,8 @@ table *{
 }
 
 .selected {
-  background-color: orange !important;
-  color:purple;
+  background-color: rgb(231, 200, 146) !important;
+  color:black;
 }
 
 td:not(:first-of-type){

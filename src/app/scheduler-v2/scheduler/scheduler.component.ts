@@ -60,31 +60,41 @@ export class SchedulerComponent implements OnInit {
     switch(eventType) {
       case 'mousedown':
         this.isSelecting = true;
-        this.selectHeader(code, colIndex);
+        this.selectHeader(code, colIndex, true);
         this.selectionStart = {
           code: code,
           index: colIndex
         }
       case 'mouseover':
+        
       case 'mouseup':
         this.isSelecting = false;
     }
   }
 
   selectHeader = (code: string, colIndex: number, isFirst?: boolean) => {
-    if(isFirst){
-      this.isChecking = !this.headers[0][colIndex].isSelected;
-    }
-
+    let headerRowIndex;
     switch(code.length){
       case 11:
-        this.headers[0][colIndex].isSelected = this.isChecking;
+        headerRowIndex = 0;
         break;
       case 9:
+        headerRowIndex = 1;
+        break;
       case 6:
+        headerRowIndex = 2;
+        break;
       default:
       console.log('WRONG LENGTH')
     }
+
+    if(isFirst){
+      this.isChecking = !this.headers[headerRowIndex][colIndex].isSelected;
+    }
+
+    this.headers[headerRowIndex][colIndex].isSelected = this.isChecking;
+
+
   }
 
   handleError = (e: any) => {
