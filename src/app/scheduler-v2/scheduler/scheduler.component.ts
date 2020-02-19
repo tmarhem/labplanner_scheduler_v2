@@ -6,30 +6,19 @@ import { Component, OnInit, Input } from "@angular/core";
   styleUrls: ["./scheduler.component.css"],
 })
 export class SchedulerComponent implements OnInit {
+
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
   headersCodes: Array<Array<string>>;
-  reversedHeadersCodes: Array<Array<string>>;
-
-  firstHeadersList: Array<string>;
-  secondHeadersList: Array<string>;
-  thirdHeadersList: Array<string>;
-
-  spannedRows: Array<any>;
-  codesList: Array<string>;
 
 
   constructor() {}
 
   ngOnInit() {
-    this.firstHeadersList = this.headers[0].map(h => h.code);
-    this.secondHeadersList = this.headers[1].map(h => h.code);
-    this.thirdHeadersList = this.headers[2].map(h => h.code);
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
-    this.reversedHeadersCodes = this.headersCodes.slice().reverse();
   }
 
   handleError = (e: any) => {

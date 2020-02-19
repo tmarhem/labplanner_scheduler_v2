@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { agGridData } from "../testData/data";
 
-import { format, isValid } from 'date-fns';
-import { fr, enGB } from 'date-fns/locale';
-import { SchedulerParams } from './_models/schedulerv2.models';
+import { format, isValid } from "date-fns";
+import { fr, enGB } from "date-fns/locale";
+import { SchedulerParams } from "./_models/schedulerv2.models";
 
 @Component({
   selector: "app-scheduler-v2",
@@ -38,7 +38,7 @@ export class SchedulerV2Component implements OnInit {
    * rows : a sample of data to get the necessary codes :
    * {user: string, _10022020am: string|TimeSlot, ...}
    */
-    generateHalfDayHeaders = (rows: any) => {
+  generateHalfDayHeaders = (rows: any) => {
     try {
       this.headers = [];
       this.headersList = Object.keys(rows).sort((a, b) => {
@@ -51,7 +51,8 @@ export class SchedulerV2Component implements OnInit {
           return {
             code: h,
             colSpan: 1,
-            displayValue: this.getDisplayValue(this.getDateFromCode(h), 'a')
+            displayValue: this.getDisplayValue(this.getDateFromCode(h), "a"),
+            selected: false
           };
         })
       );
@@ -75,7 +76,8 @@ export class SchedulerV2Component implements OnInit {
           secondHeaders.push({
             code: h,
             colSpan: 1,
-            displayValue: this.getDisplayValue(this.getDateFromCode(h), 'Ed')
+            displayValue: this.getDisplayValue(this.getDateFromCode(h), "Ed"),
+            selected: false
           });
         } else {
           secondHeaders[index].colSpan++;
@@ -104,7 +106,11 @@ export class SchedulerV2Component implements OnInit {
           thirdHeaders.push({
             code: h,
             colSpan: 1,
-            displayValue: this.getDisplayValue(this.getDateFromCode(h), 'LLLL y')
+            displayValue: this.getDisplayValue(
+              this.getDateFromCode(h),
+              "LLLL y"
+            ),
+            selected: false
           });
         } else {
           thirdHeaders[index].colSpan++;
@@ -142,12 +148,12 @@ export class SchedulerV2Component implements OnInit {
     let year, month, day, half;
     switch (code.length) {
       case 11:
-        half = code.slice(9,11)
+        half = code.slice(9, 11);
       case 9:
         year = Number(code.slice(5, 9));
         month = Number(code.slice(3, 5));
         day = Number(code.slice(1, 3));
-        return new Date(year, month - 1, day, half === 'pm' ? 22 : 5);
+        return new Date(year, month - 1, day, half === "pm" ? 22 : 5);
         break;
       case 6:
         year = Number(code.slice(2));
@@ -161,13 +167,16 @@ export class SchedulerV2Component implements OnInit {
 
   getDisplayValue = (date: Date, pattern?: string) => {
     try {
-      if (!isValid(date)) { return this.PARAMS.crossHeaderText};
-      return format(date, pattern ? pattern : 'P', {locale: this.lang})
-      .replace(/^\w/, c => c.toUpperCase());
+      if (!isValid(date)) {
+        return this.PARAMS.crossHeaderText;
+      }
+      return format(date, pattern ? pattern : "P", {
+        locale: this.lang
+      }).replace(/^\w/, c => c.toUpperCase());
     } catch (e) {
       this.handleError(e);
     }
-  }
+  };
 }
 
 export class TimeSlot {
