@@ -31,6 +31,7 @@ export class SchedulerComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter) => {
       // TODO regex to allow typing the end of the name
+      // TODO avoid filtering selection cell Row
     const dataStr =JSON.stringify(data).toLowerCase();
       console.log(dataStr);
     return dataStr.indexOf(`"value":"${filter}`) != -1 && dataStr.indexOf(`"user":"${filter}`) === -1; 
