@@ -18,7 +18,7 @@
 						[id]="header.code"
 						(mousedown)="onClickAction($event.type, $event.target.id, index,  $event.ctrlKey)"
 						(mouseup)="onClickAction($event.type, $event.target.id, index, $event.ctrlKey)"
-						(mouseenter)="onClickAction('$event.type', $event.target.id, index, $event.ctrlKey)">
+						(mouseenter)="onClickAction($event.type, $event.target.id, index, $event.ctrlKey)">
 						{{header.displayValue}}
 					</th>
 

@@ -18,7 +18,7 @@ export class SchedulerComponent implements OnInit {
 
   headersCodes: Array<Array<string>>;
 
-  isSelecting = true;
+  isSelecting = false;
   isChecking = true;
   selectedHeaders : Set<string>;
   selectionStart: {
@@ -57,22 +57,6 @@ export class SchedulerComponent implements OnInit {
 
   onClickAction = (eventType: string, code: string, colIndex: number, ctrlKey: boolean) => {
     if (colIndex === 0) return;
-    switch(eventType) {
-      case 'mousedown':
-        this.isSelecting = true;
-        this.selectHeader(code, colIndex, true);
-        this.selectionStart = {
-          code: code,
-          index: colIndex
-        }
-      case 'mouseover':
-        
-      case 'mouseup':
-        this.isSelecting = false;
-    }
-  }
-
-  selectHeader = (code: string, colIndex: number, isFirst?: boolean) => {
     let headerRowIndex;
     switch(code.length){
       case 11:
@@ -87,7 +71,29 @@ export class SchedulerComponent implements OnInit {
       default:
       console.log('WRONG LENGTH')
     }
+    switch(eventType) {
+      case 'mousedown':
+        this.isSelecting = true;
+        this.selectHeader(code, colIndex, headerRowIndex, true);
+        this.selectionStart = {
+          code: code,
+          index: headerRowIndex
+        }
+        break;
+      case 'mouseenter':
+      if (this.isSelecting) {
+        this.selectHeader(code, colIndex, headerRowIndex);
+      }
+      break;
+      case 'mouseup':
+        this.selectHeader(code, colIndex, headerRowIndex);
+        this.isSelecting = false;
+        break;
+    }
+  }
 
+  selectHeader = (code: string, colIndex: number, headerRowIndex: number, isFirst?: boolean) => {
+    // if(this.selectionStart.index !== headerRowIndex) return;
     if(isFirst){
       this.isChecking = !this.headers[headerRowIndex][colIndex].isSelected;
     }
