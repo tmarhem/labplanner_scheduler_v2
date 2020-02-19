@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
-import {MatPaginator} from '@angular/material/paginator';
-import {MatTableDataSource} from '@angular/material/table';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 
 @Component({
@@ -31,7 +31,7 @@ export class SchedulerComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter) => {
       // TODO regex to allow typing the end of the name
-      // TODO avoid filtering selection cell Row
+      // TODO avoid filtering selection cell Row OR Filtering only in selection mode
     const dataStr =JSON.stringify(data).toLowerCase();
       console.log(dataStr);
     return dataStr.indexOf(`"value":"${filter}`) != -1 && dataStr.indexOf(`"user":"${filter}`) === -1; 
