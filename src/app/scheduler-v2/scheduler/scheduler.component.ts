@@ -30,8 +30,10 @@ export class SchedulerComponent implements OnInit {
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter) => {
+      // TODO regex to allow typing the end of the name
     const dataStr =JSON.stringify(data).toLowerCase();
-    return dataStr.indexOf(filter) != -1; 
+      console.log(dataStr);
+    return dataStr.indexOf(`"value":"${filter}`) != -1 && dataStr.indexOf(`"user":"${filter}`) === -1; 
   }
 
     this.selectedHeaders = new Set<string>();
