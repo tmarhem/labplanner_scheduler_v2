@@ -1,11 +1,16 @@
-<table mat-table [dataSource]="this.rows" class="mat-elevation-z8 basic-margin">
+<table mat-table [dataSource]="this.dataSource" class="basic-margin">
 
 	<ng-container *ngFor="let headerRow of this.headers; let isFirstHeaderRow = first; let isLastHeaderRow = last">
 
 		<ng-container *ngFor="let header of headerRow; let index = index; let isFirstHeader = first; let isLastHeader = last"
 			[matColumnDef]="header.code">
-			<th mat-header-cell *matHeaderCellDef [ngClass]="!isLastHeaderRow && isFirstHeader ? 'hidden' : ''"
-				[attr.rowspan]="header.code === 'user3' ? 3 : 1" [attr.colSpan]="header.colSpan">
+			<th mat-header-cell *matHeaderCellDef [ngClass]="!isLastHeaderRow && isFirstHeader ? 'hidden' : header.isSelected ? 'selected' : ''"
+				[attr.rowspan]="header.code === 'user3' ? 3 : 1" [attr.colSpan]="header.colSpan"
+        [id]="header.code"
+        (mousedown)="onClickAction($event.type, $event.target.id, index,  $event.ctrlKey)"
+        (mouseup)="onClickAction($event.type, $event.target.id, index, $event.ctrlKey)"
+        (mouseenter)="onClickAction('$event.type', $event.target.id, index, $event.ctrlKey)"
+        >
 				{{header.displayValue}}
 			</th>
 

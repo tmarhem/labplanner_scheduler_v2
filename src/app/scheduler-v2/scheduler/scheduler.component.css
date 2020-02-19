@@ -11,6 +11,11 @@ table *{
   display: none;
 }
 
+.selected {
+  background-color: orange !important;
+  color:purple;
+}
+
 td:not(:first-of-type){
   text-align: center;
   border: 1px solid rgb(70, 70, 70);
@@ -22,13 +27,11 @@ th:not(:first-of-type){
 
 th:nth-child(even){
   background-color: rgb(75, 75, 75);
-  color: white;
 }
 
 
 th:not(:first-of-type):hover{
   background-color: orange;
-  color: white;
 }
 
 tr:nth-child(even) td:hover{

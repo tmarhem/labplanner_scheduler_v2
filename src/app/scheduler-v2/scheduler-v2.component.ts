@@ -52,7 +52,7 @@ export class SchedulerV2Component implements OnInit {
             code: h,
             colSpan: 1,
             displayValue: this.getDisplayValue(this.getDateFromCode(h), "a"),
-            selected: false
+            isSelected: false
           };
         })
       );
@@ -77,7 +77,7 @@ export class SchedulerV2Component implements OnInit {
             code: h,
             colSpan: 1,
             displayValue: this.getDisplayValue(this.getDateFromCode(h), "Ed"),
-            selected: false
+            isSelected: false
           });
         } else {
           secondHeaders[index].colSpan++;
@@ -110,7 +110,7 @@ export class SchedulerV2Component implements OnInit {
               this.getDateFromCode(h),
               "LLLL y"
             ),
-            selected: false
+            isSelected: false
           });
         } else {
           thirdHeaders[index].colSpan++;

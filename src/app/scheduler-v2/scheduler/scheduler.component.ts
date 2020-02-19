@@ -1,4 +1,7 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import {MatPaginator} from '@angular/material/paginator';
+import {MatTableDataSource} from '@angular/material/table';
+
 
 @Component({
   selector: "app-scheduler",
@@ -7,18 +10,56 @@ import { Component, OnInit, Input } from "@angular/core";
 })
 export class SchedulerComponent implements OnInit {
 
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+
+
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
   headersCodes: Array<Array<string>>;
 
+  isSelecting = true;
+  isChecking = true;
+  selectedHeaders : Set<string>;
+
+  dataSource = new MatTableDataSource<any>(this.rows);
+
 
   constructor() {}
 
   ngOnInit() {
+    this.selectedHeaders = new Set<string>();
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
+  }
+
+  onClickAction = (eventType: string, code: string, colIndex: number, ctrlKey: boolean) => {
+    if (colIndex === 0) return;
+    switch(eventType) {
+      case 'mousedown':
+        this.isSelecting = true;
+        this.selectHeader(code, colIndex);
+      case 'mouseover':
+      case 'mouseup':
+        this.isSelecting = false;
+    }
+  }
+
+  selectHeader = (code: string, colIndex: number, isFirst?: boolean) => {
+    if(isFirst){
+      this.isChecking = !this.headers[0][colIndex].isSelected;
+    }
+
+    switch(code.length){
+      case 11:
+        this.headers[0][colIndex].isSelected = this.isChecking;
+        break;
+      case 9:
+      case 6:
+      default:
+      console.log('WRONG LENGTH')
+    }
   }
 
   handleError = (e: any) => {
