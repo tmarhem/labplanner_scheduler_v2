@@ -21,6 +21,10 @@ export class SchedulerComponent implements OnInit {
   isSelecting = true;
   isChecking = true;
   selectedHeaders : Set<string>;
+  selectionStart: {
+    index: number,
+    code: string,
+  }
 
   dataSource: any;
 
@@ -33,7 +37,6 @@ export class SchedulerComponent implements OnInit {
       // TODO regex to allow typing the end of the name
       // TODO avoid filtering selection cell Row OR Filtering only in selection mode
     const dataStr =JSON.stringify(data).toLowerCase();
-      console.log(dataStr);
     return dataStr.indexOf(`"value":"${filter}`) != -1 && dataStr.indexOf(`"user":"${filter}`) === -1; 
   }
 
@@ -58,6 +61,10 @@ export class SchedulerComponent implements OnInit {
       case 'mousedown':
         this.isSelecting = true;
         this.selectHeader(code, colIndex);
+        this.selectionStart = {
+          code: code,
+          index: colIndex
+        }
       case 'mouseover':
       case 'mouseup':
         this.isSelecting = false;
