@@ -41,6 +41,8 @@ import {MatTableModule} from '@angular/material/table';
 // import {MatToolbarModule} from '@angular/material/toolbar';
 // import {MatTooltipModule} from '@angular/material/tooltip';
 // import {MatTreeModule} from '@angular/material/tree';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 @NgModule({
   exports: [
@@ -65,7 +67,7 @@ import {MatTableModule} from '@angular/material/table';
     // MatExpansionModule,
     // MatGridListModule,
     // MatIconModule,
-    // MatInputModule,
+    MatInputModule,
     // MatListModule,
     // MatMenuModule,
     // MatNativeDateModule,
@@ -87,6 +89,7 @@ import {MatTableModule} from '@angular/material/table';
     // MatTreeModule,
     // PortalModule,
     // ScrollingModule,
+    MatFormFieldModule,
   ]
 })
 export class MaterialModule {}

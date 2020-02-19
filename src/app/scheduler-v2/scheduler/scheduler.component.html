@@ -1,35 +1,44 @@
-<table mat-table [dataSource]="this.dataSource" class="basic-margin">
+<div class="basic-margin scheduler">
+	<mat-form-field class="basic-margin">
+		<mat-label>Filter</mat-label>
+		<input matInput (keyup)="applyFilter($event)" placeholder="User, project, client, ...">
+  </mat-form-field>
 
-	<ng-container *ngFor="let headerRow of this.headers; let isFirstHeaderRow = first; let isLastHeaderRow = last">
+		<table mat-table [dataSource]="this.dataSource">
 
-		<ng-container *ngFor="let header of headerRow; let index = index; let isFirstHeader = first; let isLastHeader = last"
-			[matColumnDef]="header.code">
-			<th mat-header-cell *matHeaderCellDef [ngClass]="!isLastHeaderRow && isFirstHeader ? 'hidden' : header.isSelected ? 'selected' : ''"
-				[attr.rowspan]="header.code === 'user3' ? 3 : 1" [attr.colSpan]="header.colSpan"
-        [id]="header.code"
-        (mousedown)="onClickAction($event.type, $event.target.id, index,  $event.ctrlKey)"
-        (mouseup)="onClickAction($event.type, $event.target.id, index, $event.ctrlKey)"
-        (mouseenter)="onClickAction('$event.type', $event.target.id, index, $event.ctrlKey)"
-        >
-				{{header.displayValue}}
-			</th>
+			<ng-container
+				*ngFor="let headerRow of this.headers; let isFirstHeaderRow = first; let isLastHeaderRow = last">
 
-			<ng-container *ngIf="isFirstHeaderRow">
-				<td mat-cell *matCellDef="let element" [attr.rowspan]="isFirstHeader ? 2 : 1"
-					[attr.colspan]="getRowSpan(element, index, header.code, isFirstHeader, isLastHeader)"
-					[ngClass]="getRowClasses(element, index, header.code, isFirstHeader, isLastHeader)">
-					{{this.getTimeSlotDisplayValue(element, header.code)}}
-				</td>
+				<ng-container
+					*ngFor="let header of headerRow; let index = index; let isFirstHeader = first; let isLastHeader = last"
+					[matColumnDef]="header.code">
+					<th mat-header-cell *matHeaderCellDef
+						[ngClass]="!isLastHeaderRow && isFirstHeader ? 'hidden' : header.isSelected ? 'selected' : ''"
+						[attr.rowspan]="header.code === 'user3' ? 3 : 1" [attr.colSpan]="header.colSpan"
+						[id]="header.code"
+						(mousedown)="onClickAction($event.type, $event.target.id, index,  $event.ctrlKey)"
+						(mouseup)="onClickAction($event.type, $event.target.id, index, $event.ctrlKey)"
+						(mouseenter)="onClickAction('$event.type', $event.target.id, index, $event.ctrlKey)">
+						{{header.displayValue}}
+					</th>
+
+					<ng-container *ngIf="isFirstHeaderRow">
+						<td mat-cell *matCellDef="let element" [attr.rowspan]="isFirstHeader ? 2 : 1"
+							[attr.colspan]="getRowSpan(element, index, header.code, isFirstHeader, isLastHeader)"
+							[ngClass]="getRowClasses(element, index, header.code, isFirstHeader, isLastHeader)">
+							{{this.getTimeSlotDisplayValue(element, header.code)}}
+						</td>
+					</ng-container>
+				</ng-container>
 			</ng-container>
-		</ng-container>
-	</ng-container>
 
 
-	<ng-container *ngFor="let h of this.headersCodes.slice().reverse()">
-		<tr mat-header-row *matHeaderRowDef="h; sticky: true"></tr>
-	</ng-container>
+			<ng-container *ngFor="let h of this.headersCodes.slice().reverse()">
+				<tr mat-header-row *matHeaderRowDef="h; sticky: true"></tr>
+			</ng-container>
 
 
-	<tr mat-row *matRowDef="let row; columns: this.headersCodes[0];"></tr>
-</table>
-  <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+			<tr mat-row *matRowDef="let row; columns: this.headersCodes[0];"></tr>
+		</table>
+		<mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+</div>

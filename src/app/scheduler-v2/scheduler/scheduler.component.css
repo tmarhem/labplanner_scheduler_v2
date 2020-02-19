@@ -7,6 +7,10 @@ table *{
   cursor: pointer;
 }
 
+.scheduler {
+  background-color: rgb(71, 71, 71)
+}
+
 .hidden {
   display: none;
 }

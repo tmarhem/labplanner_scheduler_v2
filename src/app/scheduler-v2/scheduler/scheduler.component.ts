@@ -22,16 +22,31 @@ export class SchedulerComponent implements OnInit {
   isChecking = true;
   selectedHeaders : Set<string>;
 
-  dataSource = new MatTableDataSource<any>(this.rows);
-
+  dataSource: any;
 
   constructor() {}
 
   ngOnInit() {
+    this.dataSource = new MatTableDataSource<any>(this.rows);
+    this.dataSource.paginator = this.paginator;
+    this.dataSource.filterPredicate = (data: any, filter) => {
+    const dataStr =JSON.stringify(data).toLowerCase();
+    return dataStr.indexOf(filter) != -1; 
+  }
+
     this.selectedHeaders = new Set<string>();
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
+  }
+
+   applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
   }
 
   onClickAction = (eventType: string, code: string, colIndex: number, ctrlKey: boolean) => {
