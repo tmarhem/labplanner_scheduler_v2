@@ -64,7 +64,6 @@ export class SchedulerComponent implements OnInit {
     ctrlKey: boolean
   ) => {
     if (colIndex === 0) return;
-    // let headerRowIndex;
     if (code) {
       switch (code.length) {
         case 11:
@@ -79,15 +78,21 @@ export class SchedulerComponent implements OnInit {
         default:
       }
     }
+    
     switch (eventType) {
       case "mousedown":
+      
         this.isSelecting = true;
         this.selectionStart = {
           code: code,
           rowIndex: this.headerRowIndex,
           colIndex: colIndex
         };
+        if(!ctrlKey){
+      this.clearSelection();
+      }
         this.selectHeader(code, colIndex, this.headerRowIndex, true);
+        
         break;
       case "mouseenter":
         if (this.isSelecting) {
@@ -107,6 +112,7 @@ export class SchedulerComponent implements OnInit {
           break;
         }
     }
+    
   };
 
   selectHeader = (
@@ -126,7 +132,6 @@ export class SchedulerComponent implements OnInit {
   };
 
   fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
-    console.log('here',colIndex,headerRowIndex,this.selectionStart.colIndex)
     const isSameCell = colIndex === this.selectionStart.colIndex;
     if (isSameCell) {
       return;
@@ -144,9 +149,14 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  // clearSelection = () => {
-
-  // }
+  clearSelection = () => {
+    this.headers.forEach( headerRow => 
+      headerRow.map( h => {
+        h.isSelected = false;
+        return h;
+      })
+    )
+  }
 
   handleError = (e: any) => {
     console.log("handleError", e);
