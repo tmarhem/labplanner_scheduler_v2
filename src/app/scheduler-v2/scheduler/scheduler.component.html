@@ -32,10 +32,13 @@
 				</ng-container>
 			</ng-container>
 
-
-			<ng-container *ngFor="let h of this.headersCodes.slice().reverse()">
-				<tr mat-header-row *matHeaderRowDef="h; sticky: true"></tr>
+  
+			<ng-container *ngFor="let h of this.headersCodes.slice().reverse(); let index = index">
+				<tr mat-header-row *matHeaderRowDef="h; sticky: true"
+						(mouseleave)="onClickAction($event.type, null, index, $event.ctrlKey)"
+        ></tr>
 			</ng-container>
+  
 
 
 			<tr mat-row *matRowDef="let row; columns: this.headersCodes[0];"></tr>

@@ -1,16 +1,14 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
-import { MatPaginator } from '@angular/material/paginator';
-import { MatTableDataSource } from '@angular/material/table';
-
+import { MatPaginator } from "@angular/material/paginator";
+import { MatTableDataSource } from "@angular/material/table";
 
 @Component({
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
-  styleUrls: ["./scheduler.component.css"],
+  styleUrls: ["./scheduler.component.css"]
 })
 export class SchedulerComponent implements OnInit {
-
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
@@ -19,11 +17,13 @@ export class SchedulerComponent implements OnInit {
 
   isSelecting = false;
   isChecking = true;
-  selectedHeaders : Set<string>;
+  selectedHeaders: Set<string>;
   selectionStart: {
-    index: number,
-    code: string,
-  }
+    rowIndex: number;
+    colIndex: number;
+    code: string;
+  };
+  headerRowIndex: number;
 
   dataSource: any;
 
@@ -35,9 +35,12 @@ export class SchedulerComponent implements OnInit {
     this.dataSource.filterPredicate = (data: any, filter) => {
       // TODO regex to allow typing the end of the name
       // TODO avoid filtering selection cell Row OR Filtering only in selection mode
-    const dataStr =JSON.stringify(data).toLowerCase();
-    return dataStr.indexOf(`"value":"${filter}`) != -1 && dataStr.indexOf(`"user":"${filter}`) === -1; 
-  }
+      const dataStr = JSON.stringify(data).toLowerCase();
+      return (
+        dataStr.indexOf(`"value":"${filter}`) != -1 &&
+        dataStr.indexOf(`"user":"${filter}`) === -1
+      );
+    };
 
     this.selectedHeaders = new Set<string>();
     this.headersCodes = this.headers.map(headerRow =>
@@ -45,7 +48,7 @@ export class SchedulerComponent implements OnInit {
     );
   }
 
-   applyFilter(event: Event) {
+  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
 
@@ -54,59 +57,92 @@ export class SchedulerComponent implements OnInit {
     }
   }
 
-  onClickAction = (eventType: string, code: string, colIndex: number, ctrlKey: boolean) => {
+  onClickAction = (
+    eventType: string,
+    code: string,
+    colIndex: number,
+    ctrlKey: boolean
+  ) => {
     if (colIndex === 0) return;
-    let headerRowIndex;
-    switch(code.length){
-      case 11:
-        headerRowIndex = 0;
-        break;
-      case 9:
-        headerRowIndex = 1;
-        break;
-      case 6:
-        headerRowIndex = 2;
-        break;
-      default:
-      console.log('WRONG LENGTH')
+    // let headerRowIndex;
+    if (code) {
+      switch (code.length) {
+        case 11:
+          this.headerRowIndex = 0;
+          break;
+        case 9:
+          this.headerRowIndex = 1;
+          break;
+        case 6:
+          this.headerRowIndex = 2;
+          break;
+        default:
+      }
     }
-    switch(eventType) {
-      case 'mousedown':
+    switch (eventType) {
+      case "mousedown":
         this.isSelecting = true;
         this.selectionStart = {
           code: code,
-          index: headerRowIndex
+          rowIndex: this.headerRowIndex,
+          colIndex: colIndex
+        };
+        this.selectHeader(code, colIndex, this.headerRowIndex, true);
+        break;
+      case "mouseenter":
+        if (this.isSelecting) {
+          this.selectHeader(code, colIndex, this.headerRowIndex);
+          this.fillHeadersSelection(colIndex, this.headerRowIndex);
         }
-        this.selectHeader(code, colIndex, headerRowIndex, true);
-
         break;
-      case 'mouseenter':
-      if (this.isSelecting) {
-        this.selectHeader(code, colIndex, headerRowIndex);
-
-      }
-      break;
-      case 'mouseup':
-        this.selectHeader(code, colIndex, headerRowIndex);
-
-        this.isSelecting = false;
-        break;
+      case "mouseup":
+        if (this.isSelecting) {
+          this.fillHeadersSelection(colIndex, this.headerRowIndex);
+          this.isSelecting = false;
+          break;
+        }
+      case "mouseleave":
+        if (this.isSelecting) {
+          this.isSelecting = false;
+          break;
+        }
     }
-  }
+  };
 
-  selectHeader = (code: string, colIndex: number, headerRowIndex: number, isFirst?: boolean) => {
-    const isSameRow = this.selectionStart.index !== headerRowIndex;
-    if(!isSameRow) return;
-    if(isFirst){
+  selectHeader = (
+    code: string,
+    colIndex: number,
+    headerRowIndex: number,
+    isFirst?: boolean
+  ) => {
+    const isSameRow = this.selectionStart.rowIndex === headerRowIndex;
+    if (!isSameRow) {
+      return;
+    }
+    if (isFirst) {
       this.isChecking = !this.headers[headerRowIndex][colIndex].isSelected;
     }
     this.headers[headerRowIndex][colIndex].isSelected = this.isChecking;
-    // if( this.isChecking ) {
-    //   this.selectedHeaders.add(code);
-    // } else {
-    //   this.selectedHeaders.delete(code);
-    // }
-  }
+  };
+
+  fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
+    console.log('here',colIndex,headerRowIndex,this.selectionStart.colIndex)
+    const isSameCell = colIndex === this.selectionStart.colIndex;
+    if (isSameCell) {
+      return;
+    }
+    const isLeftToRightSelection = this.selectionStart.colIndex < colIndex;
+    const startIndex = isLeftToRightSelection
+      ? this.selectionStart.colIndex
+      : colIndex;
+    const endIndex = isLeftToRightSelection
+      ? colIndex
+      : this.selectionStart.colIndex;
+
+    for (let i = startIndex; i < endIndex; i++) {
+      this.headers[headerRowIndex][i].isSelected = this.isChecking;
+    }
+  };
 
   // clearSelection = () => {
 
@@ -184,22 +220,16 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-    getRowClasses = (row, colIndex, codex, isFirst, isLast) => {
-      const code = this.headersCodes[0][colIndex];
-      const classes = [];
-      const rowSpan = this.getRowSpan(row, colIndex, code, isFirst, isLast);
-      const category = row[code].category ? row[code].category : null;
+  getRowClasses = (row, colIndex, codex, isFirst, isLast) => {
+    const code = this.headersCodes[0][colIndex];
+    const classes = [];
+    const rowSpan = this.getRowSpan(row, colIndex, code, isFirst, isLast);
+    const category = row[code].category ? row[code].category : null;
 
-      if( category)
-      classes.push(category);
-      if ( rowSpan === 0) {
-        classes.push('hidden');
-      }
-      return classes;
+    if (category) classes.push(category);
+    if (rowSpan === 0) {
+      classes.push("hidden");
     }
-
- 
+    return classes;
+  };
 }
-
-
-
