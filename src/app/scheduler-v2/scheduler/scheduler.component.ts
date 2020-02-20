@@ -12,7 +12,6 @@ export class SchedulerComponent implements OnInit {
 
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
 
-
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
@@ -74,34 +73,44 @@ export class SchedulerComponent implements OnInit {
     switch(eventType) {
       case 'mousedown':
         this.isSelecting = true;
-        this.selectHeader(code, colIndex, headerRowIndex, true);
         this.selectionStart = {
           code: code,
           index: headerRowIndex
         }
+        this.selectHeader(code, colIndex, headerRowIndex, true);
+
         break;
       case 'mouseenter':
       if (this.isSelecting) {
         this.selectHeader(code, colIndex, headerRowIndex);
+
       }
       break;
       case 'mouseup':
         this.selectHeader(code, colIndex, headerRowIndex);
+
         this.isSelecting = false;
         break;
     }
   }
 
   selectHeader = (code: string, colIndex: number, headerRowIndex: number, isFirst?: boolean) => {
-    // if(this.selectionStart.index !== headerRowIndex) return;
+    const isSameRow = this.selectionStart.index !== headerRowIndex;
+    if(!isSameRow) return;
     if(isFirst){
       this.isChecking = !this.headers[headerRowIndex][colIndex].isSelected;
     }
-
     this.headers[headerRowIndex][colIndex].isSelected = this.isChecking;
-
-
+    // if( this.isChecking ) {
+    //   this.selectedHeaders.add(code);
+    // } else {
+    //   this.selectedHeaders.delete(code);
+    // }
   }
+
+  // clearSelection = () => {
+
+  // }
 
   handleError = (e: any) => {
     console.log("handleError", e);
