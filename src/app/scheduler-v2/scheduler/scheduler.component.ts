@@ -19,10 +19,10 @@ export class SchedulerComponent implements OnInit {
   isChecking = true;
   selectedHeaders: Set<string>;
   selectionStart: {
-    rowIndex: number,
-    colIndex: number,
-    code: string,
-    isChecking: boolean,
+    rowIndex: number;
+    colIndex: number;
+    code: string;
+    isChecking: boolean;
   };
   headerRowIndex: number;
 
@@ -89,30 +89,32 @@ export class SchedulerComponent implements OnInit {
           code: code,
           rowIndex: headerRowIndex,
           colIndex: colIndex,
-          isChecking: !this.headers[headerRowIndex][colIndex].isSelected,
+          isChecking: !this.headers[headerRowIndex][colIndex].isSelected
         };
 
-        this.selectHeader(code, colIndex, headerRowIndex);
+        if (cellType === "HEADER") {
+          this.selectHeader(code, colIndex, headerRowIndex);
+        }
 
         break;
       case "mouseenter":
         if (this.isSelecting) {
-          this.selectHeader(code, colIndex, headerRowIndex);
-          this.fillHeadersSelection(colIndex, headerRowIndex);
+          if (cellType === "HEADER") {
+            this.selectHeader(code, colIndex, headerRowIndex);
+            this.fillHeadersSelection(colIndex, headerRowIndex);
+          }
         }
         break;
       case "mouseup":
-          this.isSelecting = false;
-          break;
+        this.isSelecting = false;
+        break;
       case "mouseleave":
-          this.isSelecting = false;
-          break;
-        
+        this.isSelecting = false;
+        break;
     }
   };
 
-
-// Todo more generic : Arrat.find(code) in all headers
+  // Todo more generic : Arrat.find(code) in all headers
   getHeaderRowIndex = (code: string) => {
     if (code) {
       switch (code.length) {
@@ -130,18 +132,16 @@ export class SchedulerComponent implements OnInit {
           break;
       }
     }
-  }
+  };
 
-  selectHeader = (
-    code: string,
-    colIndex: number,
-    headerRowIndex: number,
-  ) => {
+  selectHeader = (code: string, colIndex: number, headerRowIndex: number) => {
     const isSameRow = this.selectionStart.rowIndex === headerRowIndex;
     if (!isSameRow) {
       return;
     }
-    this.headers[headerRowIndex][colIndex].isSelected = this.selectionStart.isChecking;
+    this.headers[headerRowIndex][
+      colIndex
+    ].isSelected = this.selectionStart.isChecking;
   };
 
   fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
@@ -158,7 +158,9 @@ export class SchedulerComponent implements OnInit {
       : this.selectionStart.colIndex;
 
     for (let i = startIndex; i < endIndex; i++) {
-      this.headers[headerRowIndex][i].isSelected = this.selectionStart.isChecking;
+      this.headers[headerRowIndex][
+        i
+      ].isSelected = this.selectionStart.isChecking;
     }
   };
 
@@ -197,7 +199,7 @@ export class SchedulerComponent implements OnInit {
    * isFirst: boolean, true if first col
    * isLast: boolean, true if last col
    */
-  getRowSpan = (row, colIndex, codex, isFirst, isLast) => {
+  getRowSpan = (row, colIndex, isFirst, isLast) => {
     const code = this.headersCodes[0][colIndex];
     try {
       const isSelectionCell = row[code] === "";
@@ -243,10 +245,10 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  getRowClasses = (row, colIndex, codex, isFirst, isLast) => {
+  getRowClasses = (row, colIndex, isFirst, isLast) => {
     const code = this.headersCodes[0][colIndex];
     const classes = [];
-    const rowSpan = this.getRowSpan(row, colIndex, code, isFirst, isLast);
+    const rowSpan = this.getRowSpan(row, colIndex, isFirst, isLast);
     const category = row[code].category ? row[code].category : null;
 
     if (category) classes.push(category);
