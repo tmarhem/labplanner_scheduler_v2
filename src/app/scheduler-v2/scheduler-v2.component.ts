@@ -137,7 +137,13 @@ export class SchedulerV2Component implements OnInit {
         case "user":
           break;
         default:
-          clonedRow[prop] = "";
+          // clonedRow[prop] = "";
+          clonedRow[prop] = {
+            isSelectionCell : true,
+            isSelected: false,
+            value: ""
+          };
+
           break;
       }
     }

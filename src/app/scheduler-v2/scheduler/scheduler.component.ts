@@ -31,7 +31,7 @@ export class SchedulerComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.rows);
+    console.log(this.rows[0])
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter) => {
@@ -212,10 +212,16 @@ export class SchedulerComponent implements OnInit {
     if (!row[code]) {
       return null;
     }
-    if (row[code].value) return row[code].value;
-
-    //CHANGE_EFFECT
-    if (typeof row[code] === "string") return row[code];
+    if( row[code].isSelectionCell){
+      return "";
+    }
+    if (row[code].value){ 
+      return row[code].value
+    };
+    // user name cell case
+    if (typeof row[code] === "string") {
+      return row[code]
+      };
     return "NA";
   };
 
@@ -236,7 +242,7 @@ export class SchedulerComponent implements OnInit {
     const code = this.headersCodes[0][colIndex];
     try {
       //CHANGE_EFFECT
-      const isSelectionCell = row[code] === "";
+      const isSelectionCell = row[code].isSelectionCell ? true : false;
 
       if (isFirst || isSelectionCell) {
         return 1;
@@ -284,10 +290,14 @@ export class SchedulerComponent implements OnInit {
     const classes = [];
     const rowSpan = this.getRowSpan(row, colIndex, isFirst, isLast);
     const category = row[code].category ? row[code].category : null;
+    const isSelected = row[code].isSelectionCell ? row[code].isSelected : false;
 
     if (category) classes.push(category);
     if (rowSpan === 0) {
       classes.push("hidden");
+    }
+    if ( isSelected ) {
+      classes.push("selected")
     }
     return classes;
   };

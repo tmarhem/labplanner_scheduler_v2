@@ -29,8 +29,7 @@
 							(mousedown)="onClickAction('CELL', $event.type, $event.target.id, index,  $event.ctrlKey)"
 							(mouseup)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey)"
 							(mouseenter)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey)"
-              (mouseleave)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey)"
-              >
+							(mouseleave)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey)">
 							{{this.getTimeSlotDisplayValue(element, header.code)}}
 						</td>
 					</ng-container>

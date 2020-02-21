@@ -1,5 +1,14 @@
 <div class="basic-margin">
 <mat-card>
   <p>TimeSlot Picker</p>
+  <form class="example-form">
+
+  <mat-form-field class="example-full-width">
+    <mat-label>Timeslot to pass</mat-label>
+    <textarea matInput placeholder="category: LAB value: Forge GCP userId: 5cf662a6efaf2c00125b9b33 projectId: 5c98e6dd9dfbfe0010bf0af5"
+    [value]="getDefaultValue()"></textarea>
+  </mat-form-field>
+    <button mat-raised-button color="primary" (click)="sendApplyNotif()"> Apply </button>
+</form>
 </mat-card>
 </div>
