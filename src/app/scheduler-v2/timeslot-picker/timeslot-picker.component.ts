@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {SchedulerNotificationService, NotificationAction, Actions} from '../_services/schedulerNotification.service'
 
 @Component({
   selector: 'app-timeslot-picker',
@@ -7,9 +8,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TimeslotPickerComponent implements OnInit {
 
-  constructor() { }
+  constructor( public notifService: SchedulerNotificationService) {}
 
   ngOnInit() {
+    this.notifService.sendGenericAction(new NotificationAction<string>(Actions.REFRESH))
   }
 
   getDefaultValue = () => {

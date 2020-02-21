@@ -8,7 +8,7 @@ export class SchedulerNotificationService {
     constructor() {}
 
     private genericSource = new Subject<NotificationAction<any>>();
-    public slaAction = this.genericSource.asObservable(); // leaving access only to the observable so you cannot use/spoof the subject at will
+    public genericAction = this.genericSource.asObservable(); // leaving access only to the observable so you cannot use/spoof the subject at will
 
     public sendGenericAction = (slaNotification: NotificationAction<any>) => {
         this.genericSource.next(slaNotification);
@@ -26,7 +26,7 @@ export class NotificationAction<T> {
     type: Action;
 }
 
-export enum Action {
+export enum Actions {
     CREATE = 'CREATE',
     DELETE = 'DELETE',
     EDIT = 'EDIT',

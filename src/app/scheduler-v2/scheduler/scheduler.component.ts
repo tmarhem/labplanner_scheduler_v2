@@ -30,10 +30,10 @@ export class SchedulerComponent implements OnInit {
 
   HIDE = false;
 
-  constructor() {}
+  constructor( public notifService: SchedulerNotificationService) {}
 
   ngOnInit() {
-    console.log(this.rows[0])
+    this.notifService.genericAction.subscribe( r => console.log('notif',r));
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter) => {
