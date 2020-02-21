@@ -82,7 +82,9 @@ export class SchedulerComponent implements OnInit {
     switch (eventType) {
       case "mousedown":
         if (!ctrlKey) {
-          this.clearSelection();
+          if (cellType === "HEADER") {
+            this.clearHeadersSelection();
+          }
         }
         this.isSelecting = true;
         this.selectionStart = {
@@ -144,6 +146,10 @@ export class SchedulerComponent implements OnInit {
     ].isSelected = this.selectionStart.isChecking;
   };
 
+  selectCell = () => {
+    console.log("selectCell");
+  };
+
   fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
     const isSameCell = colIndex === this.selectionStart.colIndex;
     if (isSameCell) {
@@ -164,13 +170,21 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  clearSelection = () => {
+  fillCellSelection = () => {
+    console.log("fillCellSelection");
+  };
+
+  clearHeadersSelection = () => {
     this.headers.forEach(headerRow =>
       headerRow.map(h => {
         h.isSelected = false;
         return h;
       })
     );
+  };
+
+  clearCellSelection = () => {
+    console.log("clearCellSelection");
   };
 
   handleError = (e: any) => {
