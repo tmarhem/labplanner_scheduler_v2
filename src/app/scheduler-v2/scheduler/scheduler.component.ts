@@ -76,20 +76,8 @@ export class SchedulerComponent implements OnInit {
     ctrlKey: boolean
   ) => {
     if (colIndex === 0) return;
-    if (code) {
-      switch (code.length) {
-        case 11:
-          this.headerRowIndex = 0;
-          break;
-        case 9:
-          this.headerRowIndex = 1;
-          break;
-        case 6:
-          this.headerRowIndex = 2;
-          break;
-        default:
-      }
-    }
+
+    const headerRowIndex = this.getHeaderRowIndex(code);
 
     switch (eventType) {
       case "mousedown":
@@ -99,18 +87,18 @@ export class SchedulerComponent implements OnInit {
         this.isSelecting = true;
         this.selectionStart = {
           code: code,
-          rowIndex: this.headerRowIndex,
+          rowIndex: headerRowIndex,
           colIndex: colIndex,
-          isChecking: true
+          isChecking: !this.headers[headerRowIndex][colIndex].isSelected,
         };
 
-        this.selectHeader(code, colIndex, this.headerRowIndex, true);
+        this.selectHeader(code, colIndex, headerRowIndex);
 
         break;
       case "mouseenter":
         if (this.isSelecting) {
-          this.selectHeader(code, colIndex, this.headerRowIndex);
-          this.fillHeadersSelection(colIndex, this.headerRowIndex);
+          this.selectHeader(code, colIndex, headerRowIndex);
+          this.fillHeadersSelection(colIndex, headerRowIndex);
         }
         break;
       case "mouseup":
@@ -123,23 +111,37 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
+
+// Todo more generic : Arrat.find(code) in all headers
+  getHeaderRowIndex = (code: string) => {
+    if (code) {
+      switch (code.length) {
+        case 11:
+          return 0;
+          break;
+        case 9:
+          return 1;
+          break;
+        case 6:
+          return 2;
+          break;
+        default:
+          return -1;
+          break;
+      }
+    }
+  }
+
   selectHeader = (
     code: string,
     colIndex: number,
     headerRowIndex: number,
-    isFirst?: boolean
   ) => {
     const isSameRow = this.selectionStart.rowIndex === headerRowIndex;
     if (!isSameRow) {
       return;
     }
-    if (isFirst) {
-      console.log()
-      this.isChecking = !this.headers[headerRowIndex][colIndex].isSelected;
-            console.log(this.isChecking)
-
-    }
-    this.headers[headerRowIndex][colIndex].isSelected = this.isChecking;
+    this.headers[headerRowIndex][colIndex].isSelected = this.selectionStart.isChecking;
   };
 
   fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
@@ -156,7 +158,7 @@ export class SchedulerComponent implements OnInit {
       : this.selectionStart.colIndex;
 
     for (let i = startIndex; i < endIndex; i++) {
-      this.headers[headerRowIndex][i].isSelected = this.isChecking;
+      this.headers[headerRowIndex][i].isSelected = this.selectionStart.isChecking;
     }
   };
 
