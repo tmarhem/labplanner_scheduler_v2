@@ -31,6 +31,7 @@ export class SchedulerComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
+    console.log(this.rows);
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter) => {
@@ -43,7 +44,6 @@ export class SchedulerComponent implements OnInit {
       );
     };
 
-    this.selectedHeaders = new Set<string>();
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
@@ -75,54 +75,61 @@ export class SchedulerComponent implements OnInit {
     colIndex: number,
     ctrlKey: boolean
   ) => {
-    if (colIndex === 0) return;
+    try {
+      if (colIndex === 0) return;
 
-    const headerRowIndex = this.getHeaderRowIndex(code);
+      let headerRowIndex, cellRowIndex;
+      if (cellType === "HEADER") {
+        headerRowIndex = this.getHeaderRowIndex(code);
+      }
 
-    switch (eventType) {
-      case "mousedown":
-        if (!ctrlKey) {
-          if (cellType === "HEADER") {
-            this.clearHeadersSelection();
+      switch (eventType) {
+        case "mousedown":
+          if (!ctrlKey) {
+            if (cellType === "HEADER") {
+              this.clearHeadersSelection();
+              this.selectionStart = {
+                code: code,
+                rowIndex: headerRowIndex,
+                colIndex: colIndex,
+                isChecking: !this.headers[headerRowIndex][colIndex].isSelected
+              };
+            }
+            if (cellType === "CELL") {
+              this.clearCellsSelection();
+            }
           }
-          if (cellType === "CELL") {
-            this.clearCellsSelection();
-          }
-        }
-        this.isSelecting = true;
-        this.selectionStart = {
-          code: code,
-          rowIndex: headerRowIndex,
-          colIndex: colIndex,
-          isChecking: !this.headers[headerRowIndex][colIndex].isSelected
-        };
+          this.isSelecting = true;
 
-        if (cellType === "HEADER") {
-          this.selectHeader(code, colIndex, headerRowIndex);
-        }
-        if (cellType === "CELL") {
-          this.selectCell();
-        }
-
-        break;
-      case "mouseenter":
-        if (this.isSelecting) {
           if (cellType === "HEADER") {
             this.selectHeader(code, colIndex, headerRowIndex);
-            this.fillHeadersSelection(colIndex, headerRowIndex);
           }
           if (cellType === "CELL") {
             this.selectCell();
-            this.fillCellSelection();
           }
-        }
-        break;
-      case "mouseup":
-        this.isSelecting = false;
-        break;
-      case "mouseleave":
-        this.isSelecting = false;
-        break;
+
+          break;
+        case "mouseenter":
+          if (this.isSelecting) {
+            if (cellType === "HEADER") {
+              this.selectHeader(code, colIndex, headerRowIndex);
+              this.fillHeadersSelection(colIndex, headerRowIndex);
+            }
+            if (cellType === "CELL") {
+              this.selectCell();
+              this.fillCellSelection();
+            }
+          }
+          break;
+        case "mouseup":
+          this.isSelecting = false;
+          break;
+        case "mouseleave":
+          this.isSelecting = false;
+          break;
+      }
+    } catch (e) {
+      this.handleError(e);
     }
   };
 
@@ -206,6 +213,8 @@ export class SchedulerComponent implements OnInit {
       return null;
     }
     if (row[code].value) return row[code].value;
+
+    //CHANGE_EFFECT
     if (typeof row[code] === "string") return row[code];
     return "NA";
   };
@@ -226,6 +235,7 @@ export class SchedulerComponent implements OnInit {
   getRowSpan = (row, colIndex, isFirst, isLast) => {
     const code = this.headersCodes[0][colIndex];
     try {
+      //CHANGE_EFFECT
       const isSelectionCell = row[code] === "";
 
       if (isFirst || isSelectionCell) {
