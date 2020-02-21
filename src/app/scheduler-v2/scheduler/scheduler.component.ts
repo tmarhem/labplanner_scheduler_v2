@@ -85,6 +85,9 @@ export class SchedulerComponent implements OnInit {
           if (cellType === "HEADER") {
             this.clearHeadersSelection();
           }
+          if (cellType === "CELL") {
+            this.clearCellsSelection();
+          }
         }
         this.isSelecting = true;
         this.selectionStart = {
@@ -97,6 +100,9 @@ export class SchedulerComponent implements OnInit {
         if (cellType === "HEADER") {
           this.selectHeader(code, colIndex, headerRowIndex);
         }
+        if (cellType === "CELL") {
+          this.selectCell();
+        }
 
         break;
       case "mouseenter":
@@ -104,6 +110,10 @@ export class SchedulerComponent implements OnInit {
           if (cellType === "HEADER") {
             this.selectHeader(code, colIndex, headerRowIndex);
             this.fillHeadersSelection(colIndex, headerRowIndex);
+          }
+          if (cellType === "CELL") {
+            this.selectCell();
+            this.fillCellSelection();
           }
         }
         break;
@@ -183,7 +193,7 @@ export class SchedulerComponent implements OnInit {
     );
   };
 
-  clearCellSelection = () => {
+  clearCellsSelection = () => {
     console.log("clearCellSelection");
   };
 
