@@ -23,7 +23,7 @@
 					</th>
 
 					<ng-container *ngIf="isFirstHeaderRow">
-						<td mat-cell *matCellDef="let element" [attr.rowspan]="isFirstHeader ? 2 : 1"
+						<td mat-cell *matCellDef="let element" [attr.rowspan]="this.HIDE ? 1 : isFirstHeader ? 2 : 1"
 							[attr.colspan]="getRowSpan(element, index, isFirstHeader, isLastHeader)"
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
 							(mousedown)="onClickAction('CELL', $event.type, $event.target.id, index,  $event.ctrlKey)"

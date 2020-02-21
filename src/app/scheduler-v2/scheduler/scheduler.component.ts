@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-
+import {SchedulerNotificationService} from '../_services/schedulerNotification.service'
 @Component({
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
@@ -27,6 +27,8 @@ export class SchedulerComponent implements OnInit {
   headerRowIndex: number;
 
   dataSource: any;
+
+  HIDE = false;
 
   constructor() {}
 
@@ -294,6 +296,9 @@ export class SchedulerComponent implements OnInit {
 
     if (category) classes.push(category);
     if (rowSpan === 0) {
+      classes.push("hidden");
+    }
+    if( this.HIDE && row[code].isSelectionCell ){
       classes.push("hidden");
     }
     if ( isSelected ) {

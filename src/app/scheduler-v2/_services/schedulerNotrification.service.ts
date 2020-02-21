@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable({
     providedIn: 'root',
 })
-export class UnityNotificationService {
+export class SchedulerNotificationService {
     constructor() {}
 
     private genericSource = new Subject<NotificationAction<any>>();
