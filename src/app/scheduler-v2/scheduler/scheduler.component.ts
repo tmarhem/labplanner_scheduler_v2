@@ -19,9 +19,10 @@ export class SchedulerComponent implements OnInit {
   isChecking = true;
   selectedHeaders: Set<string>;
   selectionStart: {
-    rowIndex: number;
-    colIndex: number;
-    code: string;
+    rowIndex: number,
+    colIndex: number,
+    code: string,
+    isChecking: boolean,
   };
   headerRowIndex: number;
 
@@ -48,6 +49,9 @@ export class SchedulerComponent implements OnInit {
     );
   }
 
+  /**
+   * Filters datsource according to filter input
+   */
   applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
@@ -57,7 +61,15 @@ export class SchedulerComponent implements OnInit {
     }
   }
 
+  /**
+   * @param cellType: HEADER or CELL, source of the eventType
+   * @param eventType: mouseenter, mouseleave, mousedown, mouseup : click event type
+   * @param code: cell code
+   * @param colIndex: cell colum index
+   * @param ctrlKey: boolean is ctrl key
+   */
   onClickAction = (
+    cellType: string,
     eventType: string,
     code: string,
     colIndex: number,
@@ -78,21 +90,22 @@ export class SchedulerComponent implements OnInit {
         default:
       }
     }
-    
+
     switch (eventType) {
       case "mousedown":
-      
+        if (!ctrlKey) {
+          this.clearSelection();
+        }
         this.isSelecting = true;
         this.selectionStart = {
           code: code,
           rowIndex: this.headerRowIndex,
-          colIndex: colIndex
+          colIndex: colIndex,
+          isChecking: true
         };
-        if(!ctrlKey){
-      this.clearSelection();
-      }
+
         this.selectHeader(code, colIndex, this.headerRowIndex, true);
-        
+
         break;
       case "mouseenter":
         if (this.isSelecting) {
@@ -101,18 +114,13 @@ export class SchedulerComponent implements OnInit {
         }
         break;
       case "mouseup":
-        if (this.isSelecting) {
-          this.fillHeadersSelection(colIndex, this.headerRowIndex);
           this.isSelecting = false;
           break;
-        }
       case "mouseleave":
-        if (this.isSelecting) {
           this.isSelecting = false;
           break;
-        }
+        
     }
-    
   };
 
   selectHeader = (
@@ -126,7 +134,10 @@ export class SchedulerComponent implements OnInit {
       return;
     }
     if (isFirst) {
+      console.log()
       this.isChecking = !this.headers[headerRowIndex][colIndex].isSelected;
+            console.log(this.isChecking)
+
     }
     this.headers[headerRowIndex][colIndex].isSelected = this.isChecking;
   };
@@ -150,13 +161,13 @@ export class SchedulerComponent implements OnInit {
   };
 
   clearSelection = () => {
-    this.headers.forEach( headerRow => 
-      headerRow.map( h => {
+    this.headers.forEach(headerRow =>
+      headerRow.map(h => {
         h.isSelected = false;
         return h;
       })
-    )
-  }
+    );
+  };
 
   handleError = (e: any) => {
     console.log("handleError", e);
