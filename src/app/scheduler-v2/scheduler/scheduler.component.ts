@@ -87,15 +87,15 @@ export class SchedulerComponent implements OnInit {
 
       switch (eventType) {
         case "mousedown":
-          if (!ctrlKey) {
-            if (cellType === "HEADER") {
-              this.clearHeadersSelection();
               this.selectionStart = {
                 code: code,
                 rowIndex: headerRowIndex,
                 colIndex: colIndex,
                 isChecking: !this.headers[headerRowIndex][colIndex].isSelected
               };
+          if (!ctrlKey) {
+            if (cellType === "HEADER") {
+              this.clearHeadersSelection();
             }
             if (cellType === "CELL") {
               this.clearCellsSelection();
