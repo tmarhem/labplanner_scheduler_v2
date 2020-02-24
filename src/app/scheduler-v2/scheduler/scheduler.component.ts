@@ -13,7 +13,7 @@ export class SchedulerComponent implements OnInit {
   @Input() headers: Array<Array<any>>;
   @Input() rows: Array<any>;
 
-  headersCodes: Array<Array<string>>;
+  headersCodes: Array<any>;
 
   isSelecting = false;
   isChecking = true;
@@ -78,7 +78,7 @@ export class SchedulerComponent implements OnInit {
     rowIndex: number
   ) => {
     try {
-      if (colIndex === 0) return;
+      if (colIndex === 0) {console.log('wrong colIndex');return};
 
       switch (eventType) {
         case "mousedown":
@@ -89,7 +89,7 @@ export class SchedulerComponent implements OnInit {
 
           if (!activeCell.hasOwnProperty("isSelected")) {
             console.log("no property isSelected");
-            return; 
+            return;
           }
 
           this.selectionStartCell = {
@@ -100,7 +100,7 @@ export class SchedulerComponent implements OnInit {
           };
 
           this.isSelecting = true;
-
+          console.log('mousedown',cellType,this.isSelecting)
           if (cellType === "HEADER") {
             if (!ctrlKey) {
               this.clearHeadersSelection();
@@ -116,8 +116,9 @@ export class SchedulerComponent implements OnInit {
 
           break;
         case "mouseenter":
+        console.log('mouseenter',cellType, this.isSelecting)
           if (this.isSelecting) {
-              this.fillCellSelection(cellType, code, colIndex, rowIndex);
+            this.fillCellSelection(cellType, code, colIndex, rowIndex);
           }
           break;
         case "mouseup":
@@ -132,15 +133,24 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  selectCell = (cellType: string, code: string, colIndex: number, rowIndex: number) => {
+  selectCell = (
+    cellType: string,
+    code: string,
+    colIndex: number,
+    rowIndex: number
+  ) => {
     const isSameRow = this.selectionStartCell.rowIndex === rowIndex;
     if (!isSameRow) {
       return;
     }
     let activeCell;
-    if ( cellType === 'HEADER') { activeCell = this.headers[rowIndex][colIndex]}
-    else if ( cellType === 'DATA') { activeCell = this.dataSource.data[rowIndex][code]}
-    else { return };
+    if (cellType === "HEADER") {
+      activeCell = this.headers[rowIndex][colIndex];
+    } else if (cellType === "DATA") {
+      activeCell = this.dataSource.data[rowIndex][code];
+    } else {
+      return;
+    }
 
     activeCell.isSelected = this.selectionStartCell.isChecking;
   };
@@ -165,16 +175,19 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  fillCellSelection = (cellType: string, code: string, colIndex: number, rowIndex: number) => {
-    console.log("fillCellSelection");
+  fillCellSelection = (
+    cellType: string,
+    code: string,
+    colIndex: number,
+    rowIndex: number
+  ) => {
+    console.log('entering fillCell', cellType)
     const isSameCell = colIndex === this.selectionStartCell.colIndex;
     if (isSameCell) {
+      console.log("same cell");
       return;
     }
     let activeCell;
-    if ( cellType === 'HEADER') { activeCell = this.headers[rowIndex][colIndex]}
-    else if ( cellType === 'DATA') { activeCell = this.dataSource.data[rowIndex][code]}
-    else { return };
 
     const isLeftToRightSelection = this.selectionStartCell.colIndex < colIndex;
     const startIndex = isLeftToRightSelection
@@ -185,6 +198,15 @@ export class SchedulerComponent implements OnInit {
       : this.selectionStartCell.colIndex;
 
     for (let i = startIndex; i <= endIndex; i++) {
+      if (cellType === "HEADER") {
+        activeCell = this.headers[rowIndex][i];
+      } else if (cellType === "DATA") {
+        activeCell = this.dataSource.data[rowIndex][this.headersCodes[i]];
+      } else {
+        console.log("wrong cellTYpe");
+        return;
+      }
+      console.log("activeCell", activeCell);
       activeCell.isSelected = this.selectionStartCell.isChecking;
     }
   };
