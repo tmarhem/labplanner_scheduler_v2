@@ -78,7 +78,10 @@ export class SchedulerComponent implements OnInit {
     rowIndex: number
   ) => {
     try {
-      if (colIndex === 0) {console.log('wrong colIndex');return};
+      if (colIndex === 0) {
+        console.log("wrong colIndex");
+        return;
+      }
 
       switch (eventType) {
         case "mousedown":
@@ -100,7 +103,6 @@ export class SchedulerComponent implements OnInit {
           };
 
           this.isSelecting = true;
-          console.log('mousedown',cellType,this.isSelecting)
           if (cellType === "HEADER") {
             if (!ctrlKey) {
               this.clearHeadersSelection();
@@ -116,7 +118,6 @@ export class SchedulerComponent implements OnInit {
 
           break;
         case "mouseenter":
-        console.log('mouseenter',cellType, this.isSelecting)
           if (this.isSelecting) {
             this.fillCellSelection(cellType, code, colIndex, rowIndex);
           }
@@ -143,6 +144,7 @@ export class SchedulerComponent implements OnInit {
     if (!isSameRow) {
       return;
     }
+    // TODO Remove duplicate
     let activeCell;
     if (cellType === "HEADER") {
       activeCell = this.headers[rowIndex][colIndex];
@@ -151,29 +153,10 @@ export class SchedulerComponent implements OnInit {
     } else {
       return;
     }
-
+    if(!activeCell){ return; }
     activeCell.isSelected = this.selectionStartCell.isChecking;
   };
 
-  fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
-    const isSameCell = colIndex === this.selectionStartCell.colIndex;
-    if (isSameCell) {
-      return;
-    }
-    const isLeftToRightSelection = this.selectionStartCell.colIndex < colIndex;
-    const startIndex = isLeftToRightSelection
-      ? this.selectionStartCell.colIndex
-      : colIndex;
-    const endIndex = isLeftToRightSelection
-      ? colIndex
-      : this.selectionStartCell.colIndex;
-
-    for (let i = startIndex; i <= endIndex; i++) {
-      this.headers[headerRowIndex][
-        i
-      ].isSelected = this.selectionStartCell.isChecking;
-    }
-  };
 
   fillCellSelection = (
     cellType: string,
@@ -181,7 +164,7 @@ export class SchedulerComponent implements OnInit {
     colIndex: number,
     rowIndex: number
   ) => {
-    console.log('entering fillCell', cellType)
+    console.log("entering fillCell", cellType);
     const isSameCell = colIndex === this.selectionStartCell.colIndex;
     if (isSameCell) {
       console.log("same cell");
@@ -198,15 +181,18 @@ export class SchedulerComponent implements OnInit {
       : this.selectionStartCell.colIndex;
 
     for (let i = startIndex; i <= endIndex; i++) {
+      // TODO Remove duplicate
+      // this.selectCell(cellType,code,i,rowIndex);
       if (cellType === "HEADER") {
         activeCell = this.headers[rowIndex][i];
       } else if (cellType === "DATA") {
-        activeCell = this.dataSource.data[rowIndex][this.headersCodes[i]];
+        activeCell = this.dataSource.data[rowIndex][this.headersCodes[0][i]];
       } else {
-        console.log("wrong cellTYpe");
         return;
       }
-      console.log("activeCell", activeCell);
+      if (!activeCell) {
+        return;
+      }
       activeCell.isSelected = this.selectionStartCell.isChecking;
     }
   };
