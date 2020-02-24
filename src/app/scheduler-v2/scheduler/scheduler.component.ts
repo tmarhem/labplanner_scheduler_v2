@@ -24,11 +24,10 @@ export class SchedulerComponent implements OnInit {
     code: string;
     isChecking: boolean;
   };
-  headerRowIndex: number;
 
   dataSource: any;
 
-  HIDE = false;
+  HIDE = false; // WIP for isComplexModeEnabled
 
   constructor(public notifService: SchedulerNotificationService) {}
 
@@ -76,54 +75,55 @@ export class SchedulerComponent implements OnInit {
     code: string,
     colIndex: number,
     ctrlKey: boolean,
-    rowIndex: number,
+    rowIndex: number
   ) => {
     try {
       if (colIndex === 0) return;
 
-
       switch (eventType) {
         case "mousedown":
-          if (cellType === "HEADER") {
-            this.selectionStart = {
-              code: code,
-              rowIndex: rowIndex,
-              colIndex: colIndex,
-              isChecking: !this.headers[rowIndex][colIndex].isSelected
-            };
-            if (!ctrlKey) {
-              this.clearHeadersSelection();
-            }
+          const activeCell =
+            cellType === "HEADER"
+              ? this.headers[rowIndex][colIndex]
+              : this.dataSource.data[rowIndex][code];
+
+          if (!activeCell.hasOwnProperty("isSelected")) {
+            console.log("no property isSelected");
+            return; 
           }
-          if (cellType === "CELL") {
-              console.log(cellType,
-    eventType,
-    code,
-    colIndex,
-    ctrlKey)
-            if (!ctrlKey) {
-              this.clearCellsSelection();
-            }
-          }
+
+          this.selectionStart = {
+            code: code,
+            rowIndex: rowIndex,
+            colIndex: colIndex,
+            isChecking: !activeCell.isSelected
+          };
+
           this.isSelecting = true;
 
           if (cellType === "HEADER") {
+            if (!ctrlKey) {
+              this.clearHeadersSelection();
+            }
             this.selectHeader(code, colIndex, rowIndex);
           }
           if (cellType === "CELL") {
-            this.selectCell();
+            if (!ctrlKey) {
+              // this.clearCellsSelection();
+            }
+            this.selectCell(code, colIndex, rowIndex);
           }
 
           break;
         case "mouseenter":
           if (this.isSelecting) {
             if (cellType === "HEADER") {
-              this.selectHeader(code, colIndex, rowIndex);
               this.fillHeadersSelection(colIndex, rowIndex);
             }
             if (cellType === "CELL") {
-              this.selectCell();
-              this.fillCellSelection();
+              console.log("mouseenter cell");
+              // this.selectCell(code, colIndex, rowIndex);
+              // this.fillCellSelection();
             }
           }
           break;
@@ -139,26 +139,6 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  // Todo more generic : Arrat.find(code) in all headers
-  getHeaderRowIndex = (code: string) => {
-    if (code) {
-      switch (code.length) {
-        case 11:
-          return 0;
-          break;
-        case 9:
-          return 1;
-          break;
-        case 6:
-          return 2;
-          break;
-        default:
-          return -1;
-          break;
-      }
-    }
-  };
-
   selectHeader = (code: string, colIndex: number, headerRowIndex: number) => {
     const isSameRow = this.selectionStart.rowIndex === headerRowIndex;
     if (!isSameRow) {
@@ -169,8 +149,15 @@ export class SchedulerComponent implements OnInit {
     ].isSelected = this.selectionStart.isChecking;
   };
 
-  selectCell = () => {
-    console.log("selectCell");
+  selectCell = (code: string, colIndex: number, cellRowIndex: number) => {
+    console.log("sCell", this.dataSource.data[cellRowIndex][code]);
+    const isSameRow = this.selectionStart.rowIndex === cellRowIndex;
+    if (!isSameRow) {
+      return;
+    }
+    this.dataSource.data[cellRowIndex][
+      code
+    ].isSelected = this.selectionStart.isChecking;
   };
 
   fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
@@ -186,7 +173,7 @@ export class SchedulerComponent implements OnInit {
       ? colIndex
       : this.selectionStart.colIndex;
 
-    for (let i = startIndex; i < endIndex; i++) {
+    for (let i = startIndex; i <= endIndex; i++) {
       this.headers[headerRowIndex][
         i
       ].isSelected = this.selectionStart.isChecking;

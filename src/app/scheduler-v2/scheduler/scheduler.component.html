@@ -26,6 +26,7 @@
 						<td mat-cell *matCellDef="let element, let rowIndex = index" [attr.rowspan]="this.HIDE ? 1 : isFirstHeader ? 2 : 1"
 							[attr.colspan]="getRowSpan(element, index, isFirstHeader, isLastHeader)"
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
+              [id]="header.code"
 							(mousedown)="onClickAction('CELL', $event.type, $event.target.id, index,  $event.ctrlKey, rowIndex)"
 							(mouseup)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
 							(mouseenter)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
