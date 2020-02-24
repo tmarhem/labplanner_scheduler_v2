@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import {SchedulerNotificationService} from '../_services/schedulerNotification.service'
+import { SchedulerNotificationService } from "../_services/schedulerNotification.service";
 @Component({
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
@@ -30,10 +30,10 @@ export class SchedulerComponent implements OnInit {
 
   HIDE = false;
 
-  constructor( public notifService: SchedulerNotificationService) {}
+  constructor(public notifService: SchedulerNotificationService) {}
 
   ngOnInit() {
-    this.notifService.genericAction.subscribe( r => console.log('notif',r));
+    this.notifService.genericAction.subscribe(r => console.log("notif", r));
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter) => {
@@ -87,17 +87,19 @@ export class SchedulerComponent implements OnInit {
 
       switch (eventType) {
         case "mousedown":
-              this.selectionStart = {
-                code: code,
-                rowIndex: headerRowIndex,
-                colIndex: colIndex,
-                isChecking: !this.headers[headerRowIndex][colIndex].isSelected
-              };
-          if (!ctrlKey) {
-            if (cellType === "HEADER") {
+          if (cellType === "HEADER") {
+            this.selectionStart = {
+              code: code,
+              rowIndex: headerRowIndex,
+              colIndex: colIndex,
+              isChecking: !this.headers[headerRowIndex][colIndex].isSelected
+            };
+            if (!ctrlKey) {
               this.clearHeadersSelection();
             }
-            if (cellType === "CELL") {
+          }
+          if (cellType === "CELL") {
+            if (!ctrlKey) {
               this.clearCellsSelection();
             }
           }
@@ -214,16 +216,16 @@ export class SchedulerComponent implements OnInit {
     if (!row[code]) {
       return null;
     }
-    if( row[code].isSelectionCell){
+    if (row[code].isSelectionCell) {
       return "";
     }
-    if (row[code].value){ 
-      return row[code].value
-    };
+    if (row[code].value) {
+      return row[code].value;
+    }
     // user name cell case
     if (typeof row[code] === "string") {
-      return row[code]
-      };
+      return row[code];
+    }
     return "NA";
   };
 
@@ -298,11 +300,11 @@ export class SchedulerComponent implements OnInit {
     if (rowSpan === 0) {
       classes.push("hidden");
     }
-    if( this.HIDE && row[code].isSelectionCell ){
+    if (this.HIDE && row[code].isSelectionCell) {
       classes.push("hidden");
     }
-    if ( isSelected ) {
-      classes.push("selected")
+    if (isSelected) {
+      classes.push("selected");
     }
     return classes;
   };
