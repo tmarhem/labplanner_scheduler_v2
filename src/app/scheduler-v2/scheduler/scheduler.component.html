@@ -27,10 +27,10 @@
 							[attr.colspan]="getRowSpan(element, index, isFirstHeader, isLastHeader)"
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
               [id]="header.code"
-							(mousedown)="onClickAction('CELL', $event.type, $event.target.id, index,  $event.ctrlKey, rowIndex)"
-							(mouseup)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
-							(mouseenter)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
-							(mouseleave)="onClickAction('CELL', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)">
+							(mousedown)="onClickAction('DATA', $event.type, $event.target.id, index,  $event.ctrlKey, rowIndex)"
+							(mouseup)="onClickAction('DATA', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
+							(mouseenter)="onClickAction('DATA', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
+							(mouseleave)="onClickAction('DATA', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)">
 							{{this.getTimeSlotDisplayValue(element, header.code)}}
 						</td>
 					</ng-container>

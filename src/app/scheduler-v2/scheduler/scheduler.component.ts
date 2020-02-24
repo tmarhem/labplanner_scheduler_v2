@@ -18,7 +18,7 @@ export class SchedulerComponent implements OnInit {
   isSelecting = false;
   isChecking = true;
   selectedHeaders: Set<string>;
-  selectionStart: {
+  selectionStartCell: {
     rowIndex: number;
     colIndex: number;
     code: string;
@@ -63,7 +63,7 @@ export class SchedulerComponent implements OnInit {
   }
 
   /**
-   * @param cellType: HEADER or CELL, source of the eventType
+   * @param cellType: HEADER or DATA, source of the eventType
    * @param eventType: mouseenter, mouseleave, mousedown, mouseup : click event type
    * @param code: cell code
    * @param colIndex: cell colum index
@@ -92,7 +92,7 @@ export class SchedulerComponent implements OnInit {
             return; 
           }
 
-          this.selectionStart = {
+          this.selectionStartCell = {
             code: code,
             rowIndex: rowIndex,
             colIndex: colIndex,
@@ -105,26 +105,19 @@ export class SchedulerComponent implements OnInit {
             if (!ctrlKey) {
               this.clearHeadersSelection();
             }
-            this.selectHeader(code, colIndex, rowIndex);
+            this.selectCell(cellType, code, colIndex, rowIndex);
           }
-          if (cellType === "CELL") {
+          if (cellType === "DATA") {
             if (!ctrlKey) {
               // this.clearCellsSelection();
             }
-            this.selectCell(code, colIndex, rowIndex);
+            this.selectCell(cellType, code, colIndex, rowIndex);
           }
 
           break;
         case "mouseenter":
           if (this.isSelecting) {
-            if (cellType === "HEADER") {
-              this.fillHeadersSelection(colIndex, rowIndex);
-            }
-            if (cellType === "CELL") {
-              console.log("mouseenter cell");
-              // this.selectCell(code, colIndex, rowIndex);
-              // this.fillCellSelection();
-            }
+              this.fillCellSelection(cellType, code, colIndex, rowIndex);
           }
           break;
         case "mouseup":
@@ -139,49 +132,61 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  selectHeader = (code: string, colIndex: number, headerRowIndex: number) => {
-    const isSameRow = this.selectionStart.rowIndex === headerRowIndex;
+  selectCell = (cellType: string, code: string, colIndex: number, rowIndex: number) => {
+    const isSameRow = this.selectionStartCell.rowIndex === rowIndex;
     if (!isSameRow) {
       return;
     }
-    this.headers[headerRowIndex][
-      colIndex
-    ].isSelected = this.selectionStart.isChecking;
-  };
+    let activeCell;
+    if ( cellType === 'HEADER') { activeCell = this.headers[rowIndex][colIndex]}
+    else if ( cellType === 'DATA') { activeCell = this.dataSource.data[rowIndex][code]}
+    else { return };
 
-  selectCell = (code: string, colIndex: number, cellRowIndex: number) => {
-    console.log("sCell", this.dataSource.data[cellRowIndex][code]);
-    const isSameRow = this.selectionStart.rowIndex === cellRowIndex;
-    if (!isSameRow) {
-      return;
-    }
-    this.dataSource.data[cellRowIndex][
-      code
-    ].isSelected = this.selectionStart.isChecking;
+    activeCell.isSelected = this.selectionStartCell.isChecking;
   };
 
   fillHeadersSelection = (colIndex: number, headerRowIndex: number) => {
-    const isSameCell = colIndex === this.selectionStart.colIndex;
+    const isSameCell = colIndex === this.selectionStartCell.colIndex;
     if (isSameCell) {
       return;
     }
-    const isLeftToRightSelection = this.selectionStart.colIndex < colIndex;
+    const isLeftToRightSelection = this.selectionStartCell.colIndex < colIndex;
     const startIndex = isLeftToRightSelection
-      ? this.selectionStart.colIndex
+      ? this.selectionStartCell.colIndex
       : colIndex;
     const endIndex = isLeftToRightSelection
       ? colIndex
-      : this.selectionStart.colIndex;
+      : this.selectionStartCell.colIndex;
 
     for (let i = startIndex; i <= endIndex; i++) {
       this.headers[headerRowIndex][
         i
-      ].isSelected = this.selectionStart.isChecking;
+      ].isSelected = this.selectionStartCell.isChecking;
     }
   };
 
-  fillCellSelection = () => {
+  fillCellSelection = (cellType: string, code: string, colIndex: number, rowIndex: number) => {
     console.log("fillCellSelection");
+    const isSameCell = colIndex === this.selectionStartCell.colIndex;
+    if (isSameCell) {
+      return;
+    }
+    let activeCell;
+    if ( cellType === 'HEADER') { activeCell = this.headers[rowIndex][colIndex]}
+    else if ( cellType === 'DATA') { activeCell = this.dataSource.data[rowIndex][code]}
+    else { return };
+
+    const isLeftToRightSelection = this.selectionStartCell.colIndex < colIndex;
+    const startIndex = isLeftToRightSelection
+      ? this.selectionStartCell.colIndex
+      : colIndex;
+    const endIndex = isLeftToRightSelection
+      ? colIndex
+      : this.selectionStartCell.colIndex;
+
+    for (let i = startIndex; i <= endIndex; i++) {
+      activeCell.isSelected = this.selectionStartCell.isChecking;
+    }
   };
 
   clearHeadersSelection = () => {
