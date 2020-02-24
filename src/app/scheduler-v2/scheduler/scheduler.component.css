@@ -1,5 +1,6 @@
 table{
   width: 100%;
+  table-layout: fixed;
 }
 
 table *{
@@ -27,6 +28,12 @@ td:not(:first-of-type){
 
 th:not(:first-of-type){
   text-align: center;
+}
+
+th:first-of-type, td:first-of-type{
+  width: 80px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 th:nth-child(even){
