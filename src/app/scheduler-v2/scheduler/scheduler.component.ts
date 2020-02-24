@@ -75,30 +75,32 @@ export class SchedulerComponent implements OnInit {
     eventType: string,
     code: string,
     colIndex: number,
-    ctrlKey: boolean
+    ctrlKey: boolean,
+    rowIndex: number,
   ) => {
     try {
       if (colIndex === 0) return;
 
-      let headerRowIndex, cellRowIndex;
-      if (cellType === "HEADER") {
-        headerRowIndex = this.getHeaderRowIndex(code);
-      }
 
       switch (eventType) {
         case "mousedown":
           if (cellType === "HEADER") {
             this.selectionStart = {
               code: code,
-              rowIndex: headerRowIndex,
+              rowIndex: rowIndex,
               colIndex: colIndex,
-              isChecking: !this.headers[headerRowIndex][colIndex].isSelected
+              isChecking: !this.headers[rowIndex][colIndex].isSelected
             };
             if (!ctrlKey) {
               this.clearHeadersSelection();
             }
           }
           if (cellType === "CELL") {
+              console.log(cellType,
+    eventType,
+    code,
+    colIndex,
+    ctrlKey)
             if (!ctrlKey) {
               this.clearCellsSelection();
             }
@@ -106,7 +108,7 @@ export class SchedulerComponent implements OnInit {
           this.isSelecting = true;
 
           if (cellType === "HEADER") {
-            this.selectHeader(code, colIndex, headerRowIndex);
+            this.selectHeader(code, colIndex, rowIndex);
           }
           if (cellType === "CELL") {
             this.selectCell();
@@ -116,8 +118,8 @@ export class SchedulerComponent implements OnInit {
         case "mouseenter":
           if (this.isSelecting) {
             if (cellType === "HEADER") {
-              this.selectHeader(code, colIndex, headerRowIndex);
-              this.fillHeadersSelection(colIndex, headerRowIndex);
+              this.selectHeader(code, colIndex, rowIndex);
+              this.fillHeadersSelection(colIndex, rowIndex);
             }
             if (cellType === "CELL") {
               this.selectCell();
