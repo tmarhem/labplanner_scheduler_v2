@@ -155,7 +155,7 @@ export class SchedulerV2Component implements OnInit {
     return clonedRow;
   };
 
-  getDateFromCode = (code: string): Date => {
+  getDateFromCode = (code: string): Date | null => {
     let year, month, day, half;
     switch (code.length) {
       case 11:
@@ -172,18 +172,20 @@ export class SchedulerV2Component implements OnInit {
         return new Date(year, month - 1, 1, 5);
         break;
       default:
-        throw new Error('GetDateFromCode: Code not recognized');
+        return null;
     }
   };
 
-  getDisplayValue = (date: Date, pattern?: string) => {
+  getDisplayValue = (date: Date | null, pattern?: string) => {
     try {
       if (!isValid(date)) {
         return this.PARAMS.crossHeaderText;
       }
-      return format(date, pattern ? pattern : "P", {
-        locale: this.lang
-      }).replace(/^\w/, c => c.toUpperCase());
+      if (date) {
+        return format(date, pattern ? pattern : "P", {
+          locale: this.lang
+        }).replace(/^\w/, c => c.toUpperCase());
+      }
     } catch (e) {
       this.handleError(e);
     }
