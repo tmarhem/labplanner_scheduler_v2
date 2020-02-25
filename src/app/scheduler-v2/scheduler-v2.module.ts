@@ -25,5 +25,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   exports: [
     SchedulerV2Component
   ],
+
 })
 export class SchedulerV2Module { }

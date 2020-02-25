@@ -20,7 +20,12 @@ export class SchedulerV2Component implements OnInit {
   lang = fr;
   PARAMS: SchedulerParams = new SchedulerParams();
 
-  constructor() {}
+  constructor() {
+    this.duplicatedInput = [];
+    this.startDate = new Date();
+    this.headers = [];
+    this.headersList = [];
+  }
 
   ngOnInit() {
     this.duplicateInput(this.input);
@@ -64,14 +69,14 @@ export class SchedulerV2Component implements OnInit {
   generateDayHeaders = (headersList: any) => {
     try {
       const slicedHeaders = headersList
-        .map(h => {
+        .map((h: any) => {
           if (h === "user") return h;
           return h.slice(0, -2);
         })
-        .map(h => (h === "user" ? "user2" : h));
-      let secondHeaders = [];
-      slicedHeaders.forEach(h => {
-        let index = secondHeaders.findIndex(h2 => h2.code === h);
+        .map((h: any) => (h === "user" ? "user2" : h));
+      let secondHeaders: any = [];
+      slicedHeaders.forEach((h: any) => {
+        let index = secondHeaders.findIndex((h2: any) => h2.code === h);
         if (index < 0) {
           secondHeaders.push({
             code: h,
@@ -92,16 +97,16 @@ export class SchedulerV2Component implements OnInit {
   generateMonthHeaders = (headersList: any) => {
     try {
       const slicedHeaders = headersList
-        .map(h => {
+        .map((h: any) => {
           if (h === "user") return h;
           return h.slice(3, -2);
         })
-        .map(h => (h === "user" ? "user3" : h));
-      let thirdHeaders = [];
+        .map((h: any) => (h === "user" ? "user3" : h));
+      let thirdHeaders: any = [];
       let index;
 
-      slicedHeaders.forEach(h => {
-        let index = thirdHeaders.findIndex(h2 => h2.code === h);
+      slicedHeaders.forEach((h: any) => {
+        let index = thirdHeaders.findIndex((h2: any) => h2.code === h);
         if (index < 0) {
           thirdHeaders.push({
             code: h,
@@ -139,7 +144,7 @@ export class SchedulerV2Component implements OnInit {
         default:
           // clonedRow[prop] = "";
           clonedRow[prop] = {
-            isSelectionCell : true,
+            isSelectionCell: true,
             isSelected: false,
             value: ""
           };
@@ -167,7 +172,7 @@ export class SchedulerV2Component implements OnInit {
         return new Date(year, month - 1, 1, 5);
         break;
       default:
-        return null;
+        throw new Error('GetDateFromCode: Code not recognized');
     }
   };
 
@@ -186,8 +191,8 @@ export class SchedulerV2Component implements OnInit {
 }
 
 export class TimeSlot {
-  category: string;
-  userId: string;
-  value: string;
+  category!: string;
+  userId!: string;
+  value!: string;
   projectId?: string;
 }
