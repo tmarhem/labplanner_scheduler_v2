@@ -1,24 +1,24 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { SchedulerNotificationService } from "../_services/schedulerNotification.service";
+// import { SchedulerNotificationService } from "../_services/schedulerNotification.service";
 @Component({
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
   styleUrls: ["./scheduler.component.css"]
 })
 export class SchedulerComponent implements OnInit {
-  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+  @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
 
-  @Input() headers: Array<Array<any>>;
-  @Input() rows: Array<any>;
+  @Input() headers!: Array<Array<any>>;
+  @Input() rows!: Array<any>;
 
-  headersCodes: Array<any>;
+  headersCodes!: Array<any>;
 
   isSelecting = false;
   isChecking = true;
-  selectedHeaders: Set<string>;
-  selectionStartCell: {
+  selectedHeaders!: Set<string>;
+  selectionStartCell!: {
     rowIndex: number;
     colIndex: number;
     code: string;
@@ -29,13 +29,17 @@ export class SchedulerComponent implements OnInit {
 
   HIDE = false; // WIP for isComplexModeEnabled
 
-  constructor(public notifService: SchedulerNotificationService) {}
+  constructor(
+    // public notifService: SchedulerNotificationService
+  ) {
+
+  }
 
   ngOnInit() {
-    this.notifService.genericAction.subscribe(r => console.log("notif", r));
+    // this.notifService.genericAction.subscribe(r => console.log("notif", r));
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: any, filter) => {
+    this.dataSource.filterPredicate = (data: any, filter: any) => {
       // TODO regex to allow typing the end of the name
       // TODO avoid filtering selection cell Row OR Filtering only in selection mode
       const dataStr = JSON.stringify(data).toLowerCase();
@@ -153,7 +157,7 @@ export class SchedulerComponent implements OnInit {
     } else {
       return;
     }
-    if(!activeCell){ return; }
+    if (!activeCell) { return; }
     activeCell.isSelected = this.selectionStartCell.isChecking;
   };
 
@@ -214,7 +218,7 @@ export class SchedulerComponent implements OnInit {
     console.log("handleError", e);
   };
 
-  getTimeSlotDisplayValue = (row, code) => {
+  getTimeSlotDisplayValue = (row: any, code: any) => {
     if (!row[code]) {
       return null;
     }
@@ -232,7 +236,7 @@ export class SchedulerComponent implements OnInit {
   };
 
   //TODO to not span same text on different types
-  isSameTimeslot = (t1, t2): boolean => {
+  isSameTimeslot = (t1: any, t2: any): boolean => {
     return false;
   };
 
@@ -244,7 +248,7 @@ export class SchedulerComponent implements OnInit {
    * isFirst: boolean, true if first col
    * isLast: boolean, true if last col
    */
-  getRowSpan = (row, colIndex, isFirst, isLast) => {
+  getRowSpan = (row: any, colIndex: any, isFirst: any, isLast: any) => {
     const code = this.headersCodes[0][colIndex];
     try {
       //CHANGE_EFFECT
@@ -291,7 +295,7 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
-  getRowClasses = (row, colIndex, isFirst, isLast) => {
+  getRowClasses = (row: any, colIndex: any, isFirst: any, isLast: any) => {
     const code = this.headersCodes[0][colIndex];
     const classes = [];
     const rowSpan = this.getRowSpan(row, colIndex, isFirst, isLast);

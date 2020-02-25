@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {SchedulerNotificationService, NotificationAction, Actions} from '../_services/schedulerNotification.service'
+// import {SchedulerNotificationService, NotificationAction, Actions} from '../_services/schedulerNotification.service'
 
 @Component({
   selector: 'app-timeslot-picker',
@@ -8,14 +8,16 @@ import {SchedulerNotificationService, NotificationAction, Actions} from '../_ser
 })
 export class TimeslotPickerComponent implements OnInit {
 
-  constructor( public notifService: SchedulerNotificationService) {}
+  constructor(
+    // public notifService: SchedulerNotificationService
+  ) { }
 
   ngOnInit() {
-    this.notifService.sendGenericAction(new NotificationAction<string>(Actions.REFRESH))
+    // this.notifService.sendGenericAction(new NotificationAction<string>(Actions.REFRESH))
   }
 
   getDefaultValue = () => {
-    return JSON.stringify({category: "LAB", value: "Legallais", userId: "5cf662a6efaf2c00125b9b33", projectId: "5dcc170af9c9650010446001"});
+    return JSON.stringify({ category: "LAB", value: "Legallais", userId: "5cf662a6efaf2c00125b9b33", projectId: "5dcc170af9c9650010446001" });
   }
 
   sendApplyNotif = () => {
