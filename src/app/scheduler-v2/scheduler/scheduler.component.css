@@ -6,7 +6,6 @@ table{
 
 .headerRow{
   height: auto;
-  /* min-height: ; */
 }
 
 .headerRow th{
@@ -29,6 +28,7 @@ table *{
 
 .selected {
   background-color: rgb(216, 183, 122) !important;
+  border: 1px solid rgb(173, 148, 101) !important;
   color:black;
 }
 

@@ -40,13 +40,15 @@
 
 			<ng-container *ngFor="let h of this.headersCodes.slice().reverse(); let index = index">
 				<tr mat-header-row *matHeaderRowDef="h; sticky: true"
-					(mouseleave)="onClickAction('HEADER',$event.type, null, index, $event.ctrlKey)"
+					(mouseleave)="onClickAction('HEADER',$event.type, null, index, $event.ctrlKey, null)"
 					class="headerRow"></tr>
 			</ng-container>
 
 
 
-			<tr mat-row *matRowDef="let row; columns: this.headersCodes[0];"></tr>
+			<tr mat-row *matRowDef="let row; columns: this.headersCodes[0];"
+			(mouseleave)="onClickAction('DATA',$event.type, null, 1, $event.ctrlKey, null)"
+			></tr>
 		</table>
 		<mat-paginator [pageSizeOptions]="[8, 16, 32, 64]"></mat-paginator>
 </div>

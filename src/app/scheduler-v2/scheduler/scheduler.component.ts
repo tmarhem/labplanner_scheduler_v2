@@ -83,7 +83,6 @@ export class SchedulerComponent implements OnInit {
   ) => {
     try {
       if (colIndex === 0) {
-        console.log("wrong colIndex");
         return;
       }
 
@@ -95,7 +94,6 @@ export class SchedulerComponent implements OnInit {
               : this.dataSource.data[rowIndex][code];
 
           if (!activeCell.hasOwnProperty("isSelected")) {
-            console.log("no property isSelected");
             return;
           }
 
@@ -107,18 +105,18 @@ export class SchedulerComponent implements OnInit {
           };
 
           this.isSelecting = true;
-          if (cellType === "HEADER") {
-            if (!ctrlKey) {
-              this.clearHeadersSelection();
-            }
-            this.selectCell(cellType, code, colIndex, rowIndex);
+          // if (cellType === "HEADER") {
+          if (!ctrlKey) {
+            this.clearCellsSelection();
           }
-          if (cellType === "DATA") {
-            if (!ctrlKey) {
-              // this.clearCellsSelection();
-            }
-            this.selectCell(cellType, code, colIndex, rowIndex);
-          }
+          this.selectCell(cellType, code, colIndex, rowIndex);
+          // }
+          // if (cellType === "DATA") {
+          //   if (!ctrlKey) {
+          //     this.clearCellsSelection();
+          //   }
+          //   this.selectCell(cellType, code, colIndex, rowIndex);
+          // }
 
           break;
         case "mouseenter":
@@ -210,8 +208,24 @@ export class SchedulerComponent implements OnInit {
     );
   };
 
-  clearCellsSelection = () => {
-    console.log("clearCellSelection");
+  clearCellsSelection = (cellType?: string) => {
+    // if(cellType === 'HEADER') {
+    this.headers.forEach(headerRow =>
+      headerRow.map(h => {
+        h.isSelected = false;
+        return h;
+      })
+    );
+    // }
+    this.dataSource.data.forEach((dataRow: any) => {
+      Object.keys(dataRow).map((cell: any) => {
+        if (dataRow[cell].hasOwnProperty('isSelected')) {
+          dataRow[cell].isSelected = false;
+        };
+        return cell;
+      })
+    }
+    );
   };
 
   handleError = (e: any) => {
