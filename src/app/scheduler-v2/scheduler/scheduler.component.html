@@ -26,7 +26,7 @@
 						<td mat-cell *matCellDef="let element, let rowIndex = index" [attr.rowspan]="this.HIDE ? 1 : isFirstHeader ? 2 : 1"
 							[attr.colspan]="getRowSpan(element, index, isFirstHeader, isLastHeader)"
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
-              [id]="header.code"
+              				[id]="header.code"
 							(mousedown)="onClickAction('DATA', $event.type, $event.target.id, index,  $event.ctrlKey, rowIndex)"
 							(mouseup)="onClickAction('DATA', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
 							(mouseenter)="onClickAction('DATA', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
@@ -40,7 +40,8 @@
 
 			<ng-container *ngFor="let h of this.headersCodes.slice().reverse(); let index = index">
 				<tr mat-header-row *matHeaderRowDef="h; sticky: true"
-					(mouseleave)="onClickAction('HEADER',$event.type, null, index, $event.ctrlKey)"></tr>
+					(mouseleave)="onClickAction('HEADER',$event.type, null, index, $event.ctrlKey)"
+					class="headerRow"></tr>
 			</ng-container>
 
 

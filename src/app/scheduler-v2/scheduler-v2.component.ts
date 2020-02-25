@@ -56,7 +56,9 @@ export class SchedulerV2Component implements OnInit {
           return {
             code: h,
             colSpan: 1,
-            displayValue: this.getDisplayValue(this.getDateFromCode(h), "a"),
+            // displayValue: this.getDisplayValue(this.getDateFromCode(h), "a"),
+            displayValue: '',
+
             isSelected: false
           };
         })

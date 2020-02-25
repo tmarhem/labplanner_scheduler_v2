@@ -4,6 +4,16 @@ table{
   table-layout: fixed;
 }
 
+.headerRow{
+  height: auto;
+  /* min-height: ; */
+}
+
+.headerRow th{
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 table *{
   user-select: none;
   cursor: pointer;
