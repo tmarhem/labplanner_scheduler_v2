@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-// import { SchedulerNotificationService } from "../_services/schedulerNotification.service";
+import { SchedulerNotificationService } from "../_services/scheduler-notification.service";
 @Component({
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
-  styleUrls: ["./scheduler.component.css"]
+  styleUrls: ["./scheduler.component.css"],
+  providers: [SchedulerNotificationService]
 })
 export class SchedulerComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -30,13 +31,13 @@ export class SchedulerComponent implements OnInit {
   HIDE = false; // WIP for isComplexModeEnabled
 
   constructor(
-    // public notifService: SchedulerNotificationService
+    public notifService: SchedulerNotificationService
   ) {
 
   }
 
   ngOnInit() {
-    // this.notifService.genericAction.subscribe(r => console.log("notif", r));
+    this.notifService.genericAction.subscribe(r => console.log("notif", r));
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = (data: any, filter: any) => {
@@ -71,7 +72,7 @@ export class SchedulerComponent implements OnInit {
    * @param eventType: mouseenter, mouseleave, mousedown, mouseup : click event type
    * @param code: cell code
    * @param colIndex: cell colum index
-   * @param ctrlKey: boolean is ctrl key
+   * @param ctrlKey: boolean is ctrl key down
    */
   onClickAction = (
     cellType: string,
@@ -82,18 +83,15 @@ export class SchedulerComponent implements OnInit {
     rowIndex: number
   ) => {
     try {
-      if (colIndex === 0) {
+      // TODO replace by isSelectionCell
+      if (colIndex === 0) { // User header
         return;
       }
 
       switch (eventType) {
         case "mousedown":
-          const activeCell =
-            cellType === "HEADER"
-              ? this.headers[rowIndex][colIndex]
-              : this.dataSource.data[rowIndex][code];
-
-          if (!activeCell.hasOwnProperty("isSelected")) {
+          const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
+          if (!this.isSelectionCell(activeCell)) {
             return;
           }
 
@@ -105,19 +103,11 @@ export class SchedulerComponent implements OnInit {
           };
 
           this.isSelecting = true;
-          // if (cellType === "HEADER") {
+
           if (!ctrlKey) {
             this.clearCellsSelection();
           }
-          this.selectCell(cellType, code, colIndex, rowIndex);
-          // }
-          // if (cellType === "DATA") {
-          //   if (!ctrlKey) {
-          //     this.clearCellsSelection();
-          //   }
-          //   this.selectCell(cellType, code, colIndex, rowIndex);
-          // }
-
+          this.selectCell(cellType, colIndex, rowIndex);
           break;
         case "mouseenter":
           if (this.isSelecting) {
@@ -138,7 +128,6 @@ export class SchedulerComponent implements OnInit {
 
   selectCell = (
     cellType: string,
-    code: string,
     colIndex: number,
     rowIndex: number
   ) => {
@@ -146,18 +135,24 @@ export class SchedulerComponent implements OnInit {
     if (!isSameRow) {
       return;
     }
-    // TODO Remove duplicate
+    const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
+    activeCell.isSelected = this.selectionStartCell.isChecking;
+  };
+
+  getActiveCell = (cellType: string, colIndex: number, rowIndex: number) => {
+    if (isNaN(colIndex) || isNaN(rowIndex)) {
+      return null;
+    }
     let activeCell;
     if (cellType === "HEADER") {
       activeCell = this.headers[rowIndex][colIndex];
     } else if (cellType === "DATA") {
-      activeCell = this.dataSource.data[rowIndex][code];
+      activeCell = this.dataSource.data[rowIndex][this.headersCodes[0][colIndex]];
     } else {
-      return;
+      throw new Error(`getActiveCell: Wrong cellType provided: ${cellType}`)
     }
-    if (!activeCell) { return; }
-    activeCell.isSelected = this.selectionStartCell.isChecking;
-  };
+    return activeCell;
+  }
 
 
   fillCellSelection = (
@@ -166,13 +161,10 @@ export class SchedulerComponent implements OnInit {
     colIndex: number,
     rowIndex: number
   ) => {
-    console.log("entering fillCell", cellType);
     const isSameCell = colIndex === this.selectionStartCell.colIndex;
     if (isSameCell) {
-      console.log("same cell");
       return;
     }
-    let activeCell;
 
     const isLeftToRightSelection = this.selectionStartCell.colIndex < colIndex;
     const startIndex = isLeftToRightSelection
@@ -183,40 +175,18 @@ export class SchedulerComponent implements OnInit {
       : this.selectionStartCell.colIndex;
 
     for (let i = startIndex; i <= endIndex; i++) {
-      // TODO Remove duplicate
-      // this.selectCell(cellType,code,i,rowIndex);
-      if (cellType === "HEADER") {
-        activeCell = this.headers[rowIndex][i];
-      } else if (cellType === "DATA") {
-        activeCell = this.dataSource.data[rowIndex][this.headersCodes[0][i]];
-      } else {
-        return;
-      }
-      if (!activeCell) {
-        return;
-      }
-      activeCell.isSelected = this.selectionStartCell.isChecking;
+      this.selectCell(cellType, i, rowIndex);
     }
   };
 
-  clearHeadersSelection = () => {
+  clearCellsSelection = () => {
     this.headers.forEach(headerRow =>
       headerRow.map(h => {
         h.isSelected = false;
         return h;
       })
     );
-  };
 
-  clearCellsSelection = (cellType?: string) => {
-    // if(cellType === 'HEADER') {
-    this.headers.forEach(headerRow =>
-      headerRow.map(h => {
-        h.isSelected = false;
-        return h;
-      })
-    );
-    // }
     this.dataSource.data.forEach((dataRow: any) => {
       Object.keys(dataRow).map((cell: any) => {
         if (dataRow[cell].hasOwnProperty('isSelected')) {
@@ -227,6 +197,10 @@ export class SchedulerComponent implements OnInit {
     }
     );
   };
+
+  isSelectionCell = (cell: any): boolean => {
+    return cell ? cell.hasOwnProperty('isSelected') : false;
+  }
 
   handleError = (e: any) => {
     console.log("handleError", e);
