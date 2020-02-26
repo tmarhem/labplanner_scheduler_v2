@@ -28,8 +28,8 @@
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
               				[id]="header.code"
 							(mousedown)="onClickAction('DATA', $event.type, index,  $event.ctrlKey, rowIndex)"
-							(mouseup)="onClickAction('DATA', $event.type, index, $event.ctrlKey, rowIndex)"
 							(mouseenter)="onClickAction('DATA', $event.type, index, $event.ctrlKey, rowIndex)"
+							(mouseup)="stopSelection()"
 							>
 							{{this.getTimeSlotDisplayValue(element, header.code)}}
 						</td>
@@ -40,14 +40,14 @@
 
 			<ng-container *ngFor="let h of this.headersCodes.slice().reverse(); let index = index">
 				<tr mat-header-row *matHeaderRowDef="h; sticky: true"
-					(mouseleave)="onClickAction('HEADER',$event.type, index, $event.ctrlKey, null)"
+					(mouseleave)="stopSelection()"
 					class="headerRow"></tr>
 			</ng-container>
 
 
 
 			<tr mat-row *matRowDef="let row; columns: this.headersCodes[0];"
-			(mouseleave)="onClickAction('DATA',$event.type, null, 1, $event.ctrlKey, null)"
+			(mouseleave)="stopSelection()"
 			></tr>
 		</table>
 		<mat-paginator [pageSizeOptions]="[8, 16, 32, 64]"></mat-paginator>

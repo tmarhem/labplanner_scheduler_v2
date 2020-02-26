@@ -86,12 +86,14 @@ export class SchedulerComponent implements OnInit {
         return;
       }
 
+      const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
+      if (!this.isSelectionCell(activeCell)) {
+        this.isSelecting = false;
+        return;
+      }
+
       switch (eventType) {
         case "mousedown":
-          const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
-          if (!this.isSelectionCell(activeCell)) {
-            return;
-          }
 
           this.selectionStartCell = {
             rowIndex: rowIndex,
@@ -111,17 +113,15 @@ export class SchedulerComponent implements OnInit {
             this.fillCellSelection(cellType, colIndex, rowIndex);
           }
           break;
-        case "mouseup":
-          this.isSelecting = false;
-          break;
-        case "mouseleave":
-          this.isSelecting = false;
-          break;
       }
     } catch (e) {
       this.handleError(e);
     }
   };
+
+  stopSelection = () => {
+    this.isSelecting = false;
+  }
 
   selectCell = (
     cellType: string,
@@ -137,7 +137,7 @@ export class SchedulerComponent implements OnInit {
   };
 
   getActiveCell = (cellType: string, colIndex: number, rowIndex: number) => {
-    if (isNaN(colIndex) || isNaN(rowIndex)) {
+    if (colIndex == null || rowIndex == null) {
       return null;
     }
     let activeCell;
