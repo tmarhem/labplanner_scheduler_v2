@@ -27,8 +27,8 @@ table *{
 }
 
 .selected {
-  background-color: rgb(216, 183, 122) !important;
-  border: 1px solid rgb(173, 148, 101) !important;
+  background-color: rgb(255, 168, 68) !important;
+  border: 1px solid rgb(214, 142, 60) !important;
   color:black;
 }
 
@@ -64,7 +64,7 @@ th:nth-child(even){
 
 
 th:not(:first-of-type):hover{
-  background-color: orange;
+  background-color: orangered;
 }
 
 tr:nth-child(even) td:hover{
