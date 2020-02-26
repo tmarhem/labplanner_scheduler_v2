@@ -16,9 +16,9 @@
 						[ngClass]="!isLastHeaderRow && isFirstHeader ? 'hidden' : header.isSelected ? 'selected' : ''"
 						[attr.rowspan]="header.code === 'user3' ? 3 : 1" [attr.colSpan]="header.colSpan"
 						[id]="header.code"
-						(mousedown)="onClickAction('HEADER', $event.type, $event.target.id, index,  $event.ctrlKey, headerRowIndex)"
-						(mouseup)="onClickAction('HEADER', $event.type, $event.target.id, index, $event.ctrlKey, headerRowIndex)"
-						(mouseenter)="onClickAction('HEADER', $event.type, $event.target.id, index, $event.ctrlKey, headerRowIndex)">
+						(mousedown)="onClickAction('HEADER', $event.type, index,  $event.ctrlKey, headerRowIndex)"
+						(mouseup)="onClickAction('HEADER', $event.type, index, $event.ctrlKey, headerRowIndex)"
+						(mouseenter)="onClickAction('HEADER', $event.type, index, $event.ctrlKey, headerRowIndex)">
 						{{header.displayValue}}
 					</th>
 
@@ -27,9 +27,9 @@
 							[attr.colspan]="getRowSpan(element, index, isFirstHeader, isLastHeader)"
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
               				[id]="header.code"
-							(mousedown)="onClickAction('DATA', $event.type, $event.target.id, index,  $event.ctrlKey, rowIndex)"
-							(mouseup)="onClickAction('DATA', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
-							(mouseenter)="onClickAction('DATA', $event.type, $event.target.id, index, $event.ctrlKey, rowIndex)"
+							(mousedown)="onClickAction('DATA', $event.type, index,  $event.ctrlKey, rowIndex)"
+							(mouseup)="onClickAction('DATA', $event.type, index, $event.ctrlKey, rowIndex)"
+							(mouseenter)="onClickAction('DATA', $event.type, index, $event.ctrlKey, rowIndex)"
 							>
 							{{this.getTimeSlotDisplayValue(element, header.code)}}
 						</td>
@@ -40,7 +40,7 @@
 
 			<ng-container *ngFor="let h of this.headersCodes.slice().reverse(); let index = index">
 				<tr mat-header-row *matHeaderRowDef="h; sticky: true"
-					(mouseleave)="onClickAction('HEADER',$event.type, null, index, $event.ctrlKey, null)"
+					(mouseleave)="onClickAction('HEADER',$event.type, index, $event.ctrlKey, null)"
 					class="headerRow"></tr>
 			</ng-container>
 

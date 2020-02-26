@@ -18,15 +18,13 @@ export class SchedulerComponent implements OnInit {
 
   isSelecting = false;
   isChecking = true;
-  selectedHeaders!: Set<string>;
   selectionStartCell!: {
     rowIndex: number;
     colIndex: number;
-    code: string;
     isChecking: boolean;
   };
 
-  dataSource: any;
+  dataSource!: MatTableDataSource<any>;
 
   HIDE = false; // WIP for isComplexModeEnabled
 
@@ -37,24 +35,25 @@ export class SchedulerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.notifService.genericAction.subscribe(r => console.log("notif", r));
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
-    this.dataSource.filterPredicate = (data: any, filter: any) => {
-      // TODO regex to allow typing the end of the name
-      // TODO avoid filtering selection cell Row OR Filtering only in selection mode
-      const dataStr = JSON.stringify(data).toLowerCase();
-      return (
-        dataStr.indexOf(`"value":"${filter}`) != -1 &&
-        dataStr.indexOf(`"user":"${filter}`) === -1
-      );
-    };
-
+    this.dataSource.filterPredicate = this.filterPredicate;
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
+    this.notifService.genericAction.subscribe(r => console.log("notif", r));
   }
 
+
+  filterPredicate = (data: any, filter: any) => {
+    // TODO regex to allow typing the end of the name
+    // TODO avoid filtering selection cell Row OR Filtering only in selection mode
+    const dataStr = JSON.stringify(data).toLowerCase();
+    return (
+      dataStr.indexOf(`"value":"${filter}`) != -1 &&
+      dataStr.indexOf(`"user":"${filter}`) === -1
+    );
+  };
   /**
    * Filters datsource according to filter input
    */
@@ -77,7 +76,6 @@ export class SchedulerComponent implements OnInit {
   onClickAction = (
     cellType: string,
     eventType: string,
-    code: string,
     colIndex: number,
     ctrlKey: boolean,
     rowIndex: number
@@ -96,7 +94,6 @@ export class SchedulerComponent implements OnInit {
           }
 
           this.selectionStartCell = {
-            code: code,
             rowIndex: rowIndex,
             colIndex: colIndex,
             isChecking: !activeCell.isSelected
@@ -111,7 +108,7 @@ export class SchedulerComponent implements OnInit {
           break;
         case "mouseenter":
           if (this.isSelecting) {
-            this.fillCellSelection(cellType, code, colIndex, rowIndex);
+            this.fillCellSelection(cellType, colIndex, rowIndex);
           }
           break;
         case "mouseup":
@@ -157,7 +154,6 @@ export class SchedulerComponent implements OnInit {
 
   fillCellSelection = (
     cellType: string,
-    code: string,
     colIndex: number,
     rowIndex: number
   ) => {
