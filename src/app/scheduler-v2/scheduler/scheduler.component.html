@@ -16,9 +16,9 @@
 						[ngClass]="!isLastHeaderRow && isFirstHeader ? 'hidden' : header.isSelected ? 'selected' : ''"
 						[attr.rowspan]="header.code === 'user3' ? 3 : 1" [attr.colSpan]="header.colSpan"
 						[id]="header.code"
-						(mousedown)="onClickAction('HEADER', $event.type, index,  $event.ctrlKey, headerRowIndex)"
-						(mouseup)="onClickAction('HEADER', $event.type, index, $event.ctrlKey, headerRowIndex)"
-						(mouseenter)="onClickAction('HEADER', $event.type, index, $event.ctrlKey, headerRowIndex)">
+						(mousedown)="onMouseDown('HEADER', index, headerRowIndex, $event.ctrlKey)"
+						(mouseenter)="onMouseEnter('HEADER', index, headerRowIndex)"
+						(mouseup)="stopSelection()">
 						{{header.displayValue}}
 					</th>
 
@@ -26,9 +26,8 @@
 						<td mat-cell *matCellDef="let element, let rowIndex = index" [attr.rowspan]="this.HIDE ? 1 : isFirstHeader ? 2 : 1"
 							[attr.colspan]="getRowSpan(element, index, isFirstHeader, isLastHeader)"
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
-              				[id]="header.code"
-							(mousedown)="onClickAction('DATA', $event.type, index,  $event.ctrlKey, rowIndex)"
-							(mouseenter)="onClickAction('DATA', $event.type, index, $event.ctrlKey, rowIndex)"
+							(mousedown)="onMouseDown('DATA', index, rowIndex, $event.ctrlKey)"
+							(mouseenter)="onMouseEnter('DATA', index, rowIndex)"
 							(mouseup)="stopSelection()"
 							>
 							{{this.getTimeSlotDisplayValue(element, header.code)}}

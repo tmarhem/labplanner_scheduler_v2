@@ -74,51 +74,56 @@ export class SchedulerComponent implements OnInit {
    * @param colIndex: cell colum index
    * @param ctrlKey: boolean is ctrl key down
    */
-  onClickAction = (
+  onMouseDown = (
     cellType: string,
-    eventType: string,
     colIndex: number,
+    rowIndex: number,
     ctrlKey: boolean,
-    rowIndex: number
   ) => {
     try {
-
       const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
       if (!this.isSelectionCell(activeCell)) {
         this.stopSelection();
         return;
       }
+      this.isSelecting = true;
+      this.selectionStartCell = {
+        cellType: cellType,
+        rowIndex: rowIndex,
+        colIndex: colIndex,
+        isChecking: !activeCell.isSelected
+      };
 
-      switch (eventType) {
-        case "mousedown":
-
-          this.selectionStartCell = {
-            cellType: cellType,
-            rowIndex: rowIndex,
-            colIndex: colIndex,
-            isChecking: !activeCell.isSelected
-          };
-
-          this.isSelecting = true;
-
-          if (!ctrlKey) {
-            this.clearCellsSelection();
-          }
-          this.selectCell(cellType, colIndex, rowIndex);
-          break;
-        case "mouseenter":
-          if (this.isSelecting) {
-            const isSameRow = this.selectionStartCell != null ?
-              this.selectionStartCell.rowIndex === rowIndex : true;
-            const isSameCellType = this.selectionStartCell != null ?
-              this.selectionStartCell.cellType === cellType : true;
-            if (!isSameRow || !isSameCellType) {
-              this.stopSelection();
-            }
-            this.fillCellSelection(cellType, colIndex, rowIndex);
-          }
-          break;
+      if (!ctrlKey) {
+        this.clearCellsSelection();
       }
+
+      this.selectCell(cellType, colIndex, rowIndex);
+    } catch (e) {
+      this.handleError(e);
+    }
+  };
+
+  onMouseEnter = (
+    cellType: string,
+    colIndex: number,
+    rowIndex: number
+  ) => {
+    try {
+      if (!this.isSelecting) { return };
+
+      const isSameRow = this.selectionStartCell != null ?
+        this.selectionStartCell.rowIndex === rowIndex : true;
+      const isSameCellType = this.selectionStartCell != null ?
+        this.selectionStartCell.cellType === cellType : true;
+
+      if (!isSameRow || !isSameCellType) {
+        this.stopSelection();
+      } else {
+        this.fillCellSelection(cellType, colIndex, rowIndex);
+      }
+
+
     } catch (e) {
       this.handleError(e);
     }
