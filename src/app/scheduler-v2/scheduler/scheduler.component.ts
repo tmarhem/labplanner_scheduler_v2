@@ -19,6 +19,7 @@ export class SchedulerComponent implements OnInit {
   isSelecting = false;
   isChecking = true;
   selectionStartCell!: {
+    cellType: string,
     rowIndex: number;
     colIndex: number;
     isChecking: boolean;
@@ -81,14 +82,10 @@ export class SchedulerComponent implements OnInit {
     rowIndex: number
   ) => {
     try {
-      // TODO replace by isSelectionCell
-      if (colIndex === 0) { // User header
-        return;
-      }
 
       const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
       if (!this.isSelectionCell(activeCell)) {
-        this.isSelecting = false;
+        this.stopSelection();
         return;
       }
 
@@ -96,6 +93,7 @@ export class SchedulerComponent implements OnInit {
         case "mousedown":
 
           this.selectionStartCell = {
+            cellType: cellType,
             rowIndex: rowIndex,
             colIndex: colIndex,
             isChecking: !activeCell.isSelected
@@ -110,6 +108,13 @@ export class SchedulerComponent implements OnInit {
           break;
         case "mouseenter":
           if (this.isSelecting) {
+            const isSameRow = this.selectionStartCell != null ?
+              this.selectionStartCell.rowIndex === rowIndex : true;
+            const isSameCellType = this.selectionStartCell != null ?
+              this.selectionStartCell.cellType === cellType : true;
+            if (!isSameRow || !isSameCellType) {
+              this.stopSelection();
+            }
             this.fillCellSelection(cellType, colIndex, rowIndex);
           }
           break;
@@ -127,13 +132,10 @@ export class SchedulerComponent implements OnInit {
     cellType: string,
     colIndex: number,
     rowIndex: number
-  ) => {
-    const isSameRow = this.selectionStartCell.rowIndex === rowIndex;
-    if (!isSameRow) {
-      return;
-    }
+  ): void => {
     const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
-    activeCell.isSelected = this.selectionStartCell.isChecking;
+    if (activeCell == null) { throw new Error(`selectCell: invalid activeCell: ${activeCell}`) }
+    activeCell.isSelected = this.selectionStartCell.isChecking
   };
 
   getActiveCell = (cellType: string, colIndex: number, rowIndex: number) => {
@@ -237,7 +239,6 @@ export class SchedulerComponent implements OnInit {
     try {
       //CHANGE_EFFECT
       const isSelectionCell = row[code].isSelectionCell ? true : false;
-
       if (isFirst || isSelectionCell) {
         return 1;
       }

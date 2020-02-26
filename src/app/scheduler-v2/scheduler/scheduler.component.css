@@ -5,7 +5,7 @@ table{
 }
 
 .headerRow{
-  height: auto;
+  height: fit-content;
 }
 
 .headerRow th{
