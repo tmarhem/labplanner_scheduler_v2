@@ -29,6 +29,8 @@
 							(mousedown)="onMouseDown('DATA', index, rowIndex, $event.ctrlKey)"
 							(mouseenter)="onMouseEnter('DATA', index, rowIndex)"
 							(mouseup)="stopSelection()"
+							[matTooltip]="this.getTimeSlotDisplayValue(element, header.code)"
+							matTooltipShowDelay="750"
 							>
 							{{this.getTimeSlotDisplayValue(element, header.code)}}
 						</td>

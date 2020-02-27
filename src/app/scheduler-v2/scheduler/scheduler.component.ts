@@ -15,34 +15,30 @@ export class SchedulerComponent implements OnInit {
   @Input() rows!: Array<any>;
 
   headersCodes!: Array<any>;
-
-  isSelecting = false;
-  isChecking = true;
   selectionStartCell!: {
     cellType: string,
     rowIndex: number;
     colIndex: number;
     isChecking: boolean;
   };
-
   dataSource!: MatTableDataSource<any>;
 
+  isSelecting = false;
+  isChecking = true;
   HIDE = false; // WIP for isComplexModeEnabled
 
   constructor(
     public notifService: SchedulerNotificationService
-  ) {
-
-  }
+  ) { }
 
   ngOnInit() {
+    this.notifService.genericAction.subscribe(this.handleError);
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = this.filterPredicate;
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
-    this.notifService.genericAction.subscribe(r => console.log("notif", r));
   }
 
 
