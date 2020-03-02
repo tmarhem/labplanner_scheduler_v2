@@ -19,7 +19,7 @@ table *{
 }
 
 .scheduler {
-  background-color: rgb(71, 71, 71)
+  background-color: rgb(231, 231, 231)
 }
 
 .hidden {
@@ -34,13 +34,13 @@ table *{
 
 td:not(:first-of-type){
   text-align: center;
-  border: 1px solid rgb(70, 70, 70);
+  border: 1px solid rgb(243, 243, 243);
   overflow: hidden;
 }
 
 th{
   text-align: center;
-  border: 1px solid rgb(70, 70, 70);
+  border: 1px solid rgb(202, 202, 202);
   overflow: hidden;
 }
 
@@ -59,7 +59,7 @@ th:first-of-type, td:first-of-type{
 }
 
 th:nth-child(even){
-  background-color: rgb(75, 75, 75);
+  background-color: rgb(216, 216, 216);
 }
 
 
