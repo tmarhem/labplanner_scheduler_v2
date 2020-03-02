@@ -36,16 +36,13 @@ td:not(:first-of-type){
   text-align: center;
   border: 1px solid rgb(243, 243, 243);
   overflow: hidden;
+  border-radius: 50px;
 }
 
 th{
   text-align: center;
   border: 1px solid rgb(202, 202, 202);
   overflow: hidden;
-}
-
-td:not(:first-of-type):hover{
-  overflow: visible;
 }
 
 th:not(:first-of-type){
