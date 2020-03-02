@@ -32,6 +32,7 @@ export class SchedulerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log("SchedulerComponent -> rows", this.rows)
     this.notifService.genericAction.subscribe(this.handleError);
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
@@ -293,7 +294,7 @@ export class SchedulerComponent implements OnInit {
       classes.push("hidden");
     }
     if (this.HIDE && row[code].isSelectionCell) {
-      classes.push("hidden");
+      // classes.push("hidden");
     }
     if (isSelected) {
       classes.push("selected");

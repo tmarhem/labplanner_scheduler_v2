@@ -76,9 +76,9 @@ th:first-of-type:hover, tr td:first-of-type:hover{
 
 }
 
-tr:nth-child(even) td:first-of-type{
+/* tr:nth-child(even) td:first-of-type{
   display:none;
-}
+} */
 
 .LAB {
 background: rgb(214, 101, 19);
