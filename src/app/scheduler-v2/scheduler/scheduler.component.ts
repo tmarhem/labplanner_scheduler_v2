@@ -289,7 +289,7 @@ export class SchedulerComponent implements OnInit {
     const category = row[code].category ? row[code].category : null;
     const isSelected = row[code].isSelectionCell ? row[code].isSelected : false;
 
-    if (category) classes.push(category);
+    // if (category) classes.push(category);
     if (rowSpan === 0) {
       classes.push("hidden");
     }
@@ -299,6 +299,27 @@ export class SchedulerComponent implements OnInit {
     if (isSelected) {
       classes.push("selected");
     }
+    return classes;
+  };
+
+  getRowDivClasses = (row: any, colIndex: any, isFirst: any, isLast: any) => {
+    const code = this.headersCodes[0][colIndex];
+    const classes = [];
+    const rowSpan = this.getRowSpan(row, colIndex, isFirst, isLast);
+    const category = row[code].category ? row[code].category : null;
+    const isSelected = row[code].isSelectionCell ? row[code].isSelected : false;
+
+    classes.push('cellDiv');
+    if (category) classes.push(category);
+    // if (rowSpan === 0) {
+    //   classes.push("hidden");
+    // }
+    // if (this.HIDE && row[code].isSelectionCell) {
+    //   // classes.push("hidden");
+    // }
+    // if (isSelected) {
+    //   classes.push("selected");
+    // }
     return classes;
   };
 }

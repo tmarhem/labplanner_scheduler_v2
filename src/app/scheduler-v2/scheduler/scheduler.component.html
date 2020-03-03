@@ -32,7 +32,9 @@
 							[matTooltip]="this.getTimeSlotDisplayValue(element, header.code)"
 							matTooltipShowDelay="750"
 							>
-							{{this.getTimeSlotDisplayValue(element, header.code)}}
+							<div [ngClass]="getRowDivClasses(element, index, isFirstHeader, isLastHeader)">
+								<span>{{this.getTimeSlotDisplayValue(element, header.code)}}</span>
+							</div>
 						</td>
 					</ng-container>
 				</ng-container>

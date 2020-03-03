@@ -11,13 +11,13 @@ import { SchedulerParams } from "./_models/schedulerv2.models";
   styleUrls: ["./scheduler-v2.component.css"]
 })
 export class SchedulerV2Component implements OnInit {
-  input: Array<{ user: string }> = agGridData.result;
+  input: Array<any> = agGridData.result;
   duplicatedInput: Array<any>;
   startDate: Date;
   headers: Array<any>;
   headersList: Array<string>;
 
-  lang = fr;
+  lang = enGB;
   PARAMS: SchedulerParams = new SchedulerParams();
 
   constructor() {
@@ -29,6 +29,7 @@ export class SchedulerV2Component implements OnInit {
 
   ngOnInit() {
     // this.duplicateInput(this.input);
+    this.modulateInput();
     this.generateHalfDayHeaders(this.input[0]);
     this.generateDayHeaders(this.headersList);
     this.generateMonthHeaders(this.headersList);
@@ -37,6 +38,18 @@ export class SchedulerV2Component implements OnInit {
   handleError = (e: any) => {
     console.log("handleError", e);
   };
+
+  modulateInput = () => {
+    this.input = this.input.map(row => {
+      for (let cell in row) {
+        if (row[cell].hasOwnProperty('value')) {
+          row[cell]['isSelected'] = false;
+          row[cell]['isSplitted'] = false;
+        }
+      }
+      return row;
+    })
+  }
 
   /**
    * Fills headers with halfday headers then days headers then month headers

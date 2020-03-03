@@ -32,11 +32,24 @@ table *{
   color:black;
 }
 
+.cellDiv{
+  border-radius: 10px;
+  white-space: nowrap;
+  padding: 5px;
+}
+
+td:first-of-type{
+  white-space: normal;
+}
+
 td:not(:first-of-type){
   text-align: center;
-  border: 1px solid rgb(243, 243, 243);
+  /* border: 1px solid rgb(243, 243, 243); */
   overflow: hidden;
-  border-radius: 50px;
+  text-overflow: ellipsis;
+  padding: 2px;
+  color:white;
+
 }
 
 th{
@@ -59,15 +72,10 @@ th:nth-child(even){
   background-color: rgb(216, 216, 216);
 }
 
-
 th:not(:first-of-type):hover{
   background-color: orangered;
 }
 
-tr:nth-child(even) td:hover{
-  background-color: orangered;
-  color: white;
-}
 
 th:first-of-type:hover, tr td:first-of-type:hover{
   background-color: inherit;
@@ -81,38 +89,38 @@ th:first-of-type:hover, tr td:first-of-type:hover{
 } */
 
 .LAB {
-background: rgb(214, 101, 19);
+background-color: rgb(103, 204, 36);
 }
 .LAB:hover {
-background: rgb(233, 112, 26);
+  background-color: rgb(143, 241, 77);
 }
 
 .SCHOOL {
-    background-color: rgb(76, 76, 187);
+    background-color: #5887F9;
 }
 .SCHOOL:hover {
-    background-color: rgb(87, 87, 202);
+  background-color: rgb(119, 159, 253);
 }
 
 .BENCH {
-    background-color: rgb(58, 143, 87);
+    background-color: #FFB266;
 }
 .BENCH:hover {
-    background-color: rgb(71, 163, 102);
+  background-color: rgb(253, 189, 125);
 }
 
 .AWAY {
-    background-color: rgb(165, 61, 61);
+    background-color: rgb(206, 0, 0);
 }
 .AWAY:hover {
-    background-color: rgb(182, 74, 74);
+  background-color: rgb(230, 55, 55);
 }
 
 .CLIENT {
-    background-color: rgb(116, 78, 128);
+    background-color: rgb(147, 18, 187);
 }
 .CLIENT:hover {
-    background-color: rgb(131, 91, 143);
+  background-color: rgb(186, 51, 228);
 }
 
 .ESTIMATED {
