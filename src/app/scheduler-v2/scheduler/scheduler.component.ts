@@ -79,20 +79,29 @@ export class SchedulerComponent implements OnInit {
     colSpan: number
   ) => {
     try {
-      let index = colIndex;
-      do {
-        const activeCell = this.getActiveCell('DATA', index, rowIndex)
-        if (activeCell.hasOwnProperty('isSplitted')) {
-          activeCell.isSplitted = true;
+
+      const activeCell = this.getActiveCell('DATA', colIndex, rowIndex)
+
+      if (activeCell.hasOwnProperty('isSplitted') && !activeCell.isSplitted) {
+        let index = colIndex;
+        do {
+          const currentCell = this.getActiveCell('DATA', index, rowIndex)
+          currentCell.isSplitted = true;
+          index++;
         }
+        while (index < colIndex + colSpan)
+      } else if (activeCell.hasOwnProperty('isSelected') && !activeCell.isSelected) {
 
-        index++;
+        this.isSelecting = true;
+        this.selectionStartCell = {
+          cellType: cellType,
+          rowIndex: rowIndex,
+          colIndex: colIndex,
+          isChecking: !activeCell.isSelected
+        };
+        this.selectCell(cellType, colIndex, rowIndex);
       }
-      while (index < colIndex + colSpan)
-      // if ( activeCell.hasOwnProperty('isSplitted')) { 
-      //   for ( let i = colIndex; i < colIndex + colSpan - 1; i++ ) {
 
-      //   }
 
       // }
       // const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
@@ -100,13 +109,6 @@ export class SchedulerComponent implements OnInit {
       //   this.stopSelection();
       //   return;
       // }
-      // this.isSelecting = true;
-      // this.selectionStartCell = {
-      //   cellType: cellType,
-      //   rowIndex: rowIndex,
-      //   colIndex: colIndex,
-      //   isChecking: !activeCell.isSelected
-      // };
 
       // if (!ctrlKey) {
       //   this.clearCellsSelection();
@@ -309,7 +311,7 @@ export class SchedulerComponent implements OnInit {
     const classes = [];
     const rowSpan = this.getRowSpan(row, colIndex, isFirst, isLast);
     const category = row[code].category ? row[code].category : null;
-    const isSelected = row[code].isSelectionCell ? row[code].isSelected : false;
+    const isSelected = row[code].isSelected ? row[code].isSelected : false;
 
     // if (category) classes.push(category);
     if (rowSpan === 0) {
