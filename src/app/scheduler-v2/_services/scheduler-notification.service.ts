@@ -33,5 +33,7 @@ export enum Actions {
   EDIT = 'EDIT',
   SELECT = 'SELECT',
   REFRESH = 'REFRESH',
+  RESET = 'RESET',
+  APPLY = 'APPLY'
 }
 

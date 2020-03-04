@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { MatPaginator } from "@angular/material/paginator";
 import { MatTableDataSource } from "@angular/material/table";
-import { SchedulerNotificationService } from "../_services/scheduler-notification.service";
+import { SchedulerNotificationService, NotificationAction, Actions } from "../_services/scheduler-notification.service";
 @Component({
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
@@ -33,13 +33,21 @@ export class SchedulerComponent implements OnInit {
 
   ngOnInit() {
     console.log("SchedulerComponent -> rows", this.rows)
-    this.notifService.genericAction.subscribe(() => { })
+    this.notifService.genericAction.subscribe(this.onGenericAction)
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = this.filterPredicate;
     this.headersCodes = this.headers.map(headerRow =>
       headerRow.map(header => header.code)
     );
+  }
+
+  onGenericAction(genericAction: NotificationAction<any>) {
+    switch (genericAction.type) {
+      case 'RESET':
+        // console.log('fire');
+        this.applyTimeSlot(genericAction.data)
+    }
   }
 
 
@@ -374,4 +382,16 @@ export class SchedulerComponent implements OnInit {
     // }
     return classes;
   };
+
+  applyTimeSlot = (timeSlot: any) => {
+    this.dataSource.data.map(row => {
+      for (let prop in row) {
+        if (row[prop].hasOwnProperty('isSelected') && row[prop].isSelected) {
+          row[prop] = timeSlot;
+        }
+      }
+      return row;
+    });
+    debugger;
+  }
 }

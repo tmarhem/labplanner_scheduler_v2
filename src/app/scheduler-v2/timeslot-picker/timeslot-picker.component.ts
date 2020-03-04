@@ -21,7 +21,11 @@ export class TimeslotPickerComponent implements OnInit {
   }
 
   sendApplyNotif = () => {
-    this.notifService.sendGenericAction(new NotificationAction(Actions.REFRESH, 0, this.getDefaultValue()))
+    this.notifService.sendGenericAction(new NotificationAction(Actions.APPLY, 0, this.getDefaultValue()))
+  }
+
+  sendResetNotif = () => {
+    this.notifService.sendGenericAction(new NotificationAction(Actions.RESET, 0, null))
   }
 
 }
