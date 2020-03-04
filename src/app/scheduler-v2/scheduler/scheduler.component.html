@@ -29,6 +29,7 @@
 							(mousedown)="onMouseDownData('DATA', index, rowIndex, $event.ctrlKey, $event.toElement.offsetParent.colSpan)"
 							(mouseenter)="onMouseEnter('DATA', index, rowIndex)"
 							(mouseup)="stopSelection()"
+							(mouseleave)="onMouseLeave('DATA', index, rowIndex)"
 							[matTooltip]="this.getTimeSlotDisplayValue(element, header.code)"
 							matTooltipShowDelay="750"
 							>

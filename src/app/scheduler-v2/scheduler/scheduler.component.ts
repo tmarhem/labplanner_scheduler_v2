@@ -165,7 +165,16 @@ export class SchedulerComponent implements OnInit {
     rowIndex: number
   ) => {
     try {
-      if (!this.isSelecting) { return };
+      if (!this.isSelecting) {
+        if (cellType === 'DATA') {
+          const activeCell = this.getActiveCell(cellType, colIndex, rowIndex)
+          if (activeCell.category === 'NA') {
+            activeCell.isSplitted = true;
+          }
+        }
+
+        return
+      };
 
       const isSameRow = this.selectionStartCell != null ?
         this.selectionStartCell.rowIndex === rowIndex : true;
@@ -183,8 +192,42 @@ export class SchedulerComponent implements OnInit {
     }
   };
 
+  onMouseLeave = (
+    cellType: string,
+    colIndex: number,
+    rowIndex: number
+  ) => {
+    try {
+      if (!this.isSelecting) {
+        if (cellType === 'DATA') {
+          const activeCell = this.getActiveCell(cellType, colIndex, rowIndex)
+          if (activeCell.category === 'NA') {
+            activeCell.isSplitted = false;
+          }
+        }
+
+        return
+      };
+
+      // const isSameRow = this.selectionStartCell != null ?
+      //   this.selectionStartCell.rowIndex === rowIndex : true;
+      // const isSameCellType = this.selectionStartCell != null ?
+      //   this.selectionStartCell.cellType === cellType : true;
+
+      // if (!isSameRow || !isSameCellType) {
+      //   this.stopSelection();
+      // } else {
+      //   this.fillCellSelection(cellType, colIndex, rowIndex);
+      // }
+
+    } catch (e) {
+      this.handleError(e);
+    }
+  };
+
   stopSelection = () => {
     this.isSelecting = false;
+    // this.resetNaIsSplitted();
   }
 
   selectCell = (
@@ -302,7 +345,6 @@ export class SchedulerComponent implements OnInit {
   getRowSpan = (row: any, colIndex: any, isFirst: any, isLast: any) => {
     const code = this.headersCodes[0][colIndex];
     try {
-      //CHANGE_EFFECT
       if (row[code].hasOwnProperty('isSplitted')) {
         if (row[code].isSplitted) {
           return 1;
@@ -324,12 +366,19 @@ export class SchedulerComponent implements OnInit {
       );
       let isPreviousCellSameValue = currentCellValue === previousCellValue;
 
+      //TODO: Remove cancer IF / NA hovering splitting case
+      if (previousCellValue === '' && row[this.headersCodes[0][colIndex - 1]].isSplitted) {
+        isPreviousCellSameValue = false;
+      }
+      //
+
       if (isPreviousCellSameValue) {
         return 0;
       }
 
       let nextCellValue;
       let isNextCellSameValue;
+      let isNextASplittedNa;
 
       do {
         currentCellValue = this.getTimeSlotDisplayValue(
@@ -341,6 +390,9 @@ export class SchedulerComponent implements OnInit {
           this.headersCodes[0][colIndex + 1 + span]
         );
         isNextCellSameValue = currentCellValue === nextCellValue;
+        //TODO: Remove cancer algo
+        // isNextASplittedNa = nextCellValue === '' && row[this.headersCodes[0][colIndex + 1]].isSplitted;
+        //
         span++;
       } while (isNextCellSameValue);
 
@@ -412,4 +464,18 @@ export class SchedulerComponent implements OnInit {
       return row;
     });
   }
+
+  resetNaIsSplitted = () => {
+    this.dataSource.data.map(row => {
+      for (let prop in row) {
+        if (row[prop].hasOwnProperty('isSplitted') && row[prop].isSplitted) {
+          if (row[prop].hasOwnProperty('category') && row[prop].category === 'NA') {
+            row[prop].isSplitted = false;
+          }
+        }
+      }
+      return row;
+    });
+  }
+
 }
