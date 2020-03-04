@@ -26,10 +26,10 @@ table *{
   display: none;
 }
 
-.selected {
-  background-color: rgb(255, 168, 68) !important;
-  border: 1px solid rgb(214, 142, 60) !important;
-  color:black;
+.selected div{
+  background-color: rgb(155, 155, 155) !important;
+  /* border: 1px solid rgb(214, 142, 60) !important; */
+  /* color:black; */
 }
 
 .cellDiv{

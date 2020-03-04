@@ -12,7 +12,6 @@ export class SchedulerNotificationService {
   public genericAction = this.genericSource.asObservable(); // leaving access only to the observable so you cannot use/spoof the subject at will
 
   public sendGenericAction = (slaNotification: NotificationAction<any>) => {
-    console.log('sent')
     this.genericSource.next(slaNotification);
   };
 }

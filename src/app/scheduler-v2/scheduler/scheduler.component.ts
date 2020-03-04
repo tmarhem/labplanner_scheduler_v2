@@ -6,7 +6,7 @@ import { SchedulerNotificationService } from "../_services/scheduler-notificatio
   selector: "app-scheduler",
   templateUrl: "./scheduler.component.html",
   styleUrls: ["./scheduler.component.css"],
-  providers: [SchedulerNotificationService]
+  providers: []
 })
 export class SchedulerComponent implements OnInit {
   @ViewChild(MatPaginator, { static: true }) paginator!: MatPaginator;
@@ -33,7 +33,7 @@ export class SchedulerComponent implements OnInit {
 
   ngOnInit() {
     console.log("SchedulerComponent -> rows", this.rows)
-    this.notifService.genericAction.subscribe(this.handleError);
+    this.notifService.genericAction.subscribe(() => { })
     this.dataSource = new MatTableDataSource<any>(this.rows);
     this.dataSource.paginator = this.paginator;
     this.dataSource.filterPredicate = this.filterPredicate;
@@ -71,15 +71,15 @@ export class SchedulerComponent implements OnInit {
    * @param colIndex: cell colum index
    * @param ctrlKey: boolean is ctrl key down
    */
-  onMouseDown = (
+  onMouseDownData = (
     cellType: string,
     colIndex: number,
     rowIndex: number,
     ctrlKey: boolean,
-    colSpan: number
+    colSpan: number,
   ) => {
+    if (colSpan == null) { return };
     try {
-
       const activeCell = this.getActiveCell('DATA', colIndex, rowIndex)
 
       if (activeCell.hasOwnProperty('isSplitted') && !activeCell.isSplitted) {
@@ -90,7 +90,7 @@ export class SchedulerComponent implements OnInit {
           index++;
         }
         while (index < colIndex + colSpan)
-      } else if (activeCell.hasOwnProperty('isSelected') && !activeCell.isSelected) {
+      } else if (activeCell.hasOwnProperty('isSelected')) {
 
         this.isSelecting = true;
         this.selectionStartCell = {
@@ -99,22 +99,50 @@ export class SchedulerComponent implements OnInit {
           colIndex: colIndex,
           isChecking: !activeCell.isSelected
         };
+        // if (!ctrlKey) {
+        //   this.clearCellsSelection();
+        // }
         this.selectCell(cellType, colIndex, rowIndex);
       }
 
 
-      // }
-      // const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
-      // if (!this.isSelectionCell(activeCell)) {
-      //   this.stopSelection();
-      //   return;
-      // }
+    } catch (e) {
+      this.handleError(e);
+    }
+  };
 
-      // if (!ctrlKey) {
-      //   this.clearCellsSelection();
-      // }
+  /**
+   * @param cellType: HEADER or DATA, source of the eventType
+   * @param eventType: mouseenter, mouseleave, mousedown, mouseup : click event type
+   * @param code: cell code
+   * @param colIndex: cell colum index
+   * @param ctrlKey: boolean is ctrl key down
+   */
+  onMouseDown = (
+    cellType: string,
+    colIndex: number,
+    rowIndex: number,
+    ctrlKey: boolean,
+  ) => {
+    try {
+      const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
+      if (!this.isSelectionCell(activeCell)) {
+        this.stopSelection();
+        return;
+      }
+      this.isSelecting = true;
+      this.selectionStartCell = {
+        cellType: cellType,
+        rowIndex: rowIndex,
+        colIndex: colIndex,
+        isChecking: !activeCell.isSelected
+      };
 
-      // this.selectCell(cellType, colIndex, rowIndex);
+      if (!ctrlKey) {
+        this.clearCellsSelection();
+      }
+
+      this.selectCell(cellType, colIndex, rowIndex);
     } catch (e) {
       this.handleError(e);
     }
@@ -138,7 +166,6 @@ export class SchedulerComponent implements OnInit {
       } else {
         this.fillCellSelection(cellType, colIndex, rowIndex);
       }
-
 
     } catch (e) {
       this.handleError(e);
@@ -196,6 +223,7 @@ export class SchedulerComponent implements OnInit {
     for (let i = startIndex; i <= endIndex; i++) {
       this.selectCell(cellType, i, rowIndex);
     }
+
   };
 
   clearCellsSelection = () => {

@@ -13,6 +13,7 @@ export class TimeslotPickerComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.sendApplyNotif()
   }
 
   getDefaultValue = () => {
@@ -20,8 +21,7 @@ export class TimeslotPickerComponent implements OnInit {
   }
 
   sendApplyNotif = () => {
-    console.log('sending')
-    this.notifService.sendGenericAction(new NotificationAction<string>(Actions.REFRESH, 0, this.getDefaultValue()))
+    this.notifService.sendGenericAction(new NotificationAction(Actions.REFRESH, 0, this.getDefaultValue()))
   }
 
 }

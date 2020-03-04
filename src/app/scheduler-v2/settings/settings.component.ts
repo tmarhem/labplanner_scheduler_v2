@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SchedulerNotificationService } from '../_services/scheduler-notification.service';
 
 @Component({
   selector: 'app-settings',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SettingsComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    public notifService: SchedulerNotificationService
+  ) { }
 
   ngOnInit() {
+    // this.notifService.sendGenericAction();
+    this.notifService.genericAction.subscribe(() => { })
   }
 
 }

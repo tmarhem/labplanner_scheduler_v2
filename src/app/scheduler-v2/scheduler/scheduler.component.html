@@ -26,7 +26,7 @@
 						<td mat-cell *matCellDef="let element, let rowIndex = index"
 							[attr.colspan]="getRowSpan(element, index, isFirstHeader, isLastHeader)"
 							[ngClass]="getRowClasses(element, index, isFirstHeader, isLastHeader)"
-							(mousedown)="onMouseDown('DATA', index, rowIndex, $event.ctrlKey, $event.toElement.offsetParent.colSpan)"
+							(mousedown)="onMouseDownData('DATA', index, rowIndex, $event.ctrlKey, $event.toElement.offsetParent.colSpan)"
 							(mouseenter)="onMouseEnter('DATA', index, rowIndex)"
 							(mouseup)="stopSelection()"
 							[matTooltip]="this.getTimeSlotDisplayValue(element, header.code)"
