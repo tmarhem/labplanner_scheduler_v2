@@ -76,26 +76,43 @@ export class SchedulerComponent implements OnInit {
     colIndex: number,
     rowIndex: number,
     ctrlKey: boolean,
+    colSpan: number
   ) => {
     try {
-      const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
-      if (!this.isSelectionCell(activeCell)) {
-        this.stopSelection();
-        return;
-      }
-      this.isSelecting = true;
-      this.selectionStartCell = {
-        cellType: cellType,
-        rowIndex: rowIndex,
-        colIndex: colIndex,
-        isChecking: !activeCell.isSelected
-      };
+      let index = colIndex;
+      do {
+        const activeCell = this.getActiveCell('DATA', index, rowIndex)
+        if (activeCell.hasOwnProperty('isSplitted')) {
+          activeCell.isSplitted = true;
+        }
 
-      if (!ctrlKey) {
-        this.clearCellsSelection();
+        index++;
       }
+      while (index < colIndex + colSpan)
+      // if ( activeCell.hasOwnProperty('isSplitted')) { 
+      //   for ( let i = colIndex; i < colIndex + colSpan - 1; i++ ) {
 
-      this.selectCell(cellType, colIndex, rowIndex);
+      //   }
+
+      // }
+      // const activeCell = this.getActiveCell(cellType, colIndex, rowIndex);
+      // if (!this.isSelectionCell(activeCell)) {
+      //   this.stopSelection();
+      //   return;
+      // }
+      // this.isSelecting = true;
+      // this.selectionStartCell = {
+      //   cellType: cellType,
+      //   rowIndex: rowIndex,
+      //   colIndex: colIndex,
+      //   isChecking: !activeCell.isSelected
+      // };
+
+      // if (!ctrlKey) {
+      //   this.clearCellsSelection();
+      // }
+
+      // this.selectCell(cellType, colIndex, rowIndex);
     } catch (e) {
       this.handleError(e);
     }
@@ -214,7 +231,7 @@ export class SchedulerComponent implements OnInit {
       return "";
     }
     if (row[code].value) {
-      return row[code].value;
+      return row[code].isSplitted ? row[code].value.charAt(0) : row[code].value;
     }
     // user name cell case
     if (typeof row[code] === "string") {
@@ -240,6 +257,11 @@ export class SchedulerComponent implements OnInit {
     const code = this.headersCodes[0][colIndex];
     try {
       //CHANGE_EFFECT
+      if (row[code].hasOwnProperty('isSplitted')) {
+        if (row[code].isSplitted) {
+          return 1;
+        }
+      }
       const isSelectionCell = row[code].isSelectionCell ? true : false;
       if (isFirst || isSelectionCell) {
         return 1;

@@ -38,18 +38,16 @@ table *{
   padding: 5px;
 }
 
-td:first-of-type{
+td:first-of-type div{
   white-space: normal;
 }
 
 td:not(:first-of-type){
   text-align: center;
-  /* border: 1px solid rgb(243, 243, 243); */
   overflow: hidden;
   text-overflow: ellipsis;
   padding: 2px;
   color:white;
-
 }
 
 th{
@@ -89,7 +87,7 @@ th:first-of-type:hover, tr td:first-of-type:hover{
 } */
 
 .LAB {
-background-color: rgb(103, 204, 36);
+background-color: rgb(79, 197, 0);
 }
 .LAB:hover {
   background-color: rgb(143, 241, 77);
