@@ -42,11 +42,14 @@ export class SchedulerComponent implements OnInit {
     );
   }
 
-  onGenericAction(genericAction: NotificationAction<any>) {
+  onGenericAction = (genericAction: NotificationAction<any>) => {
     switch (genericAction.type) {
-      case 'RESET':
-        // console.log('fire');
-        this.applyTimeSlot(genericAction.data)
+      case Actions.APPLY:
+        //TODO: Remove parse, only for stringified testData, or not ?
+        this.applyTimeSlot(JSON.parse(genericAction.data));
+        this.resetIsSplitted();
+      case Actions.RESET:
+        this.resetIsSplitted();
     }
   }
 
@@ -268,6 +271,11 @@ export class SchedulerComponent implements OnInit {
     if (row[code].isSelectionCell) {
       return "";
     }
+    if (row[code].category) {
+      if (row[code].category === 'NA') {
+        return '';
+      }
+    }
     if (row[code].value) {
       return row[code].isSplitted ? row[code].value.charAt(0) : row[code].value;
     }
@@ -275,7 +283,7 @@ export class SchedulerComponent implements OnInit {
     if (typeof row[code] === "string") {
       return row[code];
     }
-    return "NA";
+    return "";
   };
 
   //TODO to not span same text on different types
@@ -392,6 +400,16 @@ export class SchedulerComponent implements OnInit {
       }
       return row;
     });
-    debugger;
+  }
+
+  resetIsSplitted = () => {
+    this.dataSource.data.map(row => {
+      for (let prop in row) {
+        if (row[prop].hasOwnProperty('isSplitted') && row[prop].isSplitted) {
+          row[prop].isSplitted = false;
+        }
+      }
+      return row;
+    });
   }
 }

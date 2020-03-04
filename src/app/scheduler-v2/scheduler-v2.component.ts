@@ -45,6 +45,13 @@ export class SchedulerV2Component implements OnInit {
         if (row[cell].hasOwnProperty('value')) {
           row[cell]['isSelected'] = false;
           row[cell]['isSplitted'] = false;
+        } else if (row[cell] === 'NA') {
+          row[cell] = {
+            category: 'NA',
+            value: 'NA',
+            isSelected: false,
+            isSplitted: false,
+          }
         }
       }
       return row;
