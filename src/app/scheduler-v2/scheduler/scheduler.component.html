@@ -34,6 +34,8 @@
 							matTooltipShowDelay="750"
 							>
 							<div [ngClass]="getRowDivClasses(element, index, isFirstHeader, isLastHeader)">
+								<mat-icon>home</mat-icon>
+								<mat-checkbox class="example-margin"></mat-checkbox>
 								{{this.getTimeSlotDisplayValue(element, header.code)}}
 							</div>
 						</td>

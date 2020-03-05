@@ -8,6 +8,10 @@ table{
   height: fit-content;
 }
 
+.mat-icon{
+  font-size: 15px;
+}
+
 .headerRow th{
   padding-top: 10px;
   padding-bottom: 10px;
