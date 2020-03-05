@@ -350,8 +350,8 @@ export class SchedulerComponent implements OnInit {
           return 1;
         }
       }
-      const isSelectionCell = row[code].isSelectionCell ? true : false;
-      if (isFirst || isSelectionCell) {
+      const isNA = row[code].category === 'NA' ? true : false;
+      if (isFirst || isNA) {
         return 1;
       }
 
@@ -378,7 +378,6 @@ export class SchedulerComponent implements OnInit {
 
       let nextCellValue;
       let isNextCellSameValue;
-      let isNextASplittedNa;
 
       do {
         currentCellValue = this.getTimeSlotDisplayValue(
@@ -391,7 +390,7 @@ export class SchedulerComponent implements OnInit {
         );
         isNextCellSameValue = currentCellValue === nextCellValue;
         //TODO: Remove cancer algo
-        // isNextASplittedNa = nextCellValue === '' && row[this.headersCodes[0][colIndex + 1]].isSplitted;
+
         //
         span++;
       } while (isNextCellSameValue);

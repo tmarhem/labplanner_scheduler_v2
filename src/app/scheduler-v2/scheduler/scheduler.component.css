@@ -92,10 +92,10 @@ th:first-of-type:hover, tr td:first-of-type:hover{
 } */
 
 .NA {
-  background-color: rgb(199, 142, 125);
+  /* background-color: rgb(199, 142, 125); */
   }
   .NA:hover {
-    background-color: rgb(236, 193, 179);
+border: 1px solid grey;
   }
 
 .LAB {
